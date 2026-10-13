@@ -13,5 +13,10 @@ module.exports = defineConfig({
       jwtExpiresIn: "7d",
       cookieSecret: process.env.COOKIE_SECRET,
     }
-  }
+  },
+  modules: [
+    {
+      resolve: './src/modules/store-content',
+    },
+  ]
 })
