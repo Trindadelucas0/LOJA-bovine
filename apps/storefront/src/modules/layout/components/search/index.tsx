@@ -113,11 +113,18 @@ const SearchPanel = ({ onNavigate }: { onNavigate: () => void }) => {
   )
 }
 
-const Search = () => {
+const Search = ({
+  trigger,
+}: {
+  trigger?: (open: () => void) => React.ReactNode
+} = {}) => {
   const { state: isOpen, open, close } = useToggleState()
 
   return (
     <>
+      {trigger ? (
+        trigger(open)
+      ) : (
       <button
         type="button"
         onClick={open}
@@ -127,6 +134,7 @@ const Search = () => {
       >
         <MagnifyingGlass />
       </button>
+      )}
 
       <SearchDrawer isOpen={isOpen} close={close}>
         <InstantSearch
