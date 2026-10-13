@@ -1,40 +1,81 @@
 "use client"
 
+import { useState } from "react"
 import type { SearchClient } from "instantsearch.js"
-import { Configure, InstantSearch } from "react-instantsearch"
+import { Configure, InstantSearch, useStats } from "react-instantsearch"
 
 import { PRODUCT_INDEX_NAME, searchClient } from "@lib/search-client"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Icon from "@modules/avadesk/components/icon"
 import StoreHits from "@modules/store/components/store-hits"
-import StoreRefinements from "@modules/store/components/store-refinements"
+import StoreRefinements, { SortSelect } from "@modules/store/components/store-refinements"
 import StoreSearchBox from "@modules/store/components/store-search-box"
 
 const PRODUCT_LIMIT = 12
 
-const StoreTemplate = ({ currencyCode }: { currencyCode: string }) => {
+const ResultCount = () => {
+  const { nbHits } = useStats()
   return (
-    <div className="py-6 content-container" data-testid="category-container">
-      <div className="mb-8 text-2xl-semi">
-        <h1 data-testid="store-page-title">Todos os produtos</h1>
-      </div>
+    <span className="text-body-sm text-ink-soft" data-testid="result-count">
+      {nbHits} {nbHits === 1 ? "produto" : "produtos"}
+    </span>
+  )
+}
 
-      <div className="flex flex-col small:flex-row small:items-start">
-        <InstantSearch
-          indexName={PRODUCT_INDEX_NAME}
-          searchClient={searchClient as unknown as SearchClient}
-          routing
-          future={{ preserveSharedStateOnUnmount: true }}
-        >
-          <Configure hitsPerPage={PRODUCT_LIMIT} />
-          <StoreRefinements currencyCode={currencyCode} />
-          <div className="w-full min-w-0">
+type Props = {
+  currencyCode: string
+  pixPercent?: number | null
+  maxInstallments?: number | null
+}
+
+const StoreTemplate = ({ currencyCode, pixPercent, maxInstallments }: Props) => {
+  const [filtersOpen, setFiltersOpen] = useState(false)
+
+  return (
+    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-10" data-testid="category-container">
+      <nav className="flex items-center gap-1.5 text-body-sm text-ink-muted mb-2">
+        <LocalizedClientLink href="/" className="hover:text-ink">Início</LocalizedClientLink>
+        <Icon name="chevron_right" className="text-[16px]" />
+        <span className="text-ink">Produtos</span>
+      </nav>
+      <h1 className="font-display text-h-md small:text-h-lg text-ink mb-4 small:mb-6" data-testid="store-page-title">
+        Todos os produtos
+      </h1>
+
+      <InstantSearch
+        indexName={PRODUCT_INDEX_NAME}
+        searchClient={searchClient as unknown as SearchClient}
+        routing
+        future={{ preserveSharedStateOnUnmount: true }}
+      >
+        <Configure hitsPerPage={PRODUCT_LIMIT} />
+        <div className="flex flex-col small:flex-row small:items-start gap-6">
+          <StoreRefinements currencyCode={currencyCode} open={filtersOpen} onClose={() => setFiltersOpen(false)} />
+          <div className="w-full min-w-0 flex flex-col gap-4">
             <StoreSearchBox />
+            <div className="flex items-center justify-between gap-3">
+              <ResultCount />
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setFiltersOpen(true)}
+                  className="small:hidden inline-flex items-center gap-1.5 h-10 px-3 rounded-ava-md border border-line bg-white text-label-sm text-ink"
+                  data-testid="open-filters"
+                >
+                  <Icon name="tune" className="text-[18px]" /> Filtros
+                </button>
+                <SortSelect currencyCode={currencyCode} />
+              </div>
+            </div>
             <StoreHits
               hitsPerPage={PRODUCT_LIMIT}
               currencyCode={currencyCode}
+              pixPercent={pixPercent}
+              maxInstallments={maxInstallments}
             />
           </div>
-        </InstantSearch>
-      </div>
+        </div>
+      </InstantSearch>
     </div>
   )
 }

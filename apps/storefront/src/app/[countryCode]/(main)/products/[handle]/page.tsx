@@ -4,6 +4,10 @@ import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
+import { getAvaContent, storeName } from "@lib/data/avadesk-content"
+
+const PRODUCT_FIELDS =
+  "*variants.calculated_price,+variants.inventory_quantity,*variants.images,*variants.options,+variants.manage_inventory,+variants.allow_backorder,+metadata,+tags,*images,*options,*options.values,*categories,*categories.parent_category,*categories.parent_category.parent_category"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -87,12 +91,14 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
+  const name = storeName((await getAvaContent()).settings)
+
   return {
-    title: `${product.title} | Minha Loja`,
-    description: `${product.title}`,
+    title: `${product.title} | ${name}`,
+    description: product.subtitle || product.description?.slice(0, 160) || product.title,
     openGraph: {
-      title: `${product.title} | Minha Loja`,
-      description: `${product.title}`,
+      title: `${product.title} | ${name}`,
+      description: product.subtitle || product.title,
       images: product.thumbnail ? [product.thumbnail] : [],
     },
   }
@@ -111,7 +117,7 @@ export default async function ProductPage(props: Props) {
 
   const pricedProduct = await listProducts({
     countryCode: params.countryCode,
-    queryParams: { handle: params.handle },
+    queryParams: { handle: params.handle, fields: PRODUCT_FIELDS },
   }).then(({ response }) => response.products[0])
 
   if (!pricedProduct) {

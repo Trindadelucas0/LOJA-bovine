@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { getAvaContent, storeName } from "@lib/data/avadesk-content"
 
 import { getCategoryByHandle, listCategories } from "@lib/data/categories"
 import { listRegions } from "@lib/data/regions"
@@ -51,12 +52,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   try {
     const productCategory = await getCategoryByHandle(params.category)
 
-    const title = productCategory.name + " | Minha Loja"
+    const name = storeName((await getAvaContent()).settings)
+    const title = `${productCategory.name} | ${name}`
 
-    const description = productCategory.description ?? `${title} category.`
+    const description = productCategory.description ?? `Produtos da categoria ${productCategory.name}.`
 
     return {
-      title: `${title} | Minha Loja`,
+      title,
       description,
       alternates: {
         canonical: `${params.category.join("/")}`,

@@ -122,7 +122,7 @@ export default function AvaProductCard({
         </LocalizedClientLink>
         {config.chatEnabled && (
           <ProductChatButton
-            product={{ id: product.id, title: product.title, sku: product.variants?.[0]?.sku, price: price?.calculated_price }}
+            product={{ id: product.id, title: product.title, handle: product.handle, image: product.thumbnail, sku: product.variants?.[0]?.sku, price: price?.calculated_price }}
           />
         )}
       </div>

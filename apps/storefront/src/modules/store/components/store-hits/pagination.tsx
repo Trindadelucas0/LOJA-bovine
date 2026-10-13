@@ -1,52 +1,38 @@
 "use client"
 
 import { usePagination } from "react-instantsearch"
-
-import { clx } from "@modules/common/components/ui"
+import Icon from "@modules/avadesk/components/icon"
 
 const SearchPagination = () => {
-  const { pages, currentRefinement, nbPages, refine } = usePagination({
-    padding: 2,
-  })
+  const { pages, currentRefinement, nbPages, refine, isFirstPage, isLastPage } = usePagination({ padding: 2 })
 
-  if (nbPages <= 1) {
-    return null
+  if (nbPages <= 1) return null
+
+  const go = (p: number) => {
+    refine(p)
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
-
-  const renderPage = (page: number) => (
-    <button
-      key={page}
-      className={clx("txt-xlarge-plus text-ui-fg-muted", {
-        "text-ui-fg-base hover:text-ui-fg-subtle": page === currentRefinement,
-      })}
-      disabled={page === currentRefinement}
-      onClick={() => refine(page)}
-    >
-      {page + 1}
-    </button>
-  )
-
-  const renderEllipsis = (key: string) => (
-    <span
-      key={key}
-      className="txt-xlarge-plus text-ui-fg-muted items-center cursor-default"
-    >
-      ...
-    </span>
-  )
-
-  const lastPage = nbPages - 1
-
+  const btn = "min-w-10 h-10 px-3 rounded-ava-md text-label-md flex items-center justify-center transition-colors"
   return (
-    <div className="flex justify-center w-full mt-12">
-      <div className="flex gap-3 items-end" data-testid="product-pagination">
-        {!pages.includes(0) && renderPage(0)}
-        {!pages.includes(0) && !pages.includes(1) && renderEllipsis("start")}
-        {pages.map(renderPage)}
-        {!pages.includes(lastPage) &&
-          !pages.includes(lastPage - 1) &&
-          renderEllipsis("end")}
-        {!pages.includes(lastPage) && renderPage(lastPage)}
+    <div className="flex justify-center w-full mt-8" data-testid="product-pagination">
+      <div className="flex gap-1.5 items-center">
+        <button type="button" disabled={isFirstPage} onClick={() => go(currentRefinement - 1)} className={`${btn} bg-white border border-line disabled:opacity-40`} aria-label="Página anterior">
+          <Icon name="chevron_left" className="text-[20px]" />
+        </button>
+        {pages.map((p) => (
+          <button
+            key={p}
+            type="button"
+            onClick={() => go(p)}
+            disabled={p === currentRefinement}
+            className={`${btn} ${p === currentRefinement ? "bg-navy text-white" : "bg-white border border-line text-ink hover:border-navy"}`}
+          >
+            {p + 1}
+          </button>
+        ))}
+        <button type="button" disabled={isLastPage} onClick={() => go(currentRefinement + 1)} className={`${btn} bg-white border border-line disabled:opacity-40`} aria-label="Próxima página">
+          <Icon name="chevron_right" className="text-[20px]" />
+        </button>
       </div>
     </div>
   )

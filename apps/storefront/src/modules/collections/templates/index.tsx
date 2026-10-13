@@ -1,11 +1,12 @@
 import { Suspense } from "react"
-
-import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
-import RefinementList from "@modules/store/components/refinement-list"
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-import PaginatedProducts from "@modules/store/templates/paginated-products"
 import { HttpTypes } from "@medusajs/types"
+
 import { OptionValueIds } from "@lib/util/product-option-filters"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Icon from "@modules/avadesk/components/icon"
+import SortPills from "@modules/store/components/sort-pills"
+import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import PaginatedProducts, { ProductsGridSkeleton } from "@modules/store/templates/paginated-products"
 
 export default function CollectionTemplate({
   sortBy,
@@ -24,28 +25,25 @@ export default function CollectionTemplate({
   const sort = sortBy || "created_at"
 
   return (
-    <div className="flex flex-col small:flex-row small:items-start py-6 content-container">
-      <RefinementList sortBy={sort} hideOptionsPicker />
-      <div className="w-full">
-        <div className="mb-8 text-2xl-semi">
-          <h1>{collection.title}</h1>
-        </div>
-        <Suspense
-          fallback={
-            <SkeletonProductGrid
-              numberOfProducts={collection.products?.length}
-            />
-          }
-        >
-          <PaginatedProducts
-            sortBy={sort}
-            page={pageNumber}
-            collectionId={collection.id}
-            countryCode={countryCode}
-            optionValueIds={optionValueIds}
-          />
-        </Suspense>
+    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-10">
+      <nav className="flex items-center gap-1.5 text-body-sm text-ink-muted mb-2">
+        <LocalizedClientLink href="/" className="hover:text-ink">Início</LocalizedClientLink>
+        <Icon name="chevron_right" className="text-[16px]" />
+        <span className="text-ink">{collection.title}</span>
+      </nav>
+      <h1 className="font-display text-h-md small:text-h-lg text-ink mb-4">{collection.title}</h1>
+      <div className="mb-4">
+        <SortPills sortBy={sort} />
       </div>
+      <Suspense key={`${sort}-${pageNumber}`} fallback={<ProductsGridSkeleton />}>
+        <PaginatedProducts
+          sortBy={sort}
+          page={pageNumber}
+          collectionId={collection.id}
+          countryCode={countryCode}
+          optionValueIds={optionValueIds}
+        />
+      </Suspense>
     </div>
   )
 }

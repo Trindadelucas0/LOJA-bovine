@@ -1,6 +1,5 @@
 "use client"
 
-import clsx from "clsx"
 import { useRefinementList } from "react-instantsearch"
 
 type RefinementGroupProps = {
@@ -21,31 +20,22 @@ const RefinementGroup = ({ attribute, title }: RefinementGroupProps) => {
 
   return (
     <div className="flex flex-col gap-y-3">
-      <span className="txt-compact-small-plus text-ui-fg-subtle">
-        {title}
-      </span>
-      <ul className="flex flex-col gap-y-2 pr-6">
+      <span className="text-label-xs uppercase tracking-wider text-ink-soft">{title}</span>
+      <ul className="flex flex-col gap-y-2">
         {items.map((item) => (
           <li key={item.value}>
-            <label className="flex cursor-pointer items-start gap-x-2">
+            <label className="flex cursor-pointer items-center gap-x-2">
               <input
                 type="checkbox"
                 checked={item.isRefined}
                 onChange={() => refine(item.value)}
-                className="mt-1 shrink-0 accent-ui-fg-interactive"
+                className="w-4 h-4 shrink-0 accent-[#FE6B00] rounded"
                 data-testid={`refinement-${attribute}`}
               />
-              <span
-                className={clsx("text-small-regular min-w-0 break-words", {
-                  "text-ui-fg-base": item.isRefined,
-                  "text-ui-fg-subtle": !item.isRefined,
-                })}
-              >
+              <span className={`text-body-md min-w-0 flex-1 break-words ${item.isRefined ? "text-ink font-semibold" : "text-ink-soft"}`}>
                 {item.label}
               </span>
-              <span className="text-small-regular shrink-0 text-ui-fg-muted">
-                ({item.count})
-              </span>
+              <span className="text-body-sm shrink-0 text-ink-muted bg-subtle rounded-full px-2">{item.count}</span>
             </label>
           </li>
         ))}

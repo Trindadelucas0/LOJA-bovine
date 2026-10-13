@@ -1,34 +1,24 @@
 "use client"
 
-import { MagnifyingGlass, XMarkMini } from "@medusajs/icons"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useSearchBox } from "react-instantsearch"
+import Icon from "@modules/avadesk/components/icon"
 
 const DEBOUNCE_MS = 250
 
-/**
- * Free-text search over the listing, refining the same InstantSearch state the
- * sidebar filters do. The input is held locally so typing stays responsive
- * while the query itself is debounced.
- */
+/** Busca livre da listagem (mesmo estado do InstantSearch dos filtros). */
 const StoreSearchBox = () => {
   const timer = useRef<number | undefined>(undefined)
 
-  const queryHook = useCallback(
-    (nextQuery: string, search: (value: string) => void) => {
-      window.clearTimeout(timer.current)
-      timer.current = window.setTimeout(() => search(nextQuery), DEBOUNCE_MS)
-    },
-    []
-  )
+  const queryHook = useCallback((nextQuery: string, search: (value: string) => void) => {
+    window.clearTimeout(timer.current)
+    timer.current = window.setTimeout(() => search(nextQuery), DEBOUNCE_MS)
+  }, [])
 
   const { query, refine } = useSearchBox({ queryHook })
   const [inputValue, setInputValue] = useState(query)
 
   useEffect(() => () => window.clearTimeout(timer.current), [])
-
-  // Follow the query when it changes elsewhere — cleared with the filters, or
-  // arriving from the URL on load, which `routing` restores after mount.
   useEffect(() => {
     setInputValue(query)
   }, [query])
@@ -40,8 +30,8 @@ const StoreSearchBox = () => {
   }
 
   return (
-    <div className="mb-6 flex items-center gap-x-3 border-b border-ui-border-base">
-      <MagnifyingGlass className="shrink-0 text-ui-fg-muted" />
+    <div className="flex items-center gap-2 h-12 px-3 rounded-ava-md bg-white border border-line shadow-sm focus-within:ring-2 focus-within:ring-navy/20">
+      <Icon name="search" className="text-[20px] text-ink-muted" />
       <input
         type="search"
         value={inputValue}
@@ -49,20 +39,14 @@ const StoreSearchBox = () => {
           setInputValue(event.target.value)
           refine(event.target.value)
         }}
-        placeholder="Buscar produtos"
+        placeholder="Buscar produtos, marcas ou SKUs..."
         aria-label="Buscar produtos"
-        className="txt-medium w-full bg-transparent py-3 text-ui-fg-base outline-none placeholder:text-ui-fg-muted [&::-webkit-search-cancel-button]:hidden"
+        className="w-full bg-transparent text-body-md text-ink outline-none placeholder:text-ink-muted [&::-webkit-search-cancel-button]:hidden"
         data-testid="store-search-input"
       />
       {inputValue && (
-        <button
-          type="button"
-          onClick={clear}
-          aria-label="Limpar busca"
-          className="shrink-0 text-ui-fg-muted hover:text-ui-fg-base"
-          data-testid="store-search-clear"
-        >
-          <XMarkMini />
+        <button type="button" onClick={clear} aria-label="Limpar busca" className="text-ink-muted hover:text-ink" data-testid="store-search-clear">
+          <Icon name="close" className="text-[20px]" />
         </button>
       )}
     </div>

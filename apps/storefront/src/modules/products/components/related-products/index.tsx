@@ -1,69 +1,54 @@
-import { listProducts } from "@lib/data/products"
-import { getRegion } from "@lib/data/regions"
 import { HttpTypes } from "@medusajs/types"
-import Product from "../product-preview"
+import { getAvaContent } from "@lib/data/avadesk-content"
+import { listProducts } from "@lib/data/products"
+import { chatConfig } from "@lib/util/chat-config"
+import AvaProductCard from "@modules/avadesk/components/product-card"
+import SectionHeading from "@modules/home/components/section-heading"
 
 type RelatedProductsProps = {
   product: HttpTypes.StoreProduct
   countryCode: string
 }
 
-export default async function RelatedProducts({
-  product,
-  countryCode,
-}: RelatedProductsProps) {
-  const region = await getRegion(countryCode)
+/** Relacionados: mesma categoria, depois mesma coleção, depois mais recentes. */
+export default async function RelatedProducts({ product, countryCode }: RelatedProductsProps) {
+  const fetch = (q: Record<string, unknown>) =>
+    listProducts({ countryCode, queryParams: { limit: 9, ...q } as any })
+      .then(({ response }) => response.products.filter((p) => p.id !== product.id))
+      .catch(() => [] as HttpTypes.StoreProduct[])
 
-  if (!region) {
-    return null
+  const catIds = (product.categories || []).map((c) => c.id)
+  let products: HttpTypes.StoreProduct[] = []
+  if (catIds.length) products = await fetch({ category_id: catIds })
+  if (products.length < 4 && product.collection_id) {
+    const more = await fetch({ collection_id: [product.collection_id] })
+    products = [...products, ...more.filter((m) => !products.some((p) => p.id === m.id))]
   }
+  if (products.length < 4) {
+    const more = await fetch({ order: "-created_at" })
+    products = [...products, ...more.filter((m) => !products.some((p) => p.id === m.id))]
+  }
+  products = products.slice(0, 4)
+  if (!products.length) return null
 
-  // edit this function to define your related products logic
-  const queryParams: HttpTypes.StoreProductListParams = {}
-  if (region?.id) {
-    queryParams.region_id = region.id
-  }
-  if (product.collection_id) {
-    queryParams.collection_id = [product.collection_id]
-  }
-  if (product.tags) {
-    queryParams.tag_id = product.tags
-      .map((t) => t.id)
-      .filter(Boolean) as string[]
-  }
-  queryParams.is_giftcard = false
-
-  const products = await listProducts({
-    queryParams,
-    countryCode,
-  }).then(({ response }) => {
-    return response.products.filter(
-      (responseProduct) => responseProduct.id !== product.id
-    )
-  })
-
-  if (!products.length) {
-    return null
+  const { settings } = await getAvaContent()
+  const config = {
+    pixPercent: settings.pix_discount_percent,
+    maxInstallments: settings.max_installments,
+    sellerName: settings.store_name,
+    chatEnabled: chatConfig(settings).enabled,
   }
 
   return (
-    <div className="product-page-constraint">
-      <div className="flex flex-col items-center text-center mb-16">
-        <span className="text-base-regular text-gray-600 mb-6">
-          Produtos relacionados
-        </span>
-        <p className="text-2xl-regular text-ui-fg-base max-w-lg">
-          Você também pode gostar destes produtos.
-        </p>
-      </div>
-
-      <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8">
-        {products.map((product) => (
-          <li key={product.id}>
-            <Product region={region} product={product} />
+    <section data-testid="related-products-container">
+      <SectionHeading eyebrow="Você também pode gostar" title="Produtos relacionados" linkLabel="Ver todos" linkHref="/store" />
+      <ul className="grid grid-cols-2 small:grid-cols-4 gap-3 small:gap-gutter">
+        {products.map((p) => (
+          <li key={p.id}>
+            <AvaProductCard product={p} config={config} />
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   )
 }
