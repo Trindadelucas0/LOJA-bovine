@@ -9,6 +9,7 @@ import ChatButton from "../chatwoot/chat-button"
 import CategoriesMenu from "./categories-menu"
 import SearchBar from "./search-bar"
 import Logo from "./logo"
+import CartDropdown from "./cart-dropdown"
 
 export default async function AvaHeader({
   settings,
@@ -71,7 +72,7 @@ export default async function AvaHeader({
               <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-stock-in rounded-full ring-2 ring-white" />
             </ChatButton>
           )}
-          <CartLink className="relative p-2 text-ink-soft hover:text-ink hover:bg-subtle rounded-full transition-colors flex items-center" />
+          <CartDropdown cart={cart} />
           <div className="h-6 w-px bg-line mx-1" />
           <LocalizedClientLink
             href="/account"

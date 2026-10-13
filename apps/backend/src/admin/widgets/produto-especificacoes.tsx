@@ -21,7 +21,7 @@ const ProdutoEspecificacoesWidget = ({ data }: Props) => {
 
   useEffect(() => {
     setValues(Object.fromEntries(FIELDS.map((f) => [f, asText(data.metadata?.[f])])) as Record<Field, string>)
-  }, [data.id]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [data.id])
 
   const set = (f: Field) => (e: { target: { value: string } }) => setValues((v) => ({ ...v, [f]: e.target.value }))
 

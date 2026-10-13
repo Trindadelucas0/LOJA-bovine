@@ -1,8 +1,9 @@
-import { retrieveCart } from "@lib/data/cart"
+import { Metadata } from "next"
+import { HttpTypes } from "@medusajs/types"
+import { getAvaContent } from "@lib/data/avadesk-content"
+import { listCartOptions, retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import CartTemplate from "@modules/cart/templates"
-import { Metadata } from "next"
-import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
   title: "Carrinho",
@@ -10,12 +11,23 @@ export const metadata: Metadata = {
 }
 
 export default async function Cart() {
-  const cart = await retrieveCart().catch((error) => {
-    console.error(error)
-    return notFound()
-  })
+  const [cart, customer, { settings }] = await Promise.all([
+    retrieveCart().catch(() => null),
+    retrieveCustomer(),
+    getAvaContent(),
+  ])
+  let shippingOptions: HttpTypes.StoreCartShippingOption[] = []
+  if (cart?.items?.length) {
+    shippingOptions = await listCartOptions().then((r) => r.shipping_options).catch(() => [])
+  }
 
-  const customer = await retrieveCustomer()
-
-  return <CartTemplate cart={cart} customer={customer} />
+  return (
+    <CartTemplate
+      cart={cart}
+      customer={customer}
+      shippingOptions={shippingOptions}
+      pixPercent={settings.pix_discount_percent}
+      maxInstallments={settings.max_installments}
+    />
+  )
 }
