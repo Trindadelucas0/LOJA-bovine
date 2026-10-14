@@ -402,6 +402,11 @@ export async function placeOrder(cartId?: string) {
     ...(await getAuthHeaders()),
   }
 
+  // Compra somente com conta: exige cliente logado (o backend tambem bloqueia).
+  if (!("authorization" in headers) || !headers.authorization) {
+    throw new Error("Entre ou crie sua conta para finalizar o pedido.")
+  }
+
   const cartRes = await sdk.store.cart
     .complete(id, {}, headers)
     .then(async (cartRes) => {
