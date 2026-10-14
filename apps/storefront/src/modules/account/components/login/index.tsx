@@ -7,9 +7,10 @@ import { useActionState } from "react"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
+  redirectTo?: string
 }
 
-const Login = ({ setCurrentView }: Props) => {
+const Login = ({ setCurrentView, redirectTo }: Props) => {
   const [message, formAction] = useActionState(login, null)
 
   return (
@@ -27,10 +28,11 @@ const Login = ({ setCurrentView }: Props) => {
           data-testid="login-verification-message"
         >
           Enviamos um link de verificação para <strong>{message.email}</strong>.
-          Please verify your email, then sign in.
+          Confirme seu e-mail e depois entre.
         </div>
       )}
       <form className="w-full" action={formAction}>
+        {redirectTo ? <input type="hidden" name="redirect" value={redirectTo} /> : null}
         <div className="flex flex-col w-full gap-y-2">
           <Input
             label="E-mail"

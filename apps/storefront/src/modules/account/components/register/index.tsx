@@ -10,9 +10,10 @@ import { signup } from "@lib/data/customer"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
+  redirectTo?: string
 }
 
-const Register = ({ setCurrentView }: Props) => {
+const Register = ({ setCurrentView, redirectTo }: Props) => {
   const [message, formAction] = useActionState(signup, null)
 
   return (
@@ -21,10 +22,10 @@ const Register = ({ setCurrentView }: Props) => {
       data-testid="register-page"
     >
       <h1 className="text-large-semi uppercase mb-6">
-        Crie sua conta na Minha Loja
+        Crie sua conta na BOVINE
       </h1>
       <p className="text-center text-base-regular text-ui-fg-base mb-4">
-        Crie seu perfil na Minha Loja e tenha uma experiência de compra melhor.
+        Crie seu perfil na BOVINE e tenha uma experiência de compra melhor.
       </p>
       {message?.state === "verification_required" && (
         <div
@@ -32,10 +33,11 @@ const Register = ({ setCurrentView }: Props) => {
           data-testid="register-verification-message"
         >
           Enviamos um link de verificação para <strong>{message.email}</strong>.
-          Please check your inbox to verify your email, then sign in.
+          Verifique sua caixa de entrada para confirmar o e-mail e depois entre.
         </div>
       )}
       <form className="w-full flex flex-col" action={formAction}>
+        {redirectTo ? <input type="hidden" name="redirect" value={redirectTo} /> : null}
         <div className="flex flex-col w-full gap-y-2">
           <Input
             label="Nome"

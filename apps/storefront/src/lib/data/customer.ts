@@ -84,6 +84,14 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
   return updateRes
 }
 
+/** Aceita apenas caminhos internos (evita open redirect). */
+function safeRedirectPath(value: FormDataEntryValue | null): string | null {
+  if (typeof value !== "string") return null
+  const v = value.trim()
+  if (!v.startsWith("/") || v.startsWith("//") || v.includes("\\")) return null
+  return v
+}
+
 export async function signup(
   _currentState: unknown,
   formData: FormData
@@ -121,7 +129,10 @@ export async function signup(
 
   // Continue by logging in. The login response tells us whether the backend
   // requires email verification — we don't need a storefront-side flag.
-  return completeLogin(customerForm.email, password)
+  const res = await completeLogin(customerForm.email, password)
+  const to = safeRedirectPath(formData.get("redirect"))
+  if (res.state === "success" && to) redirect(to)
+  return res
 }
 
 export async function login(
@@ -131,7 +142,10 @@ export async function login(
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 
-  return completeLogin(email, password)
+  const res = await completeLogin(email, password)
+  const to = safeRedirectPath(formData.get("redirect"))
+  if (res.state === "success" && to) redirect(to)
+  return res
 }
 
 // Logs the customer in and reconciles the customer record. The behavior is

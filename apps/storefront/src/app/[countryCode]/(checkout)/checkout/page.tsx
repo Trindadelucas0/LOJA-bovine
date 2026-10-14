@@ -26,6 +26,12 @@ export default async function Checkout(props: { params: Promise<{ countryCode: s
     redirect(`/${countryCode}/cart`)
   }
 
+  // Compra somente com conta: visitante vai para login/cadastro e volta ao checkout.
+  const loggedCustomer = await retrieveCustomer().catch(() => null)
+  if (!loggedCustomer) {
+    redirect(`/${countryCode}/account?redirect=${encodeURIComponent(`/${countryCode}/checkout`)}`)
+  }
+
   const [customer, shippingOptions, providers, { settings }] = await Promise.all([
     retrieveCustomer(),
     listCartShippingMethods(cart.id).catch(() => []),
