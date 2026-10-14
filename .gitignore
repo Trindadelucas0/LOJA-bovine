@@ -63,3 +63,24 @@ dev.log
 .env
 .env.local
 .env.*.local
+
+# --- organizacao repo ---
+*.bak*
+*.log
+*.err
+**/.env*
+!**/.env.example
+!**/.env.template
+.medusa/
+**/.medusa/
+apps/backend/static/
+**/uploads/
+*.sql
+*.dump
+*.sql.gz
+*.key
+*.p12
+credentials*
+*.tsbuildinfo
+.setup-bovine/
+

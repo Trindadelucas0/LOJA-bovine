@@ -22,8 +22,8 @@ type Props = {
 
 const fmt = (amount: number, currency: string) => convertToLocale({ amount, currency_code: currency })
 
-const Card = ({ n, title, icon, done, children, onEdit, summary }: {
-  n: number; title: string; icon: string; done?: boolean; children?: React.ReactNode; onEdit?: () => void; summary?: React.ReactNode
+const Card = ({ n, title, icon, done, children, onEdit, summary, sub, tag }: {
+  n: number; title: string; icon: string; done?: boolean; children?: React.ReactNode; onEdit?: () => void; summary?: React.ReactNode; sub?: string; tag?: React.ReactNode
 }) => (
   <section className="bg-white rounded-ava-lg small:rounded-ava-xl shadow-sm p-4 small:p-6">
     <div className="flex items-center justify-between gap-3 mb-1">
@@ -31,8 +31,12 @@ const Card = ({ n, title, icon, done, children, onEdit, summary }: {
         <span className={`w-9 h-9 rounded-ava-md flex items-center justify-center ${done ? "bg-stock-in/10 text-stock-in" : "bg-brand-light text-brand-dark"}`}>
           <Icon name={done ? "check_circle" : icon} className="text-[20px]" />
         </span>
-        {n}. {title}
+        <span className="flex flex-col">
+          <span>{n}. {title}</span>
+          {sub && <span className="text-body-sm font-sans font-normal text-ink-muted">{sub}</span>}
+        </span>
       </h2>
+      {!onEdit && tag && <span className="hidden xsmall:inline-flex">{tag}</span>}
       {onEdit && (
         <button type="button" onClick={onEdit} className="text-label-sm text-brand hover:text-brand-dark">Alterar</button>
       )}
@@ -90,6 +94,33 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
     city: sa?.city || "",
     province: sa?.province || "",
   }))
+  const saved = customer?.addresses || []
+  const [mode, setMode] = useState<"saved" | "form">(saved.length && !sa?.address_1 ? "saved" : "form")
+  const [savedId, setSavedId] = useState<string | undefined>((saved.find((a) => a.is_default_shipping) || saved[0])?.id)
+  const pickSaved = (a: HttpTypes.StoreCustomerAddress) => {
+    setSavedId(a.id)
+    const [street, num] = (a.address_1 || "").split(",").map((s) => s.trim())
+    const am = (a.metadata || {}) as Record<string, string>
+    setF((p) => ({
+      ...p,
+      first_name: a.first_name || p.first_name,
+      last_name: a.last_name || p.last_name,
+      phone: a.phone ? maskPhone(a.phone) : p.phone,
+      postal_code: a.postal_code ? maskCEP(a.postal_code) : p.postal_code,
+      street: am.rua || street || p.street,
+      number: am.numero || num || "S/N",
+      complement: a.address_2 || "",
+      district: am.bairro || a.address_2 || "Centro",
+      city: a.city || p.city,
+      province: a.province || p.province,
+      cpf: am.cpf || p.cpf,
+    }))
+  }
+  useEffect(() => {
+    const a = saved.find((x) => x.id === savedId)
+    if (mode === "saved" && a) pickSaved(a)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [cepState, setCepState] = useState<"idle" | "loading" | "ok" | "error">(sa?.postal_code ? "ok" : "idle")
   const [touched, setTouched] = useState(false)
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setF((p) => ({ ...p, [k]: e.target.value }))
@@ -249,7 +280,7 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
   )
 
   return (
-    <div className="flex flex-col gap-4 small:gap-6">
+    <div className="flex flex-col gap-4 small:gap-6" id="checkout-flow">
       <Stepper current={step} />
 
       {error && (
@@ -262,6 +293,8 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
       <Card
         n={1}
         title="Endereço de entrega"
+        sub="Selecione onde seus produtos serão entregues"
+        tag={<span className="text-label-xs bg-subtle text-ink-soft px-2 py-1 rounded-full">Passo obrigatório</span>}
         icon="location_on"
         done={hasAddress && step !== "address"}
         onEdit={step !== "address" && hasAddress ? () => go("address") : undefined}
@@ -276,7 +309,58 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
           ) : null
         }
       >
-        {step === "address" && (
+        {step === "address" && saved.length > 0 && (
+          <div className="flex flex-col gap-3 mb-4" data-testid="saved-addresses">
+            <div className="grid grid-cols-1 small:grid-cols-2 gap-3">
+              {saved.map((a) => {
+                const active = mode === "saved" && savedId === a.id
+                return (
+                  <button key={a.id} type="button" onClick={() => { setMode("saved"); pickSaved(a) }}
+                    className={`text-left rounded-ava-lg border-2 p-4 transition-all ${active ? "border-navy bg-navy/5 shadow-md" : "border-line hover:border-line-strong bg-white"}`}>
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <span className="flex items-center gap-2">
+                        {a.is_default_shipping && <span className="px-2 py-0.5 rounded bg-navy text-white text-[10px] font-bold uppercase">Padrão</span>}
+                        <span className="font-display font-bold text-ink">{a.address_name || a.company || "Endereço"}</span>
+                      </span>
+                      <span className={`w-6 h-6 rounded-full flex items-center justify-center ${active ? "bg-navy text-white" : "border-2 border-line-strong"}`}>
+                        {active && <Icon name="check" className="text-[16px]" />}
+                      </span>
+                    </div>
+                    <p className="text-body-sm text-ink font-semibold">{a.address_1}</p>
+                    {a.address_2 && <p className="text-body-sm text-ink-soft">{a.address_2}</p>}
+                    <p className="text-body-sm text-ink-soft">{a.city}, {a.province} — CEP {a.postal_code}</p>
+                    <p className="text-body-sm text-ink-muted mt-1">Destinatário: {a.first_name} {a.last_name}</p>
+                    <div className="flex items-center gap-3 mt-3 pt-3 border-t border-line text-label-xs">
+                      <span className="inline-flex items-center gap-1 text-ink-soft"><Icon name="edit" className="text-[14px]" /> Editar</span>
+                      <span className="inline-flex items-center gap-1 text-stock-in"><Icon name="verified" className="text-[14px]" /> CEP validado</span>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+            <button type="button" onClick={() => setMode("form")}
+              className={`h-14 rounded-ava-lg border-2 border-dashed text-label-md flex items-center justify-center gap-2 ${mode === "form" ? "border-navy text-navy bg-navy/5" : "border-line text-ink-soft hover:border-line-strong bg-subtle/60"}`}>
+              <Icon name="add" className="text-[20px]" /> Adicionar novo endereço de entrega
+            </button>
+          </div>
+        )}
+        {step === "address" && mode === "saved" && saved.length > 0 && (
+          <div className="grid grid-cols-6 gap-3" data-testid="address-saved-confirm">
+            <Field label="E-mail" error={err("email")} className="col-span-6 small:col-span-3">
+              <input className={inputCls} type="email" value={f.email} onChange={set("email")} name="email" />
+            </Field>
+            <Field label="CPF (para nota fiscal)" error={err("cpf")} className="col-span-6 small:col-span-3">
+              <input className={inputCls} inputMode="numeric" value={f.cpf} onChange={(e) => setF((p) => ({ ...p, cpf: maskCPF(e.target.value) }))} placeholder="000.000.000-00" name="cpf" />
+            </Field>
+            {touched && !addrValid && <p className="col-span-6 text-body-sm text-danger">Complete os dados do endereço: clique em &quot;Adicionar novo endereço&quot; para revisar.</p>}
+            <div className="col-span-6 flex justify-end pt-2">
+              <button type="button" onClick={saveAddress} disabled={pending} className="h-12 px-6 rounded-ava-md bg-navy hover:bg-navy-deep text-white text-label-md disabled:opacity-60 w-full small:w-auto" data-testid="submit-address-button">
+                {pending ? "Salvando..." : "Entregar neste endereço"}
+              </button>
+            </div>
+          </div>
+        )}
+        {step === "address" && (mode === "form" || saved.length === 0) && (
           <div className="grid grid-cols-6 gap-3" data-testid="address-form">
             <Field label="E-mail" error={err("email")} className="col-span-6 small:col-span-3">
               <input className={inputCls} type="email" autoComplete="email" value={f.email} onChange={set("email")} name="email" />
@@ -336,6 +420,8 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
       <Card
         n={2}
         title="Modalidade de envio"
+        sub="Entrega com rastreamento saindo de Unaí - MG"
+        tag={<span className="text-label-xs text-stock-in inline-flex items-center gap-1"><Icon name="verified_user" className="text-[14px]" /> Envio protegido</span>}
         icon="local_shipping"
         done={hasShipping && order.indexOf(step) > 1}
         onEdit={order.indexOf(step) > 1 ? () => go("delivery") : undefined}
@@ -356,7 +442,8 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
             <div className="grid grid-cols-1 small:grid-cols-2 gap-3">
               {shippingOptions.map((o) => {
                 const active = optionId === o.id
-                const desc = (o as any).type?.description
+                const desc = (o as any).type?.description || (/sedex|expres/i.test(o.name) ? "Prazo estimado: 1 a 3 dias úteis" : /pac|econ|padr/i.test(o.name) ? "Prazo estimado: 4 a 8 dias úteis" : "")
+                const fastest = shippingOptions.length > 1 && (o.amount ?? 0) === Math.max(...shippingOptions.map((x) => x.amount ?? 0))
                 return (
                   <button
                     key={o.id}
@@ -370,10 +457,15 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
                           {active && <span className="w-2.5 h-2.5 rounded-full bg-navy" />}
                         </span>
                         <span className="font-display font-bold text-ink">{o.name}</span>
+                        {fastest && <span className="px-2 py-0.5 rounded bg-brand text-white text-[10px] font-bold uppercase">Mais rápido</span>}
                       </span>
                       <span className="font-display font-bold text-ink">{(o.amount ?? 0) === 0 ? "Grátis" : fmt(o.amount ?? 0, currency)}</span>
                     </div>
                     {desc && <p className="text-body-sm text-ink-soft mt-1 ml-7">{desc}</p>}
+                    <p className="text-label-xs mt-3 pt-3 ml-7 border-t border-line flex items-center justify-between">
+                      <span className={fastest ? "text-stock-in inline-flex items-center gap-1" : "text-ink-muted inline-flex items-center gap-1"}><Icon name={fastest ? "bolt" : "local_shipping"} className="text-[14px]" /> {fastest ? "Prioridade no despacho" : "Envio padrão"}</span>
+                      <span className="text-ink-muted">Correios</span>
+                    </p>
                   </button>
                 )
               })}
@@ -391,6 +483,8 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
       <Card
         n={3}
         title="Forma de pagamento"
+        sub="Transação direta e criptografada"
+        tag={pixPercent ? <span className="text-label-xs bg-teal/10 text-teal px-2 py-1 rounded-full font-bold">{pixPercent}% OFF no PIX</span> : undefined}
         icon="payments"
         done={hasPayment && step === "review"}
         onEdit={step === "review" ? () => go("payment") : undefined}
@@ -415,16 +509,32 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
                   className={`h-11 rounded-ava text-label-sm flex items-center justify-center gap-1.5 transition-colors ${method === m ? "bg-white shadow-sm text-ink" : "text-ink-soft"}`}
                 >
                   <Icon name={methodInfo[m].icon} className="text-[18px]" />
-                  <span className="hidden xsmall:inline">{m === "card" ? "Cartão" : m === "boleto" ? "Boleto" : "PIX"}</span>
+                  <span className="hidden xsmall:inline">{m === "card" ? "Cartão de Crédito" : m === "boleto" ? "Boleto Bancário" : "PIX"}</span>
+                  {m === "card" && maxInst > 1 ? <span className="hidden small:inline text-[10px] text-ink-muted">(até {maxInst}x)</span> : null}
                   {m === "pix" && pixPercent ? <span className="hidden small:inline px-1.5 rounded bg-teal text-white text-[10px]">{pixPercent}% OFF</span> : null}
                 </button>
               ))}
             </div>
             <div className="rounded-ava-lg bg-subtle/70 border border-line p-4 small:p-6 flex flex-col small:flex-row gap-4 items-start">
-              <span className="w-14 h-14 rounded-ava-md bg-white flex items-center justify-center shrink-0 text-navy shadow-sm">
-                <Icon name={methodInfo[method].icon} className="text-[32px]" />
-              </span>
+              {method === "pix" ? (
+                <div className="w-full small:w-44 shrink-0 flex flex-col items-center gap-2">
+                  <div className="w-40 h-40 rounded-ava-lg bg-white shadow-sm border border-line p-3 grid grid-cols-7 gap-0.5" aria-hidden>
+                    {Array.from({ length: 49 }, (_, i) => {
+                      const r = Math.floor(i / 7), c = i % 7
+                      const finder = (r < 2 && c < 2) || (r < 2 && c > 4) || (r > 4 && c < 2)
+                      const on = finder || (r * 3 + c * 5 + r * c) % 3 === 0
+                      return <span key={i} className={`rounded-[2px] ${r === 3 && c === 3 ? "bg-teal" : on ? "bg-navy-deep" : "bg-transparent"}`} />
+                    })}
+                  </div>
+                  <span className="text-label-xs text-ink-muted inline-flex items-center gap-1"><Icon name="schedule" className="text-[14px]" /> QR Code gerado após finalizar</span>
+                </div>
+              ) : (
+                <span className="w-14 h-14 rounded-ava-md bg-white flex items-center justify-center shrink-0 text-navy shadow-sm">
+                  <Icon name={methodInfo[method].icon} className="text-[32px]" />
+                </span>
+              )}
               <div className="flex-1">
+                {method === "pix" && pixPercent ? <span className="inline-flex items-center gap-1 mb-2 px-2.5 py-1 rounded-full bg-teal/10 text-teal text-label-xs font-bold"><Icon name="bolt" className="text-[14px]" /> Aprovação imediata + {pixPercent}% OFF aplicado</span> : null}
                 <p className="font-display text-h-sm text-ink">{methodInfo[method].title}</p>
                 <p className="text-body-md text-ink-soft mt-1">{methodInfo[method].text}</p>
                 {method === "pix" && pixTotal !== null && (

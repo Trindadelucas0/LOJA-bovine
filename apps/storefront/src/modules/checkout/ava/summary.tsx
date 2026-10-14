@@ -3,8 +3,9 @@ import { convertToLocale } from "@lib/util/money"
 import Thumbnail from "@modules/products/components/thumbnail"
 import DiscountCode from "@modules/checkout/components/discount-code"
 import Icon from "@modules/avadesk/components/icon"
+import ChatButton from "@modules/avadesk/components/chatwoot/chat-button"
 
-export default function CheckoutSummary({ cart, pixPercent }: { cart: HttpTypes.StoreCart; pixPercent?: number | null }) {
+export default function CheckoutSummary({ cart, pixPercent, maxInstallments }: { cart: HttpTypes.StoreCart; pixPercent?: number | null; maxInstallments?: number | null }) {
   const currency = cart.currency_code
   const fmt = (n: number) => convertToLocale({ amount: n, currency_code: currency })
   const items = cart.items || []
@@ -12,7 +13,8 @@ export default function CheckoutSummary({ cart, pixPercent }: { cart: HttpTypes.
   const total = cart.total ?? 0
   const pix = pixPercent && pixPercent > 0 ? total * (1 - pixPercent / 100) : null
   return (
-    <aside className="bg-white rounded-ava-lg small:rounded-ava-xl shadow-sm p-4 small:p-6 flex flex-col gap-4 small:sticky small:top-6" data-testid="checkout-summary">
+    <div className="flex flex-col gap-4 small:sticky small:top-6">
+    <aside className="bg-white rounded-ava-lg small:rounded-ava-xl shadow-sm p-4 small:p-6 flex flex-col gap-4" data-testid="checkout-summary">
       <div className="flex items-center justify-between">
         <h2 className="font-display text-h-sm text-ink flex items-center gap-2">
           <Icon name="shopping_bag" className="text-[20px]" /> Resumo do pedido
@@ -42,21 +44,43 @@ export default function CheckoutSummary({ cart, pixPercent }: { cart: HttpTypes.
         {(cart.discount_total ?? 0) > 0 && (
           <div className="flex justify-between text-teal"><dt>Descontos</dt><dd>- {fmt(cart.discount_total ?? 0)}</dd></div>
         )}
+        {pix !== null && (
+          <div className="flex justify-between text-teal"><dt className="inline-flex items-center gap-1"><Icon name="qr_code_2" className="text-[16px]" /> Desconto especial PIX ({pixPercent}%)</dt><dd>- {fmt(total - pix)}</dd></div>
+        )}
         {(cart.tax_total ?? 0) > 0 && (
           <div className="flex justify-between"><dt className="text-ink-soft">Impostos</dt><dd>{fmt(cart.tax_total ?? 0)}</dd></div>
         )}
       </dl>
       <div className="flex items-end justify-between border-t border-line pt-3">
-        <span className="font-display text-h-sm text-ink">Total</span>
+        <span className="flex flex-col">
+          <span className="font-display text-h-sm text-ink">Total a pagar</span>
+          {(maxInstallments ?? 1) > 1 && <span className="text-body-sm text-ink-muted">ou até {maxInstallments}x de {fmt(total / (maxInstallments ?? 1))} sem juros</span>}
+        </span>
         <div className="text-right">
-          <span className="font-display text-price-display text-ink block" data-testid="cart-total">{fmt(total)}</span>
-          {pix !== null && <span className="text-body-sm text-teal font-semibold">{fmt(pix)} no PIX ({pixPercent}% OFF)</span>}
+          <span className="font-display text-price-display text-ink block" data-testid="cart-total">{fmt(pix ?? total)}</span>
+          {pix !== null && <span className="text-body-sm text-teal font-semibold block">no PIX • {fmt(total)} no cartão</span>}
         </div>
       </div>
       <div className="rounded-ava-md bg-subtle p-3 flex gap-2 text-body-sm text-ink-soft">
         <Icon name="verified_user" className="text-[20px] text-stock-in" />
         Compra protegida: seus dados são enviados de forma segura.
       </div>
+      <a href="#checkout-flow" className="hidden small:flex h-14 rounded-ava-md bg-brand hover:bg-brand-dark text-white text-label-md items-center justify-center gap-2 shadow-lg shadow-brand/30 uppercase tracking-wide">
+        <Icon name="lock" className="text-[20px]" /> Finalizar compra com segurança
+      </a>
     </aside>
+    <div className="bg-white rounded-ava-lg small:rounded-ava-xl shadow-sm p-4 border-l-4 border-stock-in">
+      <p className="font-display font-bold text-ink flex items-center gap-2 text-body-md"><Icon name="verified_user" className="text-[18px] text-stock-in" /> Garantia de Compra Protegida BOVINE</p>
+      <p className="text-body-sm text-ink-soft mt-1">Seu pagamento fica protegido até você receber o produto. Suporte técnico humano e devolução em até 7 dias.</p>
+    </div>
+    <div className="rounded-ava-lg small:rounded-ava-xl bg-navy text-white p-4 flex items-center gap-3">
+      <span className="w-10 h-10 rounded-full bg-chat flex items-center justify-center shrink-0"><Icon name="forum" className="text-[20px]" /></span>
+      <div className="flex-1 min-w-0">
+        <p className="font-bold text-body-md">Dúvida antes de pagar?</p>
+        <p className="text-body-sm text-white/70">Especialistas prontos no chat</p>
+      </div>
+      <ChatButton attrs={{ origem: "checkout" }} className="px-3 py-2 rounded-ava-md bg-white text-navy text-label-sm font-bold shrink-0">Falar agora</ChatButton>
+    </div>
+    </div>
   )
 }

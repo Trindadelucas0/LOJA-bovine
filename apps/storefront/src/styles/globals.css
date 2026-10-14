@@ -110,3 +110,38 @@
     @apply text-[32px] leading-[44px] font-semibold;
   }
 }
+
+/* ===== Mobile / PWA (BOVINE) ===== */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip; /* evita rolagem horizontal acidental; carrosseis internos continuam rolando */
+}
+body {
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+img {
+  max-width: 100%;
+}
+@media (pointer: coarse) {
+  /* alvos de toque minimos (44px) para botoes so de icone e links pequenos */
+  button:not([class*="h-"]):not([class*="py-"]),
+  [role="button"] {
+    min-height: 44px;
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 22px;
+    height: 22px;
+  }
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* impede zoom automatico no iOS ao focar */
+  }
+}

@@ -44,13 +44,13 @@ export default async function AvaHeader({
       {/* Desktop */}
       <div className="hidden small:flex h-20 max-w-page mx-auto px-margin items-center justify-between gap-gutter">
         <Logo name={name} logoUrl={settings.logo_url} />
-        <div className="flex flex-1 max-w-2xl items-center bg-subtle rounded-ava-md p-1 focus-within:ring-2 focus-within:ring-navy/20">
+        <div className="flex flex-1 min-w-[220px] max-w-2xl items-center bg-subtle rounded-ava-md p-1 focus-within:ring-2 focus-within:ring-navy/20">
           <CategoriesMenu categories={cats} />
           <div className="h-5 w-px bg-line-strong mx-1" />
           <SearchBar />
         </div>
         {links.length > 0 && (
-          <nav className="hidden medium:flex items-center gap-1 shrink-0">
+          <nav className="hidden medium:flex items-center gap-1 min-w-0 overflow-hidden whitespace-nowrap">
             {links.map((l, i) => (
               <SmartLink
                 key={i}
