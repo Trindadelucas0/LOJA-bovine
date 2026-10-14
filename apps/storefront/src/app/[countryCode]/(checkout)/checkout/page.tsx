@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { notFound, redirect } from "next/navigation"
+import { redirect } from "next/navigation"
 
 import { getAvaContent } from "@lib/data/avadesk-content"
 import { retrieveCart } from "@lib/data/cart"
@@ -20,10 +20,7 @@ export default async function Checkout(props: { params: Promise<{ countryCode: s
   const { countryCode } = await props.params
   const cart = await retrieveCart(undefined, CART_FIELDS)
 
-  if (!cart) {
-    return notFound()
-  }
-  if (!cart.items?.length) {
+  if (!cart || !cart.items?.length) {
     redirect(`/${countryCode}/cart`)
   }
 
