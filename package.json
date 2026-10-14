@@ -51,8 +51,10 @@
     "@swc/core@1.16.13": true,
     "msgpackr-extract@3.0.4": true
   },
+  "optionalDependencies": {
+    "@swc/core-win32-x64-msvc": "^1.16.13"
+  },
   "dependencies": {
-    "@swc/core-win32-x64-msvc": "^1.16.13",
     "graceful-fs": "^4.2.11",
     "semver": "^6.3.1"
   }
