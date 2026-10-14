@@ -1,0 +1,27 @@
+# BOVINE: proxy na porta 7771 (alvo do tunnel cloudflared bovine.avadesk.com.br)
+# Instalar em /etc/nginx/sites-available/bovine.conf e linkar em sites-enabled.
+map $http_x_forwarded_proto $bovine_proto { default $http_x_forwarded_proto; "" $scheme; }
+map $http_upgrade $bovine_conn { default upgrade; "" close; }
+server {
+    listen 7771;
+    listen [::]:7771;
+    server_name _;
+    client_max_body_size 50m;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $bovine_proto;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $bovine_conn;
+    proxy_read_timeout 300s;
+
+    # Backend Medusa (API, admin, uploads)
+    location ~ ^/(app|admin|auth|store|static|hooks|health)(/|$) {
+        proxy_pass http://127.0.0.1:9000;
+    }
+    # Storefront Next.js
+    location / {
+        proxy_pass http://127.0.0.1:7772;
+    }
+}

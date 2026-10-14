@@ -1,0 +1,19 @@
+{
+  "name": "BOVINE Saúde Animal e Agro",
+  "short_name": "BOVINE",
+  "description": "Saúde animal, agropecuária e energia solar para o produtor rural.",
+  "lang": "pt-BR",
+  "id": "/br",
+  "start_url": "/br",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8FAFC",
+  "theme_color": "#0E2439",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
