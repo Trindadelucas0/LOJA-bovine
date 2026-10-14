@@ -1,158 +1,52 @@
-<p align="center">
-  <a href="https://www.medusajs.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    </picture>
-  </a>
-</p>
-<h1 align="center">
-  Medusa DTC Starter
-</h1>
+# BOVINE - Loja virtual (Saúde Animal e Agro)
 
-<h4 align="center">
-  <a href="https://docs.medusajs.com">Documentation</a> |
-  <a href="https://www.medusajs.com">Website</a>
-</h4>
+Loja e-commerce da **BOVINE**, construída sobre o [Medusa](https://medusajs.com) v2 (backend + admin) e o Next.js Starter do Medusa (storefront), adaptada para o Brasil: pt-BR, BRL, CEP/CPF, PIX, frete PAC/SEDEX, área do cliente, PWA e painel admin com a marca BOVINE.
 
-<p align="center">
-  Building blocks for digital commerce
-</p>
-<p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
-  </a>
-  <a href="https://circleci.com/gh/medusajs/medusa">
-    <img src="https://circleci.com/gh/medusajs/medusa.svg?style=shield" alt="Current CircleCI build status." />
-  </a>
-  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
-  </a>
-    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
-  <a href="https://discord.gg/xpCwq3Kfn8">
-    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
-  </a>
-  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
-    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
-  </a>
-</p>
+Produção: https://bovine.avadesk.com.br
 
-# Medusa DTC Starter
+## Stack
+- **Backend:** Medusa 2.21 (Node 22, TypeScript), PostgreSQL, Redis, módulo próprio `store-content`
+- **Storefront:** Next.js 15 + React 19 + Tailwind (design system AVADESK)
+- **Monorepo:** npm workspaces + Turborepo
+- **Infra:** VPS com PM2, nginx e Cloudflare Tunnel
 
-A production-ready monorepo starter for direct-to-consumer ecommerce stores powered by Medusa and Next.js. Includes a fully featured storefront with product browsing, cart, checkout, customer accounts, and order management.
-
-## Features
-
-- All of [Medusa's commerce features](https://docs.medusajs.com/resources/commerce-modules)
-- Multi-region support with automatic country detection
-- Product catalog with variant selection
-- Cart with promotion codes
-- Multi-step checkout with shipping and payment
-- Customer accounts with order history and address management
-- Order transfer between accounts
-
-## Getting Started
-
-### Deploy with Medusa Cloud
-
-The fastest way to get started is deploying with [Medusa Cloud](https://cloud.medusajs.com):
-
-1. [Create a Medusa Cloud account](https://cloud.medusajs.com)
-2. Deploy this starter directly from your dashboard
-
-### Local Installation
-
-> **Prerequisites:
->
-> - [Node.js](https://nodejs.org/) v20+
-> - [PostgreSQL](https://www.postgresql.org/) v15+
-> - [pnpm](https://pnpm.io/) v10+
-
-1. Clone the repository and install dependencies:
-
-```bash
-git clone https://github.com/medusajs/dtc-starter.git
-cd dtc-starter
-pnpm install
+## Estrutura
+```
+apps/backend      Medusa (API, admin /app, módulos, scripts/brand-admin.js)
+apps/storefront   Loja Next.js
+docs/             Manual da loja (PDF), BRAND-ADMIN.md, DEPLOY.md, guias
+infra/            Exemplos: pm2, nginx, cloudflared, env
+scripts/          Imagens de seed e script de deploy
 ```
 
-2. Set up environment variables for the backend:
-
+## Rodando localmente
+Pré-requisitos: Node >= 22, PostgreSQL e Redis.
 ```bash
-cp apps/backend/.env.template apps/backend/.env
+npm install
+cp apps/backend/.env.example apps/backend/.env            # preencha
+cp apps/storefront/.env.example apps/storefront/.env.local
+cd apps/backend && npx medusa db:migrate && npx medusa user -e admin@exemplo.com -p <senha>
+cd ../.. && npm run dev
 ```
+- Backend/admin: http://localhost:9000/app
+- Loja: http://localhost:8000
 
-3. Set the database URL in `apps/backend.env`:
+## Deploy na VPS
+Resumo (detalhes em [docs/DEPLOY.md](docs/DEPLOY.md)):
+- Node 22, PM2 (`medusa-backend` na porta **9000**, `medusa-storefront` na **7772**)
+- nginx na **7771** (`infra/nginx/bovine.conf.example`) roteia `/app`, `/admin`, `/auth`, `/store`, `/static`, `/hooks`, `/health` para o backend e o resto para a loja
+- cloudflared tunnel `bovine.avadesk.com.br` -> `localhost:7771`
+- PostgreSQL na **5440**, Redis na **6382**
 
+### Passo obrigatório após cada build do backend
 ```bash
-# Replace with actual database URL, make sure the database exists.
-DATABASE_URL=postgres://postgres:@localhost:5432/medusa-dtc-starter
+cd apps/backend && npx medusa build && node scripts/brand-admin.js
 ```
+O build recria o admin com a marca Medusa; o `brand-admin.js` reaplica a marca BOVINE. Ver [docs/BRAND-ADMIN.md](docs/BRAND-ADMIN.md).
 
-4. Run migrations:
+## Segurança
+Nenhum segredo é versionado: `.env*` (exceto `.env.example`/`.env.template`), dumps, logs, `*.bak*`, uploads (`apps/backend/static/`) e builds estão no `.gitignore`.
 
-```bash
-cd apps/backend
-pnpm medusa db:migrate
-```
-
-5. Add admin user:
-
-```bash
-cd apps/backend
-pnpm medusa user -e admin@test.com -p supersecret
-```
-
-6. Start Medusa backend:
-
-```bash
-cd apps/backend
-pnpm dev
-```
-
-7. Open the admin dashboard at `localhost:9000/app` and log in. Retrieve your publishable API key at Settings > Publishable API key.
-
-8. Set up environment variables for the storefront:
-
-```bash
-cp apps/storefront/.env.template apps/storefront/.env.local
-```
-
-9. Update `apps/storefront/.env.local` with your Medusa publishable API key:
-
-```bash
-NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_6c3...
-```
-
-10.  Start storefront:
-
-```bash
-cd apps/storefront
-pnpm dev
-```
-
-The storefront runs on `http://localhost:8000`.
-
-You can slo run the following command from the root to start both backend and storefront:
-
-```bash
-pnpm dev
-```
-
-## Configuration
-
-The storefront is configured via environment variables in `apps/storefront/.env.local`:
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` | Publishable API key from your Medusa backend | — |
-| `NEXT_PUBLIC_MEDUSA_BACKEND_URL` | URL of your Medusa backend | `http://localhost:9000` |
-| `NEXT_PUBLIC_DEFAULT_REGION` | Default region country code | `dk` |
-| `NEXT_PUBLIC_BASE_URL` | Base URL of the storefront | `https://localhost:8000` |
-| `NEXT_PUBLIC_STRIPE_KEY` | Stripe publishable key (optional) | — |
-
-## Resources
-
-- [Medusa Documentation](https://docs.medusajs.com)
-- [Medusa Cloud](https://cloud.medusajs.com)
+## Créditos e licenças
+- [Medusa](https://github.com/medusajs/medusa) e o Next.js Starter - licença **MIT** (© Medusa). Ver [LICENSE](LICENSE). Os arquivos de licença originais são mantidos.
+- Personalizações BOVINE/AVADESK: código próprio deste repositório.
