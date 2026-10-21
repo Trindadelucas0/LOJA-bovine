@@ -1,18 +1,18 @@
 # Guia da loja Medusa (local) - Brasil / BRL
 
-Instalação local do **Medusa v2** para o Lucas - monorepo em `D:\medusa-loja`.
+Instalação local do **Medusa v2** - monorepo em `F:\BOVINE\LOJA`.
 
 ## Abrir no editor (Cursor / VS Code)
 
 1. Abra o Cursor ou o VS Code
 2. **File → Open Folder...** (Arquivo → Abrir pasta...)
-3. Escolha: `D:\medusa-loja`
+3. Escolha: `F:\BOVINE\LOJA`
 4. Confirme - a raiz do projeto deve aparecer no explorador de arquivos
 
 ## O que cada pasta é
 
 ```
-D:\medusa-loja\
+F:\BOVINE\LOJA\
   apps\
     backend\       # API Medusa + painel Admin (porta 9000)
     storefront\    # Vitrine Next.js (porta 8000)
@@ -25,37 +25,29 @@ D:\medusa-loja\
 |-------|--------|
 | `apps\backend` | API, Admin (`/app`), autenticação, produtos, pedidos, regiões |
 | `apps\storefront` | Loja pública (Next.js) - o que o cliente vê |
-| Container Docker `medusa-postgres` | Banco PostgreSQL (porta **5433** no PC) |
+| Contêiner Docker `medusa-postgres-manual` | Banco PostgreSQL (porta **5434** no PC) |
 
-## Como iniciar (3 passos)
+## Como iniciar
 
-### 1) Postgres
-
-```powershell
-docker start medusa-postgres
-```
-
-- Host: `127.0.0.1` · Porta: **5433** · Banco/user/senha: `medusa-loja` / `medusa` / `medusa`
-- `DATABASE_URL` em `apps\backend\.env`: `postgres://medusa:medusa@127.0.0.1:5433/medusa-loja`
-
-### 2) Backend (API + Admin)
+Na raiz `F:\BOVINE\LOJA`, abra o PowerShell e execute:
 
 ```powershell
-cd D:\medusa-loja\apps\backend
-npm run dev
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev-local-start.ps1
 ```
 
-- Admin: http://localhost:9000/app
-- API: http://localhost:9000
+- O comando inicia os contêineres locais `medusa-postgres-manual` e `bovine-medusa-redis` se estiverem parados, e inicia API/Admin e vitrine se ainda não responderem.
+- Loja: [http://localhost:8000](http://localhost:8000) · rota Brasil: [http://localhost:8000/br](http://localhost:8000/br)
+- Admin: [http://localhost:9000/app](http://localhost:9000/app) · API: `http://localhost:9000`
+- Banco PostgreSQL: `127.0.0.1:5434` · Redis: `127.0.0.1:6382`. Configurações privadas ficam em `apps\backend\.env` e `apps\storefront\.env.local`.
+- Logs: `.setup-bovine\runtime\`.
 
-### 3) Storefront (vitrine)
+Para encerrar apenas os processos de desenvolvimento iniciados pelo script:
 
 ```powershell
-cd D:\medusa-loja\apps\storefront
-npm run dev
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev-local-stop.ps1
 ```
 
-- Loja: http://localhost:8000
+O script mantém o PostgreSQL e o Redis ligados e não remove nem recria o banco.
 
 ## Login do Admin
 
@@ -111,23 +103,22 @@ Faça nesta ordem:
 A fonte oficial do comportamento atual é `DOCUMENTACAO-SISTEMA.md` na raiz.
 
 - **Banner completo:** Admin → Conteúdo da loja → Banners → envie a arte desktop e, opcionalmente, a arte mobile. Os textos da campanha devem fazer parte da imagem.
-- **Departamentos:** Admin → Conteúdo da loja → Informações e home → selecione as categorias exibidas na home. No desktop, clique no nome para abrir a categoria ou na seta para expandir/recolher as subcategorias imediatas; só uma lista fica aberta por vez. No celular, a faixa horizontal permanece e cada item abre sua página, onde as subcategorias também aparecem.
+- **Departamentos:** Admin → Conteúdo da loja → Informações e home → selecione as categorias exibidas no menu. Em qualquer página principal da loja, clique no botão hambúrguer **Departamentos** à esquerda do cabeçalho. A primeira categoria com subcategorias abre expandida; clique no nome para abrir a categoria ou na seta para expandir/recolher as subcategorias imediatas. Feche pelo **X**, clicando fora ou com **Esc**. No celular, o painel ocupa quase toda a tela.
 - **Atendimentos:** no mesmo painel, configure o WhatsApp geral e o WhatsApp da Mobile. Veterinário e Agrícola usam o geral; Energia usa o da Mobile.
 - Alterações públicas podem levar até 60 segundos para aparecer por causa do cache da vitrine.
 
 ## Como parar
 
-- Nos terminais do backend e do storefront: **Ctrl+C**
-- Postgres (opcional): `docker stop medusa-postgres`
-- No dia a dia: deixe o Postgres rodando e pare só os processos Node
+- Execute `scripts\dev-local-stop.ps1` para encerrar os processos Node iniciados pelo atalho.
+- PostgreSQL e Redis continuam ligados; não é preciso pará-los entre acessos.
 
 ## Problemas comuns
 
 | Problema | O que fazer |
 |----------|-------------|
-| Docker parado | Abra o Docker Desktop e rode `docker start medusa-postgres` |
-| Porta 9000 ou 8000 em uso | Feche o processo antigo (Ctrl+C) ou mate o Node dessa porta |
-| Erro de banco | `docker ps` (container Up) e porta **5433** no `.env` |
+| Docker parado | Abra o Docker Desktop e rode `scripts\dev-local-start.ps1` novamente |
+| Porta 9000 ou 8000 em uso | Confira `.setup-bovine\runtime\*.log` e identifique o processo antes de encerrá-lo |
+| Erro de banco | Confirme os contêineres locais ativos e as portas **5434** (PostgreSQL) e **6382** (Redis) |
 | Imagens quebradas (404) | Confirme se `apps\backend\static` contém a mídia ligada ao banco restaurado; o provedor local guarda os arquivos fora do banco e essa pasta é ignorada pelo Git. Restaure a cópia de mídia correspondente. |
 | Admin não abre | Espere o `npm run dev` do backend compilar; acesse `/app` |
 | Loja sem produtos | Confirme a Publishable Key no `.env.local` e reinicie o storefront |
@@ -136,7 +127,7 @@ A fonte oficial do comportamento atual é `DOCUMENTACAO-SISTEMA.md` na raiz.
 ## Comandos úteis (backend)
 
 ```powershell
-cd D:\medusa-loja\apps\backend
+cd F:\BOVINE\LOJA\apps\backend
 npx medusa db:migrate
 npx medusa user -e admin@avadesk.local -p "MedusaLocal123!"
 npm run dev

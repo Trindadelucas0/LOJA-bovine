@@ -2,8 +2,8 @@
 
 | Item | Valor |
 |---|---|
-| Versão do sistema | 1.1.4 — Departamentos expansíveis |
-| Última atualização | 21/10/2026 — departamentos do desktop expandem subcategorias; faixa móvel preservada; busca preserva largura mínima e links podem fluir para outra linha; registro do armazenamento local de imagens |
+| Versão do sistema | 1.2.0 — Menu lateral de departamentos |
+| Última atualização | 21/10/2026 — departamentos movidos para um painel hambúrguer lateral, recolhível e disponível nas páginas principais da loja |
 | Fonte oficial | Este arquivo |
 
 ## 1. Como usar este documento
@@ -20,6 +20,11 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 | Versão | Data | Mudança |
 |---|---|---|
+| 1.2.0 — Menu lateral de departamentos | 21/10/2026 | Painel de departamentos em altura total acionado pelo cabeçalho, disponível nas páginas principais da loja e fechável por botão, fundo ou Esc. |
+| 1.1.8 — Subcategorias visíveis | 21/10/2026 | A primeira categoria com subcategorias inicia expandida; a seta continua permitindo recolher ou trocar de departamento aberto. |
+| 1.1.7 — Banner alinhado aos departamentos | 21/10/2026 | Colunas da home compartilham altura e a arte cobre o cartão sem faixa branca inferior. |
+| 1.1.6 — Banner sem faixa vazia | 21/10/2026 | Mantém a altura proporcional original da imagem no banner, sem criar espaço vazio por uma altura mínima imposta. |
+| 1.1.5 — Banner ajustado à imagem | 21/10/2026 | Limita a altura visível da arte e usa corte central para evitar área vazia dentro do banner. |
 | 1.1.4 — Departamentos expansíveis | 21/10/2026 | Departamentos da home no desktop expandem suas subcategorias imediatas; faixa móvel mantida. |
 | 1.1.3 — Cabeçalho sem sobreposição | 21/10/2026 | A busca preserva largura mínima no desktop e links fluem para outra linha quando necessário. |
 | 1.1.2 — Cabeçalho sem sobreposição | 21/10/2026 | Layout compacto mantido até 1279 px para impedir links do cabeçalho de cobrirem a busca. |
@@ -31,7 +36,7 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 | Tela | Área | Conexão |
 |---|---|---|
-| Home da loja | Departamentos | Categorias selecionadas em Conteúdo da loja; o nome abre a categoria e a seta no desktop expande suas subcategorias imediatas. |
+| Páginas principais da loja | Departamentos | Botão hambúrguer no cabeçalho abre o painel lateral com as categorias selecionadas em Conteúdo da loja e suas subcategorias imediatas. |
 | Home da loja | Banner principal | Primeiro banner principal ativo; a arte usa imagem desktop/mobile e pode ter um destino de clique. |
 | Home da loja | Atendimentos | Veterinário e Agrícola usam o WhatsApp geral; Energia usa o WhatsApp da Mobile. |
 | Todas as telas da loja | Cabeçalho | Menu, marca, busca, conta e carrinho se reorganizam conforme a largura disponível. |
@@ -56,12 +61,16 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 ## 6. Telas e fluxos
 
-### Home
+### Home e navegação de departamentos
 
-- No desktop, os departamentos formam uma coluna à esquerda e o banner ocupa o restante da largura. O nome abre a categoria; a seta expande ou recolhe as subcategorias imediatas. Apenas um departamento fica expandido por vez.
-- No celular, os departamentos ficam em uma faixa horizontal rolável acima do banner. Cada item abre a categoria, onde as subcategorias continuam disponíveis.
+- O card compacto de departamentos foi removido da home; o banner ocupa a largura completa do conteúdo.
+- O botão hambúrguer **Departamentos**, à esquerda do cabeçalho, abre um painel lateral de altura total nas páginas principais da loja.
+- O painel mostra as categorias escolhidas em **Conteúdo da loja → Informações e home**, na ordem configurada; se nenhuma estiver escolhida, mostra as categorias principais.
+- O primeiro departamento com subcategorias inicia expandido. O nome abre a categoria e a seta expande ou recolhe as subcategorias imediatas; apenas uma lista fica aberta por vez.
+- O mesmo painel funciona em desktop e celular. Pode ser fechado pelo botão **X**, clicando fora do painel ou pressionando **Esc**. No celular, o painel ocupa quase toda a largura da tela.
 - Quando existe imagem, o banner não recebe texto, selo ou botão sobreposto pelo storefront.
 - A imagem mobile é opcional. Sem ela, a imagem desktop também é usada no celular.
+- A arte do banner preenche o espaço disponível sem sobrepor textos, selos ou botões do storefront.
 - O clique no banner só existe quando o campo de destino está preenchido.
 - Abaixo do banner aparecem Atendimento Veterinário, Atendimento Agrícola e Soluções em Energia.
 
@@ -88,8 +97,9 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 - Atendimento Agrícola abre o WhatsApp geral com mensagem de agendamento agrícola.
 - Soluções em Energia abre o WhatsApp da Mobile com mensagem sobre energia.
 - Sem o número necessário, o cartão permanece visível e indisponível, sem gerar link inválido.
-- Na home desktop, a seta expande apenas as subcategorias imediatas do departamento; o nome do departamento e os nomes das subcategorias abrem suas respectivas páginas.
-- A expansão é exclusiva: abrir outro departamento recolhe o anterior. No celular, a faixa de departamentos não expande subcategorias.
+- O botão **Departamentos** do cabeçalho abre a navegação lateral nas páginas principais da loja. O painel pode ser fechado pelo **X**, pelo fundo escurecido ou pela tecla **Esc**.
+- A primeira categoria com subcategorias inicia expandida. A seta expande apenas as subcategorias imediatas; os nomes abrem suas respectivas páginas.
+- A expansão é exclusiva: abrir outro departamento recolhe o anterior. A navegação usa as categorias escolhidas no admin e mantém o link **Ver todos**.
 - Campos antigos de texto e botões do banner são preservados no banco por compatibilidade, mas não são exibidos sobre a arte principal.
 - O conteúdo público pode levar até 60 segundos para refletir alterações por causa do cache do storefront.
 
@@ -112,14 +122,15 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 ### Navegar pelos departamentos
 
-- Na home desktop, clique no nome do departamento para abrir sua página ou use a seta para mostrar/recolher subcategorias. Apenas uma lista fica aberta por vez.
-- No celular, toque no departamento na faixa horizontal; as subcategorias aparecem na página da categoria.
+- Nas páginas principais da loja, clique em **Departamentos** à esquerda do cabeçalho para abrir o painel.
+- A primeira categoria com subcategorias já aparece aberta. Clique no nome do departamento para abrir sua página ou use a seta para mostrar/recolher subcategorias; apenas uma lista fica aberta por vez.
+- Feche o painel pelo **X**, clicando fora dele ou pressionando **Esc**. No celular, o mesmo fluxo abre um painel quase em tela cheia.
 
 ## 9. Checklist de validação
 
 - Conferir arte desktop e mobile sem sobreposição.
-- Conferir banner com e sem destino.
-- Conferir departamentos no desktop e no celular, incluindo categorias com e sem subcategorias, expansão exclusiva e navegação pelos nomes.
+- Conferir banner com e sem destino, inclusive arte panorâmica, sem faixa vazia abaixo da imagem.
+- Conferir botão e painel de departamentos no desktop e celular, incluindo abrir/fechar, primeira categoria expandida, categorias com e sem subcategorias, expansão exclusiva e navegação pelos nomes.
 - Conferir menu, marca, busca e carrinho em larguras compactas e desktop sem sobreposição.
 - Conferir número e mensagem dos três atalhos.
 - Conferir o estado indisponível quando um número estiver vazio.
@@ -132,6 +143,10 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 ## 11. Deploy e ambiente
 
+- No ambiente local deste workspace, a loja abre em `http://localhost:8000` e redireciona para a região brasileira (`/br`). A API e o Admin Medusa usam `http://localhost:9000`.
+- O PostgreSQL e o Redis locais usam as portas `5434` e `6382`. As conexões e a chave pública ficam nos arquivos ignorados pelo Git `apps/backend/.env` e `apps/storefront/.env.local`; não copie valores desses arquivos para documentação ou chamados.
+- Use `scripts/dev-local-start.ps1` para iniciar os contêineres locais existentes e os processos que ainda não estiverem respondendo. Use `scripts/dev-local-stop.ps1` para encerrar somente os processos Node iniciados pelo script; os contêineres de banco e Redis continuam ligados e seus dados são preservados.
+- Os logs de inicialização ficam em `.setup-bovine/runtime/`, diretório ignorado pelo Git.
 - A migration `Migration20261021130000` adiciona `mobile_whatsapp` a `avadesk_content_setting`.
 - A alteração local não executa migration nem publica código em produção.
 - O provedor `file-local` grava os arquivos enviados em `apps/backend/static`; o banco guarda as URLs, não o conteúdo binário das imagens.

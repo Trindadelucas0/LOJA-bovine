@@ -12,20 +12,20 @@ export default function Hero({
 
   if (imageUrl) {
     const picture = (
-      <picture className="block w-full">
+      <picture className="block h-full w-full">
         {banner?.mobile_image_url && (
           <source media="(max-width: 1023px)" srcSet={banner.mobile_image_url} />
         )}
         <img
           src={imageUrl}
           alt={banner?.title || `Banner da ${storeName(settings)}`}
-          className="block w-full h-auto"
+          className="block h-full w-full object-cover object-center"
         />
       </picture>
     )
 
     return (
-      <section className="w-full overflow-hidden rounded-ava-lg small:rounded-ava-xl bg-white shadow-md small:shadow-xl">
+      <section className="h-full min-h-48 w-full overflow-hidden rounded-ava-lg small:rounded-ava-xl bg-white shadow-md small:shadow-xl">
         {banner?.cta_url ? (
           <SmartLink
             href={banner.cta_url}

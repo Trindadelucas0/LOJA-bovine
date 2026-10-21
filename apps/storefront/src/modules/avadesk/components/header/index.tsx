@@ -21,11 +21,27 @@ export default async function AvaHeader({
   const [cart, customer, categories] = await Promise.all([
     retrieveCart().catch(() => null),
     retrieveCustomer().catch(() => null),
-    listCategories({ fields: "id,name,handle,parent_category_id,rank" }).catch(() => []),
+    listCategories({ fields: "id,name,handle,parent_category_id,rank,*category_children" }).catch(() => []),
   ])
   const count = cart?.items?.reduce((acc, i) => acc + i.quantity, 0) ?? 0
   const name = storeName(settings)
-  const cats = (categories || []).filter((c) => !c.parent_category_id).map((c) => ({ id: c.id, name: c.name, handle: c.handle }))
+  const availableCategories = categories || []
+  const topCategories = availableCategories.filter((category) => !category.parent_category_id)
+  const selectedCategoryIds = settings.home_category_ids || []
+  const selectedCategories = selectedCategoryIds.length
+    ? selectedCategoryIds.map((id) => availableCategories.find((category) => category.id === id)).filter(Boolean)
+    : topCategories
+  const cats = selectedCategories.map((category) => ({
+    id: category!.id,
+    name: category!.name,
+    handle: category!.handle,
+    category_children: (category!.category_children || []).map((child) => ({
+      id: child.id,
+      name: child.name,
+      handle: child.handle,
+    })),
+  }))
+  const categoriesTitle = settings.categories_title || "Departamentos"
   const links = settings.header_links || []
 
   const CartLink = ({ className }: { className: string }) => (
@@ -43,10 +59,9 @@ export default async function AvaHeader({
     <header className="sticky top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(14,36,57,0.06)]">
       {/* Desktop */}
       <div className="hidden medium:flex min-h-20 max-w-page mx-auto px-margin py-3 items-center gap-gutter flex-wrap">
+        <CategoriesMenu categories={cats} title={categoriesTitle} />
         <Logo name={name} logoUrl={settings.logo_url} />
         <div className="flex flex-1 min-w-[280px] max-w-2xl items-center bg-subtle rounded-ava-md p-1 focus-within:ring-2 focus-within:ring-navy/20">
-          <CategoriesMenu categories={cats} />
-          <div className="h-5 w-px bg-line-strong mx-1" />
           <SearchBar />
         </div>
         {links.length > 0 && (
@@ -92,7 +107,10 @@ export default async function AvaHeader({
       {/* Mobile */}
       <div className="medium:hidden px-margin-m pt-2 pb-2 flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
-          <Logo name={name} logoUrl={settings.logo_url} compact />
+          <div className="flex min-w-0 items-center gap-1">
+            <CategoriesMenu categories={cats} title={categoriesTitle} />
+            <Logo name={name} logoUrl={settings.logo_url} compact />
+          </div>
           <div className="flex items-center gap-1.5">
             {chatEnabled && (
               <ChatButton
