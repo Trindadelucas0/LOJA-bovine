@@ -2,8 +2,8 @@
 
 | Item | Valor |
 |---|---|
-| Versão do sistema | 1.1.2 — Cabeçalho sem sobreposição |
-| Última atualização | 21/10/2026 — quebra do cabeçalho desktop para layout compacto quando faltava espaço; registro do armazenamento local de imagens |
+| Versão do sistema | 1.1.4 — Departamentos expansíveis |
+| Última atualização | 21/10/2026 — departamentos do desktop expandem subcategorias; faixa móvel preservada; busca preserva largura mínima e links podem fluir para outra linha; registro do armazenamento local de imagens |
 | Fonte oficial | Este arquivo |
 
 ## 1. Como usar este documento
@@ -20,6 +20,8 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 | Versão | Data | Mudança |
 |---|---|---|
+| 1.1.4 — Departamentos expansíveis | 21/10/2026 | Departamentos da home no desktop expandem suas subcategorias imediatas; faixa móvel mantida. |
+| 1.1.3 — Cabeçalho sem sobreposição | 21/10/2026 | A busca preserva largura mínima no desktop e links fluem para outra linha quando necessário. |
 | 1.1.2 — Cabeçalho sem sobreposição | 21/10/2026 | Layout compacto mantido até 1279 px para impedir links do cabeçalho de cobrirem a busca. |
 | 1.1.1 — Cabeçalho responsivo | 21/10/2026 | Ajuste do cabeçalho em larguras compactas para evitar sobreposição entre menu, marca, busca e carrinho. |
 | 1.1.0 — Home de atendimentos | 21/10/2026 | Banner em arte completa, departamentos ao lado e três atalhos de atendimento. |
@@ -29,7 +31,7 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 | Tela | Área | Conexão |
 |---|---|---|
-| Home da loja | Departamentos | Categorias selecionadas em Conteúdo da loja; cada item abre a categoria correspondente. |
+| Home da loja | Departamentos | Categorias selecionadas em Conteúdo da loja; o nome abre a categoria e a seta no desktop expande suas subcategorias imediatas. |
 | Home da loja | Banner principal | Primeiro banner principal ativo; a arte usa imagem desktop/mobile e pode ter um destino de clique. |
 | Home da loja | Atendimentos | Veterinário e Agrícola usam o WhatsApp geral; Energia usa o WhatsApp da Mobile. |
 | Todas as telas da loja | Cabeçalho | Menu, marca, busca, conta e carrinho se reorganizam conforme a largura disponível. |
@@ -56,8 +58,8 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 ### Home
 
-- No desktop, os departamentos formam uma coluna à esquerda e o banner ocupa o restante da largura.
-- No celular, os departamentos ficam em uma faixa horizontal rolável acima do banner.
+- No desktop, os departamentos formam uma coluna à esquerda e o banner ocupa o restante da largura. O nome abre a categoria; a seta expande ou recolhe as subcategorias imediatas. Apenas um departamento fica expandido por vez.
+- No celular, os departamentos ficam em uma faixa horizontal rolável acima do banner. Cada item abre a categoria, onde as subcategorias continuam disponíveis.
 - Quando existe imagem, o banner não recebe texto, selo ou botão sobreposto pelo storefront.
 - A imagem mobile é opcional. Sem ela, a imagem desktop também é usada no celular.
 - O clique no banner só existe quando o campo de destino está preenchido.
@@ -66,7 +68,7 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 ### Cabeçalho da loja
 
 - Em larguras compactas, menu, marca, busca e carrinho ocupam uma linha com espaços flexíveis; a marca pode truncar para manter os controles separados.
-- O cabeçalho desktop completo é exibido a partir do breakpoint `medium` (1280 px). Abaixo dele, a marca, busca e controles usam o layout compacto de duas linhas para manter os links separados.
+- O cabeçalho desktop completo é exibido a partir do breakpoint `medium` (1280 px). A busca preserva largura mínima; links e controles podem fluir para outra linha quando o espaço disponível não comporta todos os elementos.
 
 ### Conteúdo da loja
 
@@ -86,6 +88,8 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 - Atendimento Agrícola abre o WhatsApp geral com mensagem de agendamento agrícola.
 - Soluções em Energia abre o WhatsApp da Mobile com mensagem sobre energia.
 - Sem o número necessário, o cartão permanece visível e indisponível, sem gerar link inválido.
+- Na home desktop, a seta expande apenas as subcategorias imediatas do departamento; o nome do departamento e os nomes das subcategorias abrem suas respectivas páginas.
+- A expansão é exclusiva: abrir outro departamento recolhe o anterior. No celular, a faixa de departamentos não expande subcategorias.
 - Campos antigos de texto e botões do banner são preservados no banco por compatibilidade, mas não são exibidos sobre a arte principal.
 - O conteúdo público pode levar até 60 segundos para refletir alterações por causa do cache do storefront.
 
@@ -106,11 +110,16 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 3. Marque as categorias que devem aparecer como departamentos.
 4. Salve as configurações.
 
+### Navegar pelos departamentos
+
+- Na home desktop, clique no nome do departamento para abrir sua página ou use a seta para mostrar/recolher subcategorias. Apenas uma lista fica aberta por vez.
+- No celular, toque no departamento na faixa horizontal; as subcategorias aparecem na página da categoria.
+
 ## 9. Checklist de validação
 
 - Conferir arte desktop e mobile sem sobreposição.
 - Conferir banner com e sem destino.
-- Conferir departamentos no desktop e no celular.
+- Conferir departamentos no desktop e no celular, incluindo categorias com e sem subcategorias, expansão exclusiva e navegação pelos nomes.
 - Conferir menu, marca, busca e carrinho em larguras compactas e desktop sem sobreposição.
 - Conferir número e mensagem dos três atalhos.
 - Conferir o estado indisponível quando um número estiver vazio.

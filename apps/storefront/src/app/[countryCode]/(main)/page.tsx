@@ -39,7 +39,7 @@ export default async function Home(props: { params: Promise<{ countryCode: strin
 
   const [{ settings, banners }, categories, { collections }] = await Promise.all([
     getAvaContent(),
-    listCategories({ fields: "id,name,handle,metadata,parent_category_id,rank,*products" }).catch(() => []),
+    listCategories({ fields: "id,name,handle,parent_category_id,rank,*category_children" }).catch(() => []),
     listCollections({ fields: "id,handle,title" }).catch(() => ({ collections: [] as HttpTypes.StoreCollection[] })),
   ])
 
@@ -55,7 +55,16 @@ export default async function Home(props: { params: Promise<{ countryCode: strin
       : categories.filter((c) => !c.parent_category_id)
   )
     .slice(0, 12)
-    .map((c) => ({ ...c!, product_count: c!.products?.length }))
+    .map((category) => ({
+      id: category!.id,
+      name: category!.name,
+      handle: category!.handle,
+      category_children: (category!.category_children || []).map((child) => ({
+        id: child.id,
+        name: child.name,
+        handle: child.handle,
+      })),
+    }))
 
   // Coleções em destaque (abas)
   const selectedCols = settings.featured_collection_ids || []

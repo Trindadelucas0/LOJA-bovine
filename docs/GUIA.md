@@ -111,7 +111,7 @@ Faça nesta ordem:
 A fonte oficial do comportamento atual é `DOCUMENTACAO-SISTEMA.md` na raiz.
 
 - **Banner completo:** Admin → Conteúdo da loja → Banners → envie a arte desktop e, opcionalmente, a arte mobile. Os textos da campanha devem fazer parte da imagem.
-- **Departamentos:** Admin → Conteúdo da loja → Informações e home → selecione as categorias exibidas na home.
+- **Departamentos:** Admin → Conteúdo da loja → Informações e home → selecione as categorias exibidas na home. No desktop, clique no nome para abrir a categoria ou na seta para expandir/recolher as subcategorias imediatas; só uma lista fica aberta por vez. No celular, a faixa horizontal permanece e cada item abre sua página, onde as subcategorias também aparecem.
 - **Atendimentos:** no mesmo painel, configure o WhatsApp geral e o WhatsApp da Mobile. Veterinário e Agrícola usam o geral; Energia usa o da Mobile.
 - Alterações públicas podem levar até 60 segundos para aparecer por causa do cache da vitrine.
 

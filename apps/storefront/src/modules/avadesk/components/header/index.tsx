@@ -42,15 +42,15 @@ export default async function AvaHeader({
   return (
     <header className="sticky top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(14,36,57,0.06)]">
       {/* Desktop */}
-      <div className="hidden medium:flex h-20 max-w-page mx-auto px-margin items-center justify-between gap-gutter">
+      <div className="hidden medium:flex min-h-20 max-w-page mx-auto px-margin py-3 items-center gap-gutter flex-wrap">
         <Logo name={name} logoUrl={settings.logo_url} />
-        <div className="flex flex-1 min-w-[180px] max-w-2xl items-center bg-subtle rounded-ava-md p-1 focus-within:ring-2 focus-within:ring-navy/20">
+        <div className="flex flex-1 min-w-[280px] max-w-2xl items-center bg-subtle rounded-ava-md p-1 focus-within:ring-2 focus-within:ring-navy/20">
           <CategoriesMenu categories={cats} />
           <div className="h-5 w-px bg-line-strong mx-1" />
           <SearchBar />
         </div>
         {links.length > 0 && (
-          <nav className="flex items-center gap-1 min-w-0 shrink-0 whitespace-nowrap">
+          <nav className="ml-auto flex items-center justify-end gap-1 min-w-0 max-w-full flex-wrap whitespace-nowrap">
             {links.map((l, i) => (
               <SmartLink
                 key={i}
@@ -62,7 +62,7 @@ export default async function AvaHeader({
             ))}
           </nav>
         )}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="ml-auto flex items-center gap-2 shrink-0">
           {chatEnabled && (
             <ChatButton
               className="relative p-2 text-ink-soft hover:text-ink hover:bg-subtle rounded-full transition-colors flex items-center"
