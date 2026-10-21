@@ -106,6 +106,15 @@ Faça nesta ordem:
 5. Testar o fluxo completo: produto → carrinho → checkout
 6. Só então pensar em domínio / deploy (não faça deploy enquanto estiver só testando local)
 
+## Gerenciar a home da BOVINE
+
+A fonte oficial do comportamento atual é `DOCUMENTACAO-SISTEMA.md` na raiz.
+
+- **Banner completo:** Admin → Conteúdo da loja → Banners → envie a arte desktop e, opcionalmente, a arte mobile. Os textos da campanha devem fazer parte da imagem.
+- **Departamentos:** Admin → Conteúdo da loja → Informações e home → selecione as categorias exibidas na home.
+- **Atendimentos:** no mesmo painel, configure o WhatsApp geral e o WhatsApp da Mobile. Veterinário e Agrícola usam o geral; Energia usa o da Mobile.
+- Alterações públicas podem levar até 60 segundos para aparecer por causa do cache da vitrine.
+
 ## Como parar
 
 - Nos terminais do backend e do storefront: **Ctrl+C**
@@ -119,6 +128,7 @@ Faça nesta ordem:
 | Docker parado | Abra o Docker Desktop e rode `docker start medusa-postgres` |
 | Porta 9000 ou 8000 em uso | Feche o processo antigo (Ctrl+C) ou mate o Node dessa porta |
 | Erro de banco | `docker ps` (container Up) e porta **5433** no `.env` |
+| Imagens quebradas (404) | Confirme se `apps\backend\static` contém a mídia ligada ao banco restaurado; o provedor local guarda os arquivos fora do banco e essa pasta é ignorada pelo Git. Restaure a cópia de mídia correspondente. |
 | Admin não abre | Espere o `npm run dev` do backend compilar; acesse `/app` |
 | Loja sem produtos | Confirme a Publishable Key no `.env.local` e reinicie o storefront |
 | Precos em euro/dólar | Confirme região Brasil / BRL e que o produto tem preço em BRL |

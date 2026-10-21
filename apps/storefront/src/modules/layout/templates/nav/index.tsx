@@ -18,26 +18,28 @@ export default async function Nav() {
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
-        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
-          <div className="flex-1 basis-0 h-full flex items-center">
+      <header className="relative min-h-16 py-2 mx-auto border-b duration-200 bg-white border-ui-border-base small:h-16 small:py-0">
+        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle grid w-full min-h-12 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 text-small-regular small:flex small:h-full small:justify-between">
+          <div className="flex h-full min-w-0 items-center small:flex-1 small:basis-0">
             <div className="h-full">
               <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
             </div>
           </div>
 
-          <div className="flex items-center h-full">
+          <div className="flex min-w-0 items-center justify-center overflow-hidden small:shrink-0">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
+              className="txt-compact-xlarge-plus truncate text-center hover:text-ui-fg-base uppercase"
               data-testid="nav-store-link"
             >
               Minha Loja
             </LocalizedClientLink>
           </div>
 
-          <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
-            <Search />
+          <div className="flex min-w-0 items-center justify-end gap-x-3 small:h-full small:flex-1 small:basis-0 small:gap-x-6">
+            <div className="hidden min-w-0 small:block">
+              <Search />
+            </div>
             <div className="hidden small:flex items-center gap-x-6 h-full">
               <LocalizedClientLink
                 className="hover:text-ui-fg-base"
@@ -46,6 +48,9 @@ export default async function Nav() {
               >
                 Conta
               </LocalizedClientLink>
+            </div>
+            <div className="small:hidden">
+              <Search />
             </div>
             <Suspense
               fallback={

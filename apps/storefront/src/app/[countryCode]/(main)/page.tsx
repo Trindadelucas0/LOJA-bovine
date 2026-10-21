@@ -9,7 +9,7 @@ import { getRegion } from "@lib/data/regions"
 import { chatConfig } from "@lib/util/chat-config"
 import AvaProductCard, { PriceConfig } from "@modules/avadesk/components/product-card"
 import Benefits from "@modules/home/components/benefits"
-import CategoryGrid from "@modules/home/components/category-grid"
+import DepartmentsMenu from "@modules/home/components/departments-menu"
 import ChatBlock from "@modules/home/components/chat-block"
 import FeaturedTabs from "@modules/home/components/featured-tabs"
 import Hero from "@modules/home/components/hero"
@@ -17,6 +17,7 @@ import TrustStrip from "@modules/home/components/hero/trust-strip"
 import NewArrivals from "@modules/home/components/new-arrivals"
 import PromoBanner from "@modules/home/components/promo-banner"
 import SectionHeading from "@modules/home/components/section-heading"
+import ServiceShortcuts from "@modules/home/components/service-shortcuts"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { settings } = await getAvaContent()
@@ -96,8 +97,11 @@ export default async function Home(props: { params: Promise<{ countryCode: strin
   return (
     <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-10 flex flex-col gap-6 small:gap-10">
       <TrustStrip items={badges} />
-      <Hero banner={hero} settings={settings} badges={badges} />
-      <CategoryGrid title={settings.categories_title || "Compre por Categoria"} categories={homeCats} />
+      <div className="flex flex-col gap-3 small:grid small:grid-cols-[280px_minmax(0,1fr)] small:gap-gutter">
+        <DepartmentsMenu title={settings.categories_title || "Departamentos"} departments={homeCats} />
+        <Hero banner={hero} settings={settings} />
+      </div>
+      <ServiceShortcuts settings={settings} />
       <PromoBanner banner={promo} pixText={settings.pix_discount_text} />
       {tabs.length > 0 && (
         <section>

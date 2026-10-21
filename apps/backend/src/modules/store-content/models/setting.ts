@@ -11,6 +11,7 @@ const ContentSetting = model.define("avadesk_content_setting", {
   tagline: model.text().nullable(),
   phone: model.text().nullable(),
   whatsapp: model.text().nullable(),
+  mobile_whatsapp: model.text().nullable(),
   email: model.text().nullable(),
   address: model.text().nullable(),
   footer_text: model.text().nullable(),

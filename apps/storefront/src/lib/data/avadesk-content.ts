@@ -10,6 +10,7 @@ export type AvaSettings = {
   tagline?: string | null
   phone?: string | null
   whatsapp?: string | null
+  mobile_whatsapp?: string | null
   email?: string | null
   address?: string | null
   footer_text?: string | null

@@ -198,6 +198,7 @@ const SettingsTab = () => {
         <div className={grid}>
           <Field label="Telefone"><Input value={s.phone ?? ""} onChange={set("phone")} /></Field>
           <Field label="WhatsApp" hint="Somente números com DDI, ex.: 5511999999999"><Input value={s.whatsapp ?? ""} onChange={set("whatsapp")} /></Field>
+          <Field label="WhatsApp da Mobile" hint="Usado somente em Soluções em Energia. Somente números com DDI."><Input inputMode="numeric" value={s.mobile_whatsapp ?? ""} onChange={(e) => setS({ ...s, mobile_whatsapp: e.target.value.replace(/\D/g, "") })} /></Field>
           <Field label="E-mail"><Input value={s.email ?? ""} onChange={set("email")} /></Field>
           <Field label="Endereço"><Input value={s.address ?? ""} onChange={set("address")} /></Field>
         </div>
@@ -213,7 +214,7 @@ const SettingsTab = () => {
       <div className={section}>
         <Heading level="h2">Home</Heading>
         <div className={grid}>
-          <Field label="Título de categorias"><Input value={s.categories_title ?? ""} onChange={set("categories_title")} placeholder="Compre por Categoria" /></Field>
+          <Field label="Título de departamentos"><Input value={s.categories_title ?? ""} onChange={set("categories_title")} placeholder="Departamentos" /></Field>
           <Field label="Título de destaques"><Input value={s.featured_title ?? ""} onChange={set("featured_title")} placeholder="Produtos em Destaque" /></Field>
           <Field label="Título de recém-adicionados"><Input value={s.new_arrivals_title ?? ""} onChange={set("new_arrivals_title")} placeholder="Recém-adicionados" /></Field>
         </div>
@@ -223,7 +224,7 @@ const SettingsTab = () => {
         <Field label="Benefícios (faixa antes do rodapé)" hint="Um por linha: ícone | título | texto">
           <Textarea rows={4} value={txt.benefits} onChange={(e) => setTxt({ ...txt, benefits: e.target.value })} />
         </Field>
-        <Field label="Categorias exibidas na home" hint="Nenhuma marcada = todas as categorias principais.">
+        <Field label="Departamentos exibidos na home" hint="Nenhuma marcada = todos os departamentos principais.">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {cats.map((c) => (
               <label key={c.id} className="flex items-center gap-x-2 txt-small">
@@ -310,18 +311,19 @@ const BannerForm = ({ initial, onDone }: { initial: Dict; onDone: () => void }) 
           </Select>
         </Field>
         <Field label="Ordem" hint="Menor aparece primeiro"><Input type="number" value={b.rank ?? 0} onChange={set("rank")} /></Field>
-        <Field label="Selo superior (opcional)"><Input value={b.eyebrow ?? ""} onChange={set("eyebrow")} placeholder="Ex.: ENTREGA EXPRESSA 24H" /></Field>
-        <Field label="Título *"><Input value={b.title ?? ""} onChange={set("title")} /></Field>
+        <Field label="Nome interno / texto alternativo *" hint="Identifica o banner no admin e descreve a imagem para acessibilidade."><Input value={b.title ?? ""} onChange={set("title")} /></Field>
       </div>
-      <Field label="Subtítulo / texto"><Textarea rows={2} value={b.subtitle ?? ""} onChange={set("subtitle")} /></Field>
+      <Text size="small" className="text-ui-fg-subtle">A arte enviada ocupa todo o banner. Inclua na própria imagem os textos e elementos visuais da campanha. Recomendação: desktop 1440 × 420 px e mobile 750 × 900 px.</Text>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <ImageField label="Imagem (desktop)" value={b.image_url} onChange={(v) => setB({ ...b, image_url: v })} />
-        <ImageField label="Imagem (mobile, opcional)" value={b.mobile_image_url} onChange={(v) => setB({ ...b, mobile_image_url: v })} />
-        <Field label="Botão 1 - texto"><Input value={b.cta_label ?? ""} onChange={set("cta_label")} /></Field>
-        <Field label="Botão 1 - link" hint="Ex.: /store, /collections/ofertas ou #chat"><Input value={b.cta_url ?? ""} onChange={set("cta_url")} /></Field>
-        <Field label="Botão 2 - texto"><Input value={b.cta2_label ?? ""} onChange={set("cta2_label")} /></Field>
-        <Field label="Botão 2 - link"><Input value={b.cta2_url ?? ""} onChange={set("cta2_url")} /></Field>
+        <ImageField label="Arte completa (desktop)" value={b.image_url} onChange={(v) => setB({ ...b, image_url: v })} />
+        <ImageField label="Arte completa (mobile, opcional)" value={b.mobile_image_url} onChange={(v) => setB({ ...b, mobile_image_url: v })} />
       </div>
+      {(b.image_url || b.mobile_image_url) && (
+        <div className="overflow-hidden rounded-lg border bg-ui-bg-base">
+          <img src={b.image_url || b.mobile_image_url} alt={b.title || "Prévia do banner"} className="block h-auto max-h-72 w-full object-contain" />
+        </div>
+      )}
+      <Field label="Destino ao clicar no banner (opcional)" hint="Ex.: /store, /collections/ofertas, #chat ou uma URL completa. Vazio = banner sem clique."><Input value={b.cta_url ?? ""} onChange={set("cta_url")} /></Field>
       <div className="flex items-center justify-between">
         <label className="flex items-center gap-x-2 txt-small">
           <Switch checked={!!b.is_active} onCheckedChange={(v) => setB({ ...b, is_active: v })} /> Ativo
