@@ -2,8 +2,8 @@
 
 | Item | Valor |
 |---|---|
-| Versão do sistema | 1.2.0 — Menu lateral de departamentos |
-| Última atualização | 21/10/2026 — departamentos movidos para um painel hambúrguer lateral, recolhível e disponível nas páginas principais da loja |
+| Versão do sistema | 1.2.1 — Menu lateral de departamentos |
+| Última atualização | 23/10/2026 — home desktop com departamentos sempre visíveis em uma lateral fixa; painel hambúrguer preservado nas demais páginas e em telas menores |
 | Fonte oficial | Este arquivo |
 
 ## 1. Como usar este documento
@@ -20,6 +20,7 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 | Versão | Data | Mudança |
 |---|---|---|
+| 1.2.1 — Menu lateral de departamentos | 23/10/2026 | Na home a partir de 1280 px, os departamentos permanecem visíveis em uma lateral fixa abaixo do cabeçalho; celular, tablet e demais páginas preservam o painel acionado pelo botão. |
 | 1.2.0 — Menu lateral de departamentos | 21/10/2026 | Painel de departamentos em altura total acionado pelo cabeçalho, disponível nas páginas principais da loja e fechável por botão, fundo ou Esc. |
 | 1.1.8 — Subcategorias visíveis | 21/10/2026 | A primeira categoria com subcategorias inicia expandida; a seta continua permitindo recolher ou trocar de departamento aberto. |
 | 1.1.7 — Banner alinhado aos departamentos | 21/10/2026 | Colunas da home compartilham altura e a arte cobre o cartão sem faixa branca inferior. |
@@ -36,7 +37,8 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 | Tela | Área | Conexão |
 |---|---|---|
-| Páginas principais da loja | Departamentos | Botão hambúrguer no cabeçalho abre o painel lateral com as categorias selecionadas em Conteúdo da loja e suas subcategorias imediatas. |
+| Home da loja | Departamentos | A partir de 1280 px, lateral fixa com as categorias selecionadas em Conteúdo da loja e suas subcategorias imediatas. |
+| Demais páginas e home abaixo de 1280 px | Departamentos | Botão hambúrguer no cabeçalho abre o painel lateral com as mesmas categorias e subcategorias. |
 | Home da loja | Banner principal | Primeiro banner principal ativo; a arte usa imagem desktop/mobile e pode ter um destino de clique. |
 | Home da loja | Atendimentos | Veterinário e Agrícola usam o WhatsApp geral; Energia usa o WhatsApp da Mobile. |
 | Todas as telas da loja | Cabeçalho | Menu, marca, busca, conta e carrinho se reorganizam conforme a largura disponível. |
@@ -64,10 +66,11 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 ### Home e navegação de departamentos
 
 - O card compacto de departamentos foi removido da home; o banner ocupa a largura completa do conteúdo.
-- O botão hambúrguer **Departamentos**, à esquerda do cabeçalho, abre um painel lateral de altura total nas páginas principais da loja.
+- Na home a partir de 1280 px, os departamentos ficam sempre visíveis em uma lateral à esquerda do conteúdo. A lateral permanece abaixo do cabeçalho durante a rolagem e usa rolagem interna quando a lista ultrapassa a altura disponível.
+- Na home abaixo de 1280 px e nas demais páginas, o botão hambúrguer **Departamentos**, à esquerda do cabeçalho, abre o painel lateral.
 - O painel mostra as categorias escolhidas em **Conteúdo da loja → Informações e home**, na ordem configurada; se nenhuma estiver escolhida, mostra as categorias principais.
 - O primeiro departamento com subcategorias inicia expandido. O nome abre a categoria e a seta expande ou recolhe as subcategorias imediatas; apenas uma lista fica aberta por vez.
-- O mesmo painel funciona em desktop e celular. Pode ser fechado pelo botão **X**, clicando fora do painel ou pressionando **Esc**. No celular, o painel ocupa quase toda a largura da tela.
+- O painel recolhível pode ser fechado pelo botão **X**, clicando fora ou pressionando **Esc**. No celular, ocupa quase toda a largura da tela.
 - Quando existe imagem, o banner não recebe texto, selo ou botão sobreposto pelo storefront.
 - A imagem mobile é opcional. Sem ela, a imagem desktop também é usada no celular.
 - A arte do banner preenche o espaço disponível sem sobrepor textos, selos ou botões do storefront.
@@ -97,7 +100,7 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 - Atendimento Agrícola abre o WhatsApp geral com mensagem de agendamento agrícola.
 - Soluções em Energia abre o WhatsApp da Mobile com mensagem sobre energia.
 - Sem o número necessário, o cartão permanece visível e indisponível, sem gerar link inválido.
-- O botão **Departamentos** do cabeçalho abre a navegação lateral nas páginas principais da loja. O painel pode ser fechado pelo **X**, pelo fundo escurecido ou pela tecla **Esc**.
+- Na home desktop a partir de 1280 px, a navegação de departamentos fica aberta e o botão do cabeçalho é ocultado. Nas demais páginas e abaixo desse tamanho, o botão **Departamentos** abre o painel, que pode ser fechado pelo **X**, pelo fundo escurecido ou pela tecla **Esc**.
 - A primeira categoria com subcategorias inicia expandida. A seta expande apenas as subcategorias imediatas; os nomes abrem suas respectivas páginas.
 - A expansão é exclusiva: abrir outro departamento recolhe o anterior. A navegação usa as categorias escolhidas no admin e mantém o link **Ver todos**.
 - Campos antigos de texto e botões do banner são preservados no banco por compatibilidade, mas não são exibidos sobre a arte principal.
@@ -122,15 +125,17 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 ### Navegar pelos departamentos
 
-- Nas páginas principais da loja, clique em **Departamentos** à esquerda do cabeçalho para abrir o painel.
-- A primeira categoria com subcategorias já aparece aberta. Clique no nome do departamento para abrir sua página ou use a seta para mostrar/recolher subcategorias; apenas uma lista fica aberta por vez.
-- Feche o painel pelo **X**, clicando fora dele ou pressionando **Esc**. No celular, o mesmo fluxo abre um painel quase em tela cheia.
+- Na home desktop a partir de 1280 px, use a lateral **Departamentos** à esquerda; não é necessário abrir um painel.
+- Na home abaixo de 1280 px e nas demais páginas, clique em **Departamentos** à esquerda do cabeçalho para abrir o painel.
+- A primeira categoria com subcategorias já aparece aberta. Clique no nome para abrir sua página ou use a seta para mostrar/recolher subcategorias; apenas uma lista fica aberta por vez.
+- Quando estiver usando o painel, feche pelo **X**, clicando fora ou pressionando **Esc**. No celular, ele ocupa quase toda a tela.
 
 ## 9. Checklist de validação
 
 - Conferir arte desktop e mobile sem sobreposição.
 - Conferir banner com e sem destino, inclusive arte panorâmica, sem faixa vazia abaixo da imagem.
-- Conferir botão e painel de departamentos no desktop e celular, incluindo abrir/fechar, primeira categoria expandida, categorias com e sem subcategorias, expansão exclusiva e navegação pelos nomes.
+- Conferir a lateral fixa da home em 1280, 1440 e 1920 px, incluindo permanência durante a rolagem, rolagem interna e ausência do botão no cabeçalho.
+- Conferir botão e painel na home abaixo de 1280 px e nas demais páginas, incluindo abrir/fechar, primeira categoria expandida, categorias com e sem subcategorias, expansão exclusiva e navegação pelos nomes.
 - Conferir menu, marca, busca e carrinho em larguras compactas e desktop sem sobreposição.
 - Conferir número e mensagem dos três atalhos.
 - Conferir o estado indisponível quando um número estiver vazio.

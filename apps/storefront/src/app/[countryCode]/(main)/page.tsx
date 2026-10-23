@@ -2,11 +2,13 @@ import { Metadata } from "next"
 import { HttpTypes } from "@medusajs/types"
 
 import { getAvaContent, storeName } from "@lib/data/avadesk-content"
+import { listCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
 import { listProducts } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 import { chatConfig } from "@lib/util/chat-config"
 import AvaProductCard, { PriceConfig } from "@modules/avadesk/components/product-card"
+import { CategoriesSidebar } from "@modules/avadesk/components/header/categories-menu"
 import Benefits from "@modules/home/components/benefits"
 import ChatBlock from "@modules/home/components/chat-block"
 import FeaturedTabs from "@modules/home/components/featured-tabs"
@@ -35,14 +37,32 @@ export default async function Home(props: { params: Promise<{ countryCode: strin
   const region = await getRegion(countryCode)
   if (!region) return null
 
-  const [{ settings, banners }, { collections }] = await Promise.all([
+  const [{ settings, banners }, categories, { collections }] = await Promise.all([
     getAvaContent(),
+    listCategories({ fields: "id,name,handle,parent_category_id,rank,*category_children" }).catch(() => []),
     listCollections({ fields: "id,handle,title" }).catch(() => ({ collections: [] as HttpTypes.StoreCollection[] })),
   ])
 
   const hero = banners.find((b) => b.position === "hero")
   const promo = banners.find((b) => b.position === "promo")
   const badges = settings.hero_badges || []
+  const availableCategories = categories || []
+  const topCategories = availableCategories.filter((category) => !category.parent_category_id)
+  const selectedCategoryIds = settings.home_category_ids || []
+  const selectedCategories = selectedCategoryIds.length
+    ? selectedCategoryIds.map((id) => availableCategories.find((category) => category.id === id)).filter(Boolean)
+    : topCategories
+  const departmentCategories = selectedCategories.map((category) => ({
+    id: category!.id,
+    name: category!.name,
+    handle: category!.handle,
+    category_children: (category!.category_children || []).map((child) => ({
+      id: child.id,
+      name: child.name,
+      handle: child.handle,
+    })),
+  }))
+  const categoriesTitle = settings.categories_title || "Departamentos"
 
   // Coleções em destaque (abas)
   const selectedCols = settings.featured_collection_ids || []
@@ -82,25 +102,28 @@ export default async function Home(props: { params: Promise<{ countryCode: strin
   ]
 
   return (
-    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-10 flex flex-col gap-6 small:gap-10">
-      <TrustStrip items={badges} />
-      <Hero banner={hero} settings={settings} />
-      <ServiceShortcuts settings={settings} />
-      <PromoBanner banner={promo} pixText={settings.pix_discount_text} />
-      {tabs.length > 0 && (
-        <section>
-          <SectionHeading
-            eyebrow="Seleção recomendada"
-            title={settings.featured_title || "Produtos em Destaque"}
-            linkLabel="Ver todos"
-            linkHref="/store"
-          />
-          <FeaturedTabs tabs={tabs.map(({ id, label, content }) => ({ id, label, content }))} />
-        </section>
-      )}
-      {chat.enabled && <ChatBlock settings={settings} />}
-      <NewArrivals title={settings.new_arrivals_title || "Recém-adicionados"} products={newest} config={config} />
-      <Benefits items={settings.benefits || []} />
+    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-10 flex flex-col gap-6 medium:grid medium:grid-cols-[260px_minmax(0,1fr)] medium:items-start medium:gap-gutter">
+      <CategoriesSidebar categories={departmentCategories} title={categoriesTitle} />
+      <div className="min-w-0 flex flex-col gap-6 small:gap-10">
+        <TrustStrip items={badges} />
+        <Hero banner={hero} settings={settings} />
+        <ServiceShortcuts settings={settings} />
+        <PromoBanner banner={promo} pixText={settings.pix_discount_text} />
+        {tabs.length > 0 && (
+          <section>
+            <SectionHeading
+              eyebrow="Seleção recomendada"
+              title={settings.featured_title || "Produtos em Destaque"}
+              linkLabel="Ver todos"
+              linkHref="/store"
+            />
+            <FeaturedTabs tabs={tabs.map(({ id, label, content }) => ({ id, label, content }))} />
+          </section>
+        )}
+        {chat.enabled && <ChatBlock settings={settings} />}
+        <NewArrivals title={settings.new_arrivals_title || "Recém-adicionados"} products={newest} config={config} />
+        <Benefits items={settings.benefits || []} />
+      </div>
     </div>
   )
 }
