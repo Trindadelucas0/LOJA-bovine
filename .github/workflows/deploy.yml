@@ -1,0 +1,34 @@
+name: Deploy VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-vps-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: 22
+          timeout: 60s
+          command_timeout: 30m
+          script: |
+            set -e
+            cd /opt/medusa-loja
+            # Node 22 fica em /opt/node22/bin; sessao nao-interativa traz o Node 20 de /usr/bin
+            export PATH=/opt/node22/bin:$PATH
+            node -v
+            # Atualiza antes de rodar o script, para sempre usar a versao nova dele
+            git pull --ff-only
+            bash scripts/deploy-vps.sh

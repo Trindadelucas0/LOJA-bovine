@@ -98,6 +98,26 @@ async function getCountryCode(
 }
 
 /**
+ * Public origin for redirects. Prefers NEXT_PUBLIC_BASE_URL, then the
+ * forwarded host sent by the proxy, then the request origin.
+ */
+function getPublicOrigin(request: NextRequest) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+  if (baseUrl) {
+    return baseUrl.replace(/\/+$/, "")
+  }
+
+  const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim()
+  if (forwardedHost) {
+    const forwardedProto =
+      request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim() || "https"
+    return `${forwardedProto}://${forwardedHost}`
+  }
+
+  return request.nextUrl.origin
+}
+
+/**
  * Middleware to handle region selection and onboarding status.
  */
 export async function middleware(request: NextRequest) {
@@ -138,7 +158,9 @@ export async function middleware(request: NextRequest) {
   const redirectPath =
     request.nextUrl.pathname === "/" ? "" : request.nextUrl.pathname
   const queryString = request.nextUrl.search || ""
-  const redirectUrl = `${request.nextUrl.origin}/${country}${redirectPath}${queryString}`
+  // Behind nginx/Cloudflare, request.nextUrl.origin is the internal address
+  // (127.0.0.1:7772). Use the public base URL or the forwarded host instead.
+  const redirectUrl = `${getPublicOrigin(request)}/${country}${redirectPath}${queryString}`
 
   return NextResponse.redirect(redirectUrl, 307)
 }
