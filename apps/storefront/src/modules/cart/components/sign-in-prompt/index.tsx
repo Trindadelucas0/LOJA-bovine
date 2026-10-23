@@ -8,7 +8,7 @@ const SignInPrompt = () => {
         <Heading level="h2" className="txt-xlarge">
           Já tem uma conta?
         </Heading>
-        <Text className="txt-medium text-ui-fg-subtle mt-2">
+        <Text className="txt-medium text-ink-soft mt-2">
           Entre para uma experiência melhor.
         </Text>
       </div>

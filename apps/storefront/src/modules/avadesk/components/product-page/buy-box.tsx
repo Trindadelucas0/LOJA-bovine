@@ -153,7 +153,7 @@ export default function BuyBox({
       {product.subtitle && <p className="text-body-md text-ink-soft -mt-2">{product.subtitle}</p>}
 
       {/* Preço */}
-      <div className="rounded-ava-lg bg-subtle/70 border border-line p-4" data-testid="product-price">
+      <div className="rounded-ava-lg bg-brand-light/40 border border-brand/25 p-4 small:p-5" data-testid="product-price">
         {price ? (
           <>
             {hasDiscount && (
@@ -219,13 +219,13 @@ export default function BuyBox({
           <span className="text-label-md text-ink block">Quantidade</span>
           {maxQty && <span className="text-body-sm text-ink-muted">Limite por pedido: {maxQty} un</span>}
         </div>
-        <div className="flex items-center rounded-ava-md border border-line bg-white">
-          <button type="button" aria-label="Diminuir" className="w-10 h-10 flex items-center justify-center disabled:opacity-40" disabled={qty <= 1} onClick={() => setQty((q) => Math.max(1, q - 1))}>
-            <Icon name="remove" className="text-[20px]" />
+        <div className="flex items-center rounded-ava-md border border-line-strong bg-card overflow-hidden">
+          <button type="button" aria-label="Diminuir quantidade" className="w-12 h-12 flex items-center justify-center text-navy hover:bg-subtle disabled:opacity-40 transition-colors" disabled={qty <= 1} onClick={() => setQty((q) => Math.max(1, q - 1))}>
+            <Icon name="remove" className="text-[24px]" />
           </button>
-          <span className="w-10 text-center font-display font-bold" data-testid="quantity">{qty}</span>
-          <button type="button" aria-label="Aumentar" className="w-10 h-10 flex items-center justify-center disabled:opacity-40" disabled={qty >= limit} onClick={() => setQty((q) => Math.min(limit, q + 1))}>
-            <Icon name="add" className="text-[20px]" />
+          <span className="w-12 text-center font-display font-extrabold text-h-sm" data-testid="quantity">{qty}</span>
+          <button type="button" aria-label="Aumentar quantidade" className="w-12 h-12 flex items-center justify-center text-navy hover:bg-subtle disabled:opacity-40 transition-colors" disabled={qty >= limit} onClick={() => setQty((q) => Math.min(limit, q + 1))}>
+            <Icon name="add" className="text-[24px]" />
           </button>
         </div>
       </div>
@@ -236,7 +236,7 @@ export default function BuyBox({
           type="button"
           disabled={!canBuy || !!busy}
           onClick={() => add("buy")}
-          className="h-12 rounded-ava-md bg-brand hover:bg-brand-dark disabled:bg-line-strong text-white text-label-md flex items-center justify-center gap-2 shadow-lg shadow-brand/20"
+          className="h-[52px] rounded-ava-md bg-brand hover:bg-brand-dark disabled:bg-line-strong text-white text-body-lg font-display font-extrabold flex items-center justify-center gap-2 shadow-brand-glow"
           data-testid="buy-now-button"
         >
           <Icon name="bolt" className="text-[20px]" />
@@ -246,7 +246,7 @@ export default function BuyBox({
           type="button"
           disabled={!canBuy || !!busy}
           onClick={() => add("cart")}
-          className="h-12 rounded-ava-md bg-navy hover:bg-navy-deep disabled:bg-line-strong text-white text-label-md flex items-center justify-center gap-2"
+          className="h-12 rounded-ava-md bg-card border border-line-strong hover:border-navy text-navy disabled:opacity-50 text-label-md flex items-center justify-center gap-2 transition-colors"
           data-testid="add-product-button"
         >
           <Icon name="add_shopping_cart" className="text-[20px]" />
@@ -264,27 +264,27 @@ export default function BuyBox({
       <button
         type="button"
         onClick={chat}
-        className="flex items-center gap-3 p-3 rounded-ava-md bg-chat/10 hover:bg-chat/15 text-left transition-colors"
+        className="flex items-center gap-3 p-3.5 rounded-ava-md bg-chat/10 border border-chat/20 hover:bg-chat/15 text-left transition-colors"
         data-testid="product-chat-button"
       >
-        <span className="w-10 h-10 rounded-full bg-chat text-white flex items-center justify-center shrink-0">
+        <span className="w-12 h-12 rounded-full bg-chat text-white flex items-center justify-center shrink-0">
           <Icon name="forum" className="text-[22px]" />
         </span>
         <span className="flex-1">
-          <span className="block text-label-md text-ink">Conversar sobre este produto</span>
-          <span className="block text-body-sm text-chat">Tire dúvidas com um especialista</span>
+          <span className="block text-body-lg font-bold text-ink">Conversar sobre este produto</span>
+          <span className="block text-body-md text-chat">Tire dúvidas com um especialista</span>
         </span>
         <Icon name="arrow_forward" className="text-[20px] text-chat" />
       </button>
       {chatFailed && <ChatFallback whatsapp={whatsapp} email={email} onClose={() => setChatFailed(false)} />}
 
       {/* Barra fixa mobile (acima da navegação inferior) */}
-      <div className="small:hidden fixed inset-x-0 bottom-16 z-40 bg-white/95 backdrop-blur-xl border-t border-line px-3 py-2 flex gap-2" style={{ marginBottom: "env(safe-area-inset-bottom)" }}>
+      <div className="small:hidden fixed inset-x-0 bottom-nav z-40 bar-sticky px-3 py-2.5 flex gap-2">
         <button
           type="button"
           disabled={!canBuy || !!busy}
           onClick={() => add("cart")}
-          className="flex-1 h-11 rounded-ava-md bg-subtle text-navy disabled:opacity-50 text-label-md flex items-center justify-center gap-1.5"
+          className="flex-1 h-12 rounded-ava-md bg-card border border-line-strong text-navy disabled:opacity-50 text-label-md flex items-center justify-center gap-1.5"
         >
           <Icon name="add_shopping_cart" className="text-[20px]" />
           {busy === "cart" ? "..." : added ? "Adicionado" : "Carrinho"}
@@ -293,7 +293,7 @@ export default function BuyBox({
           type="button"
           disabled={!canBuy || !!busy}
           onClick={() => add("buy")}
-          className="flex-[1.6] h-11 rounded-ava-md bg-brand disabled:bg-line-strong text-white text-label-md flex items-center justify-center gap-1.5"
+          className="flex-[1.6] h-12 rounded-ava-md bg-brand disabled:bg-line-strong text-white text-label-md flex items-center justify-center gap-1.5 shadow-brand-glow"
         >
           <Icon name="bolt" className="text-[20px]" />
           {busy === "buy" ? "Processando..." : label || "Comprar agora"}

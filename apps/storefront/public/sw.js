@@ -3,11 +3,18 @@
  * checkout, conta, pedidos, requisicoes nao-GET ou com credenciais/RSC.
  * Cacheia: assets imutaveis do Next (/_next/static), icones e imagens de produto (/static).
  * Paginas HTML: network-first com fallback offline simples. */
-const VERSION = "bovine-v1"
+const VERSION = "bovine-v2"
 const STATIC_CACHE = `${VERSION}-static`
 const IMG_CACHE = `${VERSION}-img`
 const OFFLINE_URL = "/offline.html"
-const PRECACHE = [OFFLINE_URL, "/icons/icon-192.png", "/icons/icon-512.png", "/manifest.webmanifest"]
+const PRECACHE = [
+  OFFLINE_URL,
+  "/icons/icon-192.png",
+  "/icons/icon-512.png",
+  "/icons/maskable-192.png",
+  "/icons/apple-touch-icon.png",
+  "/manifest.webmanifest",
+]
 
 const NEVER = /^\/(store|admin|auth|app|hooks|api|health)(\/|$)|\/(cart|checkout|account|order)(\/|$)/
 

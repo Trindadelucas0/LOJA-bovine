@@ -1,13 +1,13 @@
-import { Container } from "@modules/common/components/ui"
-
+/** Silhueta do cartao de produto real (AvaProductCard). */
 const SkeletonProductPreview = () => {
   return (
-    <div className="animate-pulse">
-      <Container className="aspect-[9/16] w-full bg-gray-100 bg-ui-bg-subtle" />
-      <div className="flex justify-between text-base-regular mt-2">
-        <div className="w-2/5 h-6 bg-gray-100"></div>
-        <div className="w-1/5 h-6 bg-gray-100"></div>
-      </div>
+    <div className="card-surface p-2.5 small:p-4 animate-pulse">
+      <div className="aspect-square rounded-ava-md bg-subtle mb-3" />
+      <div className="h-3 w-1/2 bg-subtle rounded mb-2" />
+      <div className="h-4 bg-subtle rounded mb-1.5" />
+      <div className="h-4 w-2/3 bg-subtle rounded mb-4" />
+      <div className="h-7 w-1/2 bg-subtle rounded mb-3" />
+      <div className="h-12 bg-subtle rounded-ava-md" />
     </div>
   )
 }

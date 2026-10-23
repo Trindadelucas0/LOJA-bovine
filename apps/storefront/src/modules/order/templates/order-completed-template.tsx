@@ -28,7 +28,7 @@ export default async function OrderCompletedTemplate({ order }: OrderCompletedTe
   }
 
   return (
-    <div className="max-w-page mx-auto px-margin-m small:px-margin py-6 small:py-10 pb-24 small:pb-10" data-testid="order-complete-container">
+    <div className="max-w-page mx-auto px-margin-m small:px-margin py-6 small:py-10 pb-nav" data-testid="order-complete-container">
       <div className="max-w-4xl mx-auto flex flex-col gap-5">
         <section className="bg-gradient-to-r from-navy-deep via-navy to-navy-soft text-white rounded-ava-xl p-6 small:p-10 relative overflow-hidden">
           <div className="absolute -right-16 -top-16 w-64 h-64 bg-stock-in/20 rounded-full blur-3xl pointer-events-none" />
@@ -42,7 +42,7 @@ export default async function OrderCompletedTemplate({ order }: OrderCompletedTe
           </p>
         </section>
 
-        <section className="bg-white rounded-ava-lg shadow-sm p-5 small:p-6 flex flex-col small:flex-row gap-4">
+        <section className="card-surface p-5 small:p-6 flex flex-col small:flex-row gap-4">
           <span className="w-12 h-12 rounded-ava-md bg-stock-low/10 text-stock-low flex items-center justify-center shrink-0">
             <Icon name="schedule" className="text-[26px]" />
           </span>
@@ -63,7 +63,7 @@ export default async function OrderCompletedTemplate({ order }: OrderCompletedTe
         </section>
 
         <div className="grid grid-cols-1 small:grid-cols-2 gap-5">
-          <section className="bg-white rounded-ava-lg shadow-sm p-5">
+          <section className="card-surface p-5">
             <h2 className="font-display text-h-sm text-ink mb-3 flex items-center gap-2"><Icon name="location_on" className="text-[20px]" /> Entrega</h2>
             <p className="text-body-md text-ink font-semibold">{sa?.first_name} {sa?.last_name}</p>
             <p className="text-body-md text-ink-soft">{sa?.address_1}{sa?.address_2 ? ` • ${sa.address_2}` : ""}</p>
@@ -72,7 +72,7 @@ export default async function OrderCompletedTemplate({ order }: OrderCompletedTe
               <p className="text-body-md text-ink mt-2">{order.shipping_methods[0].name} • {fmt(order.shipping_methods[0].total ?? order.shipping_methods[0].amount ?? 0)}</p>
             )}
           </section>
-          <section className="bg-white rounded-ava-lg shadow-sm p-5">
+          <section className="card-surface p-5">
             <h2 className="font-display text-h-sm text-ink mb-3 flex items-center gap-2"><Icon name="receipt" className="text-[20px]" /> Valores</h2>
             <dl className="flex flex-col gap-1.5 text-body-md">
               <div className="flex justify-between"><dt className="text-ink-soft">Subtotal</dt><dd>{fmt(order.item_subtotal ?? order.subtotal ?? 0)}</dd></div>
@@ -83,7 +83,7 @@ export default async function OrderCompletedTemplate({ order }: OrderCompletedTe
           </section>
         </div>
 
-        <section className="bg-white rounded-ava-lg shadow-sm p-5">
+        <section className="card-surface p-5">
           <h2 className="font-display text-h-sm text-ink mb-3">Itens</h2>
           <ul className="flex flex-col gap-3">
             {(order.items || []).map((i) => (

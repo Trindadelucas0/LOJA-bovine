@@ -30,7 +30,7 @@ export default function NewArrivals({
         {products.slice(0, 4).map((p) => {
           const { cheapestPrice } = getProductPrice({ product: p })
           return (
-            <LocalizedClientLink key={p.id} href={`/products/${p.handle}`} className="flex items-center gap-3 bg-white rounded-ava-lg p-2.5 shadow-sm">
+            <LocalizedClientLink key={p.id} href={`/products/${p.handle}`} className="flex items-center gap-3 card-interactive p-3">
               <div className="w-20 shrink-0">
                 <Thumbnail thumbnail={p.thumbnail} images={p.images} size="square" className="!rounded-ava-md !shadow-none" />
               </div>

@@ -18,7 +18,7 @@ export default function SectionHeading({
     <div className="flex items-end justify-between gap-4 mb-4 small:mb-6">
       <div>
         {eyebrow && (
-          <div className="hidden small:flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1">
             <span className="w-2.5 h-2.5 rounded-full bg-brand" />
             <span className="text-label-xs uppercase tracking-widest text-ink-soft">{eyebrow}</span>
           </div>

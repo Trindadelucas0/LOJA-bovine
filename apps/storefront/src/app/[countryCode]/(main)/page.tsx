@@ -102,7 +102,7 @@ export default async function Home(props: { params: Promise<{ countryCode: strin
   ]
 
   return (
-    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-10 flex flex-col gap-6 medium:grid medium:grid-cols-[260px_minmax(0,1fr)] medium:items-start medium:gap-gutter">
+    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-nav flex flex-col gap-6 medium:grid medium:grid-cols-[260px_minmax(0,1fr)] medium:items-start medium:gap-gutter">
       <CategoriesSidebar categories={departmentCategories} title={categoriesTitle} />
       <div className="min-w-0 flex flex-col gap-6 small:gap-10">
         <TrustStrip items={badges} />

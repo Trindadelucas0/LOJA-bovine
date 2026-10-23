@@ -96,16 +96,16 @@ const OptionRefinements = () => {
             <Accordion.Header>
               <Accordion.Trigger className="flex w-full items-center justify-between py-3 text-left">
                 <div className="flex items-center gap-2">
-                  <span className="txt-compact-small-plus text-ui-fg-base">
+                  <span className="txt-compact-small-plus text-ink">
                     {group.title}
                   </span>
-                  <span className="txt-compact-small-plus text-ui-fg-muted">
+                  <span className="txt-compact-small-plus text-ink-muted">
                     ({selectedCount})
                   </span>
                 </div>
                 <span
                   className={clsx(
-                    "flex h-7 w-7 items-center justify-center text-ui-fg-muted transition-transform duration-150",
+                    "flex h-7 w-7 items-center justify-center text-ink-muted transition-transform duration-150",
                     { "rotate-180": isOpen }
                   )}
                 >
@@ -121,18 +121,18 @@ const OptionRefinements = () => {
                     onClick={() => refine(value.value)}
                     aria-pressed={value.isRefined}
                     className={clsx(
-                      "border-ui-border-base border text-small-regular h-10 rounded-rounded px-3 flex items-center gap-x-1.5 transition-colors duration-150",
+                      "border-line border text-small-regular h-10 rounded-rounded px-3 flex items-center gap-x-1.5 transition-colors duration-150",
                       {
-                        "border-ui-border-interactive text-ui-fg-base":
+                        "border-ui-border-interactive text-ink":
                           value.isRefined,
-                        "text-ui-fg-muted hover:text-ui-fg-base":
+                        "text-ink-muted hover:text-ink":
                           !value.isRefined,
                       }
                     )}
                     data-testid="option-refinement"
                   >
                     {value.label}
-                    <span className="text-ui-fg-muted">({value.count})</span>
+                    <span className="text-ink-muted">({value.count})</span>
                   </button>
                 ))}
               </div>

@@ -11,7 +11,7 @@ export default function DetailsTabs({ sections }: { sections: DetailSection[] })
   const [open, setOpen] = useState<string | null>(null)
   if (!sections.length) return null
   return (
-    <section className="bg-white rounded-ava-lg small:rounded-ava-xl shadow-sm overflow-hidden">
+    <section className="card-surface small:rounded-ava-xl overflow-hidden">
       <div className="hidden small:flex border-b border-line bg-subtle/60">
         {sections.map((s) => (
           <button
@@ -19,7 +19,7 @@ export default function DetailsTabs({ sections }: { sections: DetailSection[] })
             type="button"
             onClick={() => setActive(s.id)}
             className={`flex items-center gap-2 px-6 py-4 text-label-md border-b-2 transition-colors ${
-              active === s.id ? "border-brand text-ink bg-white" : "border-transparent text-ink-soft hover:text-ink"
+              active === s.id ? "border-brand text-ink bg-card" : "border-transparent text-ink-soft hover:text-ink"
             }`}
           >
             <Icon name={s.icon} className="text-[20px]" />

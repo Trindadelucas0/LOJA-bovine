@@ -8,7 +8,7 @@ const OrderCard = ({ order }: { order: HttpTypes.StoreOrder }) => {
   const qty = order.items?.reduce((a, i) => a + i.quantity, 0) ?? 0
   const badge = orderBadge(order)
   return (
-    <div className="bg-white rounded-ava-xl border border-[#E2E8F0] shadow-sm p-4 small:p-5 flex flex-col gap-4" data-testid="order-card">
+    <div className="bg-white rounded-ava-xl border border-line shadow-sm p-4 small:p-5 flex flex-col gap-4" data-testid="order-card">
       <div className="flex items-start justify-between gap-3">
         <div>
           <div className="flex flex-wrap items-center gap-2">

@@ -15,21 +15,21 @@ export default function AvaFooter({ settings }: { settings: AvaSettings }) {
   ].filter(Boolean) as { icon: string; label: string; href: string }[]
 
   return (
-    <footer className="w-full bg-white border-t border-line pb-16 small:pb-0">
+    <footer className="w-full bg-navy text-white pb-nav">
       <div className="max-w-page mx-auto px-margin-m small:px-margin py-10">
-        <div className="grid grid-cols-1 small:grid-cols-5 gap-gutter pb-10 border-b border-line">
+        <div className="grid grid-cols-1 tablet:grid-cols-2 small:grid-cols-5 gap-gutter pb-10 border-b border-white/15">
           <div className="small:col-span-2 flex flex-col gap-3 small:pr-6">
             <Logo name={name} logoUrl={settings.logo_url} compact />
             {settings.footer_text && (
-              <p className="text-body-sm text-ink-soft leading-relaxed">{settings.footer_text}</p>
+              <p className="text-body-md text-white/75 leading-relaxed">{settings.footer_text}</p>
             )}
             {contacts.length > 0 && (
               <ul className="flex flex-col gap-1.5 pt-1">
                 {contacts.map((c, i) => (
-                  <li key={i} className="flex items-center gap-2 text-body-sm text-ink-soft">
+                  <li key={i} className="flex items-center gap-2 text-body-md text-white/80">
                     <Icon name={c.icon} className="text-[18px] text-teal" />
                     {c.href ? (
-                      <a href={c.href} className="hover:text-ink" target={c.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+                      <a href={c.href} className="hover:text-white" target={c.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
                         {c.label}
                       </a>
                     ) : (
@@ -43,20 +43,20 @@ export default function AvaFooter({ settings }: { settings: AvaSettings }) {
           {columns.map((col, i) => (
             <div key={i} className="flex flex-col gap-2">
               {col.title && (
-                <span className="text-label-md text-ink uppercase tracking-wider mb-1">{col.title}</span>
+                <span className="text-label-md text-white uppercase tracking-wider mb-1">{col.title}</span>
               )}
               {(col.links || []).map((l, j) => (
-                <SmartLink key={j} href={l.url} className="text-body-sm text-ink-soft hover:text-ink transition-colors text-left">
+                <SmartLink key={j} href={l.url} className="text-body-md text-white/75 hover:text-white transition-colors text-left py-1">
                   {l.label}
                 </SmartLink>
               ))}
             </div>
           ))}
         </div>
-        <div className="pt-6 flex flex-col small:flex-row items-center justify-between gap-2 text-body-sm text-ink-muted">
+        <div className="pt-6 flex flex-col small:flex-row items-center justify-between gap-2 text-body-sm text-white/60">
           <span>{settings.copyright_text || `© ${year} ${name}. Todos os direitos reservados.`}</span>
           {settings.pix_discount_text && (
-            <span className="flex items-center gap-1 text-teal font-semibold">
+            <span className="flex items-center gap-1 text-teal-light font-semibold">
               <Icon name="pix" className="text-[18px]" />
               {settings.pix_discount_text}
             </span>

@@ -25,7 +25,7 @@ export function orderStep(o: HttpTypes.StoreOrder): number {
 export function orderBadge(o: HttpTypes.StoreOrder) {
   const s = orderStep(o)
   const p = (o as any).payment_status as string | undefined
-  if (s === -1) return { label: "Cancelado", cls: "bg-red-50 text-[#EF4444]" }
+  if (s === -1) return { label: "Cancelado", cls: "bg-red-50 text-stock-out" }
   if (s === 4) return { label: "Entregue", cls: "bg-emerald-50 text-[#10B981]" }
   if (s === 3) return { label: "Em transporte", cls: "bg-blue-50 text-chat" }
   if (s === 2) return { label: "Em separação", cls: "bg-brand-light text-brand-dark" }

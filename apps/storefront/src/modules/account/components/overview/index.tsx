@@ -29,7 +29,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
             {recent.map((o) => <li key={o.id}><OrderCard order={o} /></li>)}
           </ul>
         ) : (
-          <div className="bg-white rounded-ava-xl border border-[#E2E8F0] p-8 text-center" data-testid="no-orders-container">
+          <div className="bg-white rounded-ava-xl border border-line p-8 text-center" data-testid="no-orders-container">
             <Icon name="shopping_bag" className="text-[40px] text-ink-muted" />
             <p className="font-bold text-ink mt-2">Você ainda não fez pedidos</p>
             <p className="text-sm text-ink-soft">Confira vacinas, sal mineral, kits solares e muito mais.</p>
@@ -38,7 +38,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
         )}
       </div>
       <aside className="small:col-span-4 flex flex-col gap-4">
-        <div className="bg-white rounded-ava-xl border border-[#E2E8F0] shadow-sm p-5">
+        <div className="bg-white rounded-ava-xl border border-line shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-display font-extrabold text-ink">Complete seu perfil</h3>
             <span className="text-sm font-extrabold text-brand" data-testid="customer-profile-completion" data-value={pct}>{pct}%</span>
@@ -58,7 +58,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
             ))}
           </ul>
         </div>
-        <div className="bg-white rounded-ava-xl border border-[#E2E8F0] shadow-sm p-5">
+        <div className="bg-white rounded-ava-xl border border-line shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-display font-extrabold text-ink flex items-center gap-2"><Icon name="location_on" className="text-brand" /> Endereço principal</h3>
             <span className="text-xs text-ink-muted" data-testid="addresses-count" data-value={customer?.addresses?.length || 0}>{customer?.addresses?.length || 0} salvo(s)</span>

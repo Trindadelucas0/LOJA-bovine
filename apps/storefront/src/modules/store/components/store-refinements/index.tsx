@@ -15,12 +15,12 @@ export const SortSelect = ({ currencyCode }: { currencyCode: string }) => {
   const items = getSortOptions(currencyCode)
   const { currentRefinement, refine } = useSortBy({ items })
   return (
-    <label className="relative inline-flex items-center">
+    <label className="relative flex w-full items-center small:w-auto">
       <span className="sr-only">Ordenar por</span>
       <select
         value={currentRefinement}
         onChange={(e) => refine(e.target.value)}
-        className="appearance-none h-10 pl-3 pr-9 rounded-ava-md border border-line bg-white text-label-sm text-ink focus:outline-none focus:ring-2 focus:ring-navy/20"
+        className="w-full appearance-none h-12 pl-4 pr-10 rounded-ava-md border border-line-strong bg-card text-label-md text-ink focus:outline-none focus:border-brand transition-colors"
         data-testid="sort-by-container"
       >
         {items.map((i) => (
@@ -29,7 +29,7 @@ export const SortSelect = ({ currencyCode }: { currencyCode: string }) => {
           </option>
         ))}
       </select>
-      <Icon name="expand_more" className="absolute right-2 text-[20px] text-ink-muted pointer-events-none" />
+      <Icon name="expand_more" className="absolute right-3 text-[22px] text-ink-soft pointer-events-none" />
     </label>
   )
 }
@@ -58,7 +58,7 @@ const StoreRefinements = ({
   return (
     <>
       {/* Desktop: barra lateral */}
-      <aside className="hidden small:block w-[260px] shrink-0 bg-white rounded-ava-lg shadow-sm p-5 sticky top-24">
+      <aside className="hidden small:block w-[260px] shrink-0 card-surface p-5 sticky top-24">
         <div className="flex items-center justify-between mb-5">
           <span className="font-display text-h-sm text-ink flex items-center gap-2">
             <Icon name="tune" className="text-[20px]" /> Filtros
@@ -74,9 +74,9 @@ const StoreRefinements = ({
 
       {/* Mobile: gaveta */}
       <div className={`small:hidden fixed inset-0 z-[70] ${open ? "" : "pointer-events-none"}`} aria-hidden={!open}>
-        <div className={`absolute inset-0 bg-black/40 transition-opacity ${open ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
+        <div className={`absolute inset-0 bg-navy/40 transition-opacity ${open ? "opacity-100" : "opacity-0"}`} onClick={onClose} />
         <div
-          className={`absolute inset-x-0 bottom-0 max-h-[85vh] bg-white rounded-t-ava-xl flex flex-col transition-transform ${
+          className={`absolute inset-x-0 bottom-0 max-h-[85vh] bg-card shadow-overlay rounded-t-ava-xl flex flex-col transition-transform ${
             open ? "translate-y-0" : "translate-y-full"
           }`}
         >

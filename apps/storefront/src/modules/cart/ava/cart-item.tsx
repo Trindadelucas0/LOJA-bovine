@@ -51,18 +51,18 @@ export default function CartItemRow({ item, currency, compact }: { item: HttpTyp
           <span className="text-body-sm text-ink-muted">{item.variant_title}</span>
         )}
         <div className="flex items-center justify-between gap-2 mt-auto pt-1">
-          <div className="flex items-center rounded-ava-md border border-line bg-white">
-            <button type="button" aria-label="Diminuir" disabled={pending || item.quantity <= 1} onClick={() => change(item.quantity - 1)} className="w-8 h-8 flex items-center justify-center disabled:opacity-40">
-              <Icon name="remove" className="text-[18px]" />
+          <div className="flex items-center rounded-ava-md border border-line-strong bg-card overflow-hidden">
+            <button type="button" aria-label="Diminuir quantidade" disabled={pending || item.quantity <= 1} onClick={() => change(item.quantity - 1)} className="w-11 h-11 flex items-center justify-center text-navy hover:bg-subtle disabled:opacity-40 transition-colors">
+              <Icon name="remove" className="text-[22px]" />
             </button>
-            <span className="w-8 text-center text-label-md" data-testid="product-quantity">{item.quantity}</span>
-            <button type="button" aria-label="Aumentar" disabled={pending || item.quantity >= max} onClick={() => change(item.quantity + 1)} className="w-8 h-8 flex items-center justify-center disabled:opacity-40">
-              <Icon name="add" className="text-[18px]" />
+            <span className="w-10 text-center font-display font-extrabold text-body-lg" data-testid="product-quantity">{item.quantity}</span>
+            <button type="button" aria-label="Aumentar quantidade" disabled={pending || item.quantity >= max} onClick={() => change(item.quantity + 1)} className="w-11 h-11 flex items-center justify-center text-navy hover:bg-subtle disabled:opacity-40 transition-colors">
+              <Icon name="add" className="text-[22px]" />
             </button>
           </div>
           <div className="text-right">
             {item.quantity > 1 && <span className="block text-body-sm text-ink-muted">{fmt(item.unit_price)} cada</span>}
-            <span className="font-display font-bold text-ink" data-testid="product-price">{fmt(item.total ?? item.unit_price * item.quantity)}</span>
+            <span className="font-display font-extrabold text-price-sm text-ink" data-testid="product-price">{fmt(item.total ?? item.unit_price * item.quantity)}</span>
           </div>
         </div>
         {error && <span className="text-body-sm text-danger">{error}</span>}

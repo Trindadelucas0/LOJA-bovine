@@ -23,7 +23,7 @@ type TextProps = HTMLAttributes<HTMLParagraphElement> & {
 export const Text = forwardRef<HTMLParagraphElement, TextProps>(
   ({ className, as: Component = "p", children, ...props }, ref) => {
     return (
-      <Component ref={ref} className={clsx("txt-medium", className)} {...props}>
+      <Component ref={ref} className={clsx("text-body-md text-ink", className)} {...props}>
         {children}
       </Component>
     )
@@ -42,10 +42,10 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
       <Component
         ref={ref}
         className={clsx(
-          "font-semibold",
-          Component === "h1" && "text-3xl",
-          Component === "h2" && "text-2xl",
-          Component === "h3" && "text-xl",
+          "font-display text-ink",
+          Component === "h1" && "text-h-lg",
+          Component === "h2" && "text-h-md",
+          Component === "h3" && "text-h-sm",
           className
         )}
         {...props}
@@ -59,7 +59,7 @@ Heading.displayName = "Heading"
 
 // Button Component
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "transparent"
+  variant?: "primary" | "secondary" | "navy" | "ghost" | "danger" | "transparent"
   size?: "small" | "medium" | "large"
   isLoading?: boolean
 }
@@ -82,19 +82,22 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || isLoading}
         className={clsx(
-          "inline-flex gap-2 items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-          variant === "primary" && "bg-black text-white hover:bg-gray-800",
+          "inline-flex gap-2 items-center justify-center rounded-ava-md font-display font-bold transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60",
+          variant === "primary" && "bg-brand text-white hover:bg-brand-dark shadow-brand-glow",
           variant === "secondary" &&
-            "bg-white text-black border border-gray-200 hover:bg-gray-50",
-          variant === "transparent" && "bg-transparent hover:bg-gray-100",
-          size === "small" && "h-8 px-3 text-sm",
-          size === "medium" && "h-10 px-4",
-          size === "large" && "h-12 px-6 text-lg",
+            "bg-card text-navy border border-line-strong hover:border-navy hover:bg-subtle",
+          variant === "navy" && "bg-navy text-white hover:bg-navy-soft",
+          variant === "ghost" && "bg-transparent text-ink-soft hover:bg-subtle hover:text-ink",
+          variant === "danger" && "bg-danger text-white hover:opacity-90",
+          variant === "transparent" && "bg-transparent hover:bg-subtle",
+          size === "small" && "h-10 px-4 text-label-sm",
+          size === "medium" && "h-12 px-5 text-label-md",
+          size === "large" && "h-[52px] px-6 text-body-lg font-extrabold",
           className
         )}
         {...props}
       >
-        {isLoading ? "Carregando..." : children}
+        {isLoading ? "Aguarde..." : children}
       </button>
     )
   }
@@ -109,7 +112,7 @@ export const Container = forwardRef<HTMLDivElement, ContainerProps>(
     return (
       <div
         ref={ref}
-        className={clsx("bg-white rounded-lg p-4", className)}
+        className={clsx("card-surface p-4", className)}
         {...props}
       >
         {children}
@@ -135,7 +138,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
           color === "red" && "bg-red-100 text-red-700",
           color === "blue" && "bg-blue-100 text-blue-700",
           color === "orange" && "bg-orange-100 text-orange-700",
-          color === "grey" && "bg-gray-100 text-gray-700",
+          color === "grey" && "bg-subtle text-ink-soft",
           color === "purple" && "bg-purple-100 text-purple-700",
           className
         )}
@@ -157,7 +160,7 @@ export const IconBadge = forwardRef<HTMLSpanElement, IconBadgeProps>(
       <span
         ref={ref}
         className={clsx(
-          "inline-flex items-center justify-center rounded-full bg-gray-100 p-1",
+          "inline-flex items-center justify-center rounded-full bg-subtle p-1",
           className
         )}
         {...props}
@@ -178,7 +181,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       <button
         ref={ref}
         className={clsx(
-          "inline-flex items-center justify-center rounded-md p-2 hover:bg-gray-100 transition-colors focus-visible:outline-none focus-visible:ring-2",
+          "inline-flex items-center justify-center rounded-ava p-2 hover:bg-subtle transition-colors focus-visible:outline-none",
           className
         )}
         {...props}
@@ -198,7 +201,7 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
     return (
       <label
         ref={ref}
-        className={clsx("text-sm font-medium", className)}
+        className={clsx("text-label-md text-ink", className)}
         {...props}
       >
         {children}
@@ -216,12 +219,12 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, ...props }, ref) => {
     return (
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1.5">
         {label && <Label>{label}</Label>}
         <input
           ref={ref}
           className={clsx(
-            "flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-12 w-full rounded-ava-md border border-line-strong bg-card px-4 text-body-md text-ink placeholder:text-ink-muted focus:outline-none focus:border-brand disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
           {...props}
@@ -292,7 +295,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
       <tr
         ref={ref}
         className={clsx(
-          "border-b transition-colors hover:bg-gray-50",
+          "border-b border-line transition-colors hover:bg-subtle",
           className
         )}
         {...props}
@@ -312,7 +315,7 @@ const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
       <th
         ref={ref}
         className={clsx(
-          "h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0",
+          "h-12 px-4 text-left align-middle text-label-sm text-ink-soft [&:has([role=checkbox])]:pr-0",
           className
         )}
         {...props}
@@ -384,7 +387,7 @@ const RadioGroupItem = forwardRef<HTMLInputElement, RadioGroupItemProps>(
           type="radio"
           id={id}
           className={clsx(
-            "h-4 w-4 border-gray-300 text-gray-900 focus:ring-gray-900",
+            "h-5 w-5 border-line-strong text-brand focus:ring-brand",
             className
           )}
           {...props}
@@ -414,7 +417,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           type="checkbox"
           id={id}
           className={clsx(
-            "h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900",
+            "h-5 w-5 rounded border-line-strong text-brand focus:ring-brand",
             className
           )}
           {...props}

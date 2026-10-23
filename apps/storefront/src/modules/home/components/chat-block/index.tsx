@@ -8,7 +8,7 @@ export default function ChatBlock({ settings }: { settings: AvaSettings }) {
   const replies = settings.chat_quick_replies || []
   const button = settings.chat_button_label || "Falar com Consultor"
   return (
-    <section className="relative overflow-hidden rounded-ava-lg small:rounded-ava-xl bg-white small:bg-gradient-to-r small:from-navy-deep small:via-navy small:to-navy-soft small:text-white shadow-sm small:shadow-xl">
+    <section className="relative overflow-hidden card-surface small:border-0 small:rounded-ava-xl small:bg-gradient-to-r small:from-navy-deep small:via-navy small:to-navy-soft small:text-white small:shadow-overlay">
       <div className="hidden small:block absolute -left-20 -bottom-20 w-80 h-80 bg-chat/20 rounded-full blur-3xl pointer-events-none" />
       <div className="relative z-10 grid grid-cols-1 small:grid-cols-12 gap-gutter items-center p-4 small:p-10">
         <div className="small:col-span-7 flex flex-col gap-3">
@@ -29,7 +29,7 @@ export default function ChatBlock({ settings }: { settings: AvaSettings }) {
           </ChatButton>
         </div>
         {replies.length > 0 && (
-          <div className="small:col-span-5 flex flex-col gap-2 small:bg-white small:rounded-ava-lg small:p-5 small:shadow-2xl">
+          <div className="small:col-span-5 flex flex-col gap-2 small:bg-card small:rounded-ava-lg small:p-5 small:shadow-overlay">
             <span className="hidden small:block text-label-xs uppercase text-ink-muted mb-1">Respostas rápidas</span>
             {replies.map((r, i) => (
               <ChatButton

@@ -7,7 +7,7 @@ export default function PromoBanner({ banner, pixText }: { banner?: AvaBanner; p
   if (!title) return null
   const subtitle = banner?.subtitle
   return (
-    <section className="flex items-center gap-3 small:gap-4 bg-brand-light/60 small:bg-white border border-brand/20 rounded-ava-lg p-3 small:p-5 shadow-sm">
+    <section className="flex items-center gap-3 small:gap-4 bg-brand-light/60 small:bg-card border border-brand/25 rounded-ava-lg p-3.5 small:p-5 shadow-card">
       {banner?.image_url ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={banner.image_url} alt="" className="w-12 h-12 small:w-14 small:h-14 rounded-ava-md object-cover shrink-0" />

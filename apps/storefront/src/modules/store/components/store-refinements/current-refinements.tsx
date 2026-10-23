@@ -78,13 +78,13 @@ const CurrentRefinements = ({ currencyCode }: { currencyCode: string }) => {
   return (
     <div className="flex flex-col gap-y-3" data-testid="current-refinements">
       <div className="flex items-center justify-between gap-x-2 pr-6">
-        <span className="txt-compact-small-plus text-ui-fg-subtle">
+        <span className="txt-compact-small-plus text-ink-soft">
           Filtros aplicados
         </span>
         {canClearAll && (
           <button
             onClick={clearAll}
-            className="txt-compact-small-plus text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+            className="txt-compact-small-plus text-brand hover:text-brand"
             data-testid="clear-refinements"
           >
             Limpar tudo
@@ -105,11 +105,11 @@ const CurrentRefinements = ({ currencyCode }: { currencyCode: string }) => {
               <button
                 onClick={() => refine(refinement)}
                 aria-label={`Remove filter ${label}`}
-                className="border-ui-border-interactive text-ui-fg-base border text-small-regular h-8 rounded-rounded px-3 flex items-center gap-x-1.5 transition-colors duration-150 hover:bg-ui-bg-base-hover"
+                className="border-ui-border-interactive text-ink border text-small-regular h-8 rounded-rounded px-3 flex items-center gap-x-1.5 transition-colors duration-150 hover:bg-card-hover"
                 data-testid="remove-refinement"
               >
                 {label}
-                <XMarkMini className="text-ui-fg-muted" />
+                <XMarkMini className="text-ink-muted" />
               </button>
             </li>
           )

@@ -61,7 +61,7 @@ export default function ServiceShortcuts({ settings }: { settings: AvaSettings }
               href={service.href}
               target="_blank"
               rel="noreferrer"
-              className="group flex min-h-[88px] items-center gap-3 rounded-ava-lg border border-line bg-white p-4 shadow-sm transition-colors hover:border-brand/40 hover:bg-brand-light/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="group flex min-h-[96px] items-center gap-3 card-interactive p-4 hover:border-brand/40 hover:bg-brand-light/20"
             >
               {content}
             </a>

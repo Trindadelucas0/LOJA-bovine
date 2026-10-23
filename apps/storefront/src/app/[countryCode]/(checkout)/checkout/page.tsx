@@ -51,7 +51,7 @@ export default async function Checkout(props: { params: Promise<{ countryCode: s
         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-stock-in/10 text-stock-in text-label-xs font-bold"><Icon name="lock" className="text-[12px]" /> Sessão criptografada</span>
       </div>
     </div>
-    <div className="max-w-page mx-auto px-margin-m small:px-margin py-4 small:py-6 pb-28 small:pb-8 grid grid-cols-1 small:grid-cols-[1fr_380px] gap-4 small:gap-8 items-start">
+    <div className="max-w-page mx-auto px-margin-m small:px-margin py-4 small:py-6 pb-nav-lg grid grid-cols-1 small:grid-cols-[1fr_380px] gap-4 small:gap-8 items-start">
       <CheckoutFlow
         cart={cart}
         customer={customer}
@@ -62,9 +62,9 @@ export default async function Checkout(props: { params: Promise<{ countryCode: s
       />
       <CheckoutSummary cart={cart} pixPercent={settings.pix_discount_percent} maxInstallments={settings.max_installments} />
     </div>
-    <div className="small:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-line shadow-[0_-4px_16px_rgba(0,0,0,0.06)] px-4 pt-2 pb-3">
+    <div className="small:hidden fixed bottom-0 inset-x-0 z-40 bar-sticky px-4 pt-2.5" style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}>
       <div className="flex justify-between text-body-sm mb-2"><span className="text-ink-soft">Total{pixP ? " com PIX" : ""}:</span><b className="text-brand">{convertToLocale({ amount: pixP ? payNow : cart.total ?? 0, currency_code: cart.currency_code })}{pixP ? " à vista" : ""}</b></div>
-      <a href="#checkout-flow" className="h-12 rounded-ava-md bg-brand text-white text-label-md flex items-center justify-center gap-2 shadow-lg shadow-brand/30"><Icon name="lock" className="text-[18px]" /> Finalizar compra com segurança</a>
+      <a href="#checkout-flow" className="h-13 rounded-ava-md bg-brand text-white text-label-md flex items-center justify-center gap-2 shadow-brand-glow"><Icon name="lock" className="text-[18px]" /> Finalizar compra com segurança</a>
     </div>
     </>
   )

@@ -24,7 +24,7 @@ const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
 
   return (
     <div
-      className="w-full flex flex-col items-center gap-y-3 bg-white rounded-ava-xl border border-[#E2E8F0] p-8 text-center"
+      className="w-full flex flex-col items-center gap-y-3 bg-white rounded-ava-xl border border-line p-8 text-center"
       data-testid="no-orders-container"
     >
       <h2 className="text-large-semi">Nada por aqui</h2>

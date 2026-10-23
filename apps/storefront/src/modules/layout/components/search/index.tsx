@@ -47,8 +47,8 @@ const SearchPanel = ({ onNavigate }: { onNavigate: () => void }) => {
 
   return (
     <>
-      <div className="flex items-center gap-x-3 border-b border-ui-border-base px-4">
-        <MagnifyingGlass className="shrink-0 text-ui-fg-muted" />
+      <div className="flex items-center gap-x-3 border-b border-line px-4">
+        <MagnifyingGlass className="shrink-0 text-ink-muted" />
         <input
           type="search"
           value={inputValue}
@@ -59,7 +59,7 @@ const SearchPanel = ({ onNavigate }: { onNavigate: () => void }) => {
           placeholder="Buscar produtos"
           aria-label="Buscar produtos"
           autoFocus
-          className="txt-medium w-full bg-transparent py-4 text-ui-fg-base outline-none placeholder:text-ui-fg-muted"
+          className="txt-medium w-full bg-transparent py-4 text-ink outline-none placeholder:text-ink-muted"
           data-testid="search-input"
         />
       </div>
@@ -67,14 +67,14 @@ const SearchPanel = ({ onNavigate }: { onNavigate: () => void }) => {
       <div className="flex-1 overflow-y-auto">
         {!hasInput ? (
           <Text
-            className="px-4 py-6 text-center text-ui-fg-muted"
+            className="px-4 py-6 text-center text-ink-muted"
             data-testid="search-empty"
           >
             Comece a digitar para buscar produtos.
           </Text>
         ) : status === "error" ? (
           <Text
-            className="px-4 py-6 text-center text-ui-fg-error"
+            className="px-4 py-6 text-center text-danger"
             data-testid="search-error"
           >
             Não foi possível buscar produtos
@@ -82,7 +82,7 @@ const SearchPanel = ({ onNavigate }: { onNavigate: () => void }) => {
           </Text>
         ) : !isSettled ? (
           <Text
-            className="px-4 py-6 text-center text-ui-fg-muted"
+            className="px-4 py-6 text-center text-ink-muted"
             data-testid="search-loading"
           >
             Buscando&hellip;
@@ -95,14 +95,14 @@ const SearchPanel = ({ onNavigate }: { onNavigate: () => void }) => {
           </ul>
         ) : isPending || !query.trim() ? (
           <Text
-            className="px-4 py-6 text-center text-ui-fg-muted"
+            className="px-4 py-6 text-center text-ink-muted"
             data-testid="search-loading"
           >
             Buscando&hellip;
           </Text>
         ) : (
           <Text
-            className="px-4 py-6 text-center text-ui-fg-subtle"
+            className="px-4 py-6 text-center text-ink-soft"
             data-testid="search-no-results"
           >
             Nenhum produto encontrado para &quot;{query}&quot;
@@ -129,7 +129,7 @@ const Search = ({
         type="button"
         onClick={open}
         aria-label="Buscar produtos"
-        className="flex items-center hover:text-ui-fg-base"
+        className="flex items-center hover:text-ink"
         data-testid="nav-search-button"
       >
         <MagnifyingGlass />

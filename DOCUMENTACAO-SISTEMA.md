@@ -2,8 +2,8 @@
 
 | Item | Valor |
 |---|---|
-| Versão do sistema | 1.2.1 — Menu lateral de departamentos |
-| Última atualização | 23/10/2026 — home desktop com departamentos sempre visíveis em uma lateral fixa; painel hambúrguer preservado nas demais páginas e em telas menores |
+| Versão do sistema | 1.3.0 — Identidade visual e navegação do aplicativo |
+| Última atualização | 23/10/2026 — superfícies com borda e sombra sobre fundo cinza-claro, tipografia e botões maiores para leitura confortável, fronteira única entre celular e computador em 1024 px e navegação do celular revista |
 | Fonte oficial | Este arquivo |
 
 ## 1. Como usar este documento
@@ -20,6 +20,7 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 | Versão | Data | Mudança |
 |---|---|---|
+| 1.3.0 — Identidade visual e navegação do aplicativo | 23/10/2026 | Sistema visual único em toda a loja: cartões brancos com borda e sombra sobre fundo cinza-claro, texto e botões maiores, rodapé em azul-escuro, campos com rótulo sempre visível, barra inferior do celular revista e página sem conexão redesenhada. |
 | 1.2.1 — Menu lateral de departamentos | 23/10/2026 | Na home a partir de 1280 px, os departamentos permanecem visíveis em uma lateral fixa abaixo do cabeçalho; celular, tablet e demais páginas preservam o painel acionado pelo botão. |
 | 1.2.0 — Menu lateral de departamentos | 21/10/2026 | Painel de departamentos em altura total acionado pelo cabeçalho, disponível nas páginas principais da loja e fechável por botão, fundo ou Esc. |
 | 1.1.8 — Subcategorias visíveis | 21/10/2026 | A primeira categoria com subcategorias inicia expandida; a seta continua permitindo recolher ou trocar de departamento aberto. |
@@ -94,6 +95,24 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 | Banners | Arte completa mobile | Opcional | Substitui a imagem principal abaixo de 1024 px. |
 | Banners | Destino ao clicar | Opcional | Aceita caminho interno, `#chat` ou URL externa. |
 
+### Sistema visual (superfícies, texto e botões)
+
+- Os tokens ficam em `apps/storefront/tailwind.config.js` e as classes de apoio em `apps/storefront/src/styles/globals.css`. Toda tela nova deve usá-los em vez de cores ou sombras escritas à mão.
+- Fundo da página `canvas` (`#EEF2F6`); todo bloco de conteúdo é um cartão branco com borda `line` e sombra, aplicado pela classe `.card-surface` (ou `.card-interactive`, que acrescenta o realce ao passar o mouse).
+- Sombras disponíveis: `shadow-card`, `shadow-card-hover`, `shadow-raised`, `shadow-overlay`, `shadow-sticky`, `shadow-header` e `shadow-brand-glow`. Não usar valores arbitrários.
+- Laranja `brand` é reservado para a ação principal da tela; azul-escuro `navy` é a cor de estrutura (cabeçalho, rodapé, seleção).
+- Texto: escala `body-lg` 17 px, `body-md` 16 px, `body-sm` 14 px, pensada para leitura confortável. Os tons `ink-soft` e `ink-muted` foram escurecidos para atender ao contraste mínimo de acessibilidade.
+- Botões: 44 px (`small`), 48 px (`medium`) e 52 px (`large`/`h-13`). No celular, todo botão tem no mínimo 48 px de altura.
+- Campos de formulário têm o rótulo sempre visível acima do campo, altura de 52 px e erro em texto logo abaixo.
+- `1024 px` (`small`) é a única fronteira entre celular e computador; `tablet` (768 px) existe apenas para ajustar colunas. Os prefixos `sm:`, `md:`, `lg:` e `xl:` não existem neste projeto.
+
+### Navegação no celular e aplicativo instalado
+
+- A barra inferior fixa tem 68 px, quatro destinos (Início, Buscar, Carrinho, Conta), rótulos sempre visíveis e marca o destino atual com uma faixa laranja.
+- As telas reservam o espaço da barra com `.pb-nav` (ou `.pb-nav-lg` quando há também uma barra de ação fixa, como no carrinho, no produto e no checkout). Não usar `pb-16`, `pb-24` ou `pb-32`.
+- As barras fixas de ação usam `.bar-sticky` e ficam acima da barra inferior, respeitando a área de gestos do aparelho.
+- No checkout, o celular mostra o nome do passo atual e uma barra de progresso ("Passo 2 de 4"); a trilha completa com ícones aparece a partir de 1024 px.
+
 ## 7. Regras de negócio
 
 - Atendimento Veterinário abre o WhatsApp geral com mensagem de urgência veterinária.
@@ -137,6 +156,12 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 - Conferir a lateral fixa da home em 1280, 1440 e 1920 px, incluindo permanência durante a rolagem, rolagem interna e ausência do botão no cabeçalho.
 - Conferir botão e painel na home abaixo de 1280 px e nas demais páginas, incluindo abrir/fechar, primeira categoria expandida, categorias com e sem subcategorias, expansão exclusiva e navegação pelos nomes.
 - Conferir menu, marca, busca e carrinho em larguras compactas e desktop sem sobreposição.
+- Conferir as telas em 390 px, 768 px, 1100 px e 1280 px: home, produtos, categoria, produto, carrinho, checkout, conta, pedidos, entrar e uma rota inexistente.
+- Conferir que em 1100 px o cabeçalho e a grade de produtos trocam juntos para o formato de computador.
+- Conferir ausência de rolagem horizontal em 390 px.
+- Conferir que as barras fixas do carrinho e do produto não cobrem a barra inferior.
+- Conferir o foco visível ao navegar somente pelo teclado em entrar, produto e checkout.
+- Conferir o aplicativo instalado: service worker na versão `bovine-v2`, visual novo após a atualização e página sem conexão em modo avião.
 - Conferir número e mensagem dos três atalhos.
 - Conferir o estado indisponível quando um número estiver vazio.
 
@@ -157,6 +182,7 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 - O provedor `file-local` grava os arquivos enviados em `apps/backend/static`; o banco guarda as URLs, não o conteúdo binário das imagens.
 - `apps/backend/static` é ignorada pelo Git. Ao mover o ambiente ou restaurar uma cópia do banco, restaure também a pasta de mídia correspondente para que banners, categorias e produtos não apontem para arquivos ausentes.
 - Em publicação autorizada, executar as migrations antes de reiniciar o backend e validar a home.
+- Ao alterar `apps/storefront/public/sw.js`, aumentar o valor de `VERSION`. Sem isso, os aparelhos que já instalaram a loja continuam exibindo a versão antiga em cache.
 
 ## 12. Ao atualizar este documento
 

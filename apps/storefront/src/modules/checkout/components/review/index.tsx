@@ -39,7 +39,7 @@ const Review = ({ cart }: { cart: HttpTypes.StoreCart }) => {
         <>
           <div className="flex items-start gap-x-1 w-full mb-6">
             <div className="w-full">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
+              <Text className="txt-medium-plus text-ink mb-1">
                 Ao clicar em Finalizar pedido, você confirma que leu, entendeu e aceita nossos Termos de Uso, Termos de Venda e Política de Devolução, e declara ter lido a Política de Privacidade da Minha Loja.
               </Text>
             </div>

@@ -90,8 +90,8 @@ export default async function ProductTemplate({ product, countryCode, images }: 
   }
 
   return (
-    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-24 small:pb-12 flex flex-col gap-6 small:gap-10" data-testid="product-container">
-      <nav className="flex items-center gap-1.5 text-body-sm text-ink-muted overflow-x-auto no-scrollbar whitespace-nowrap" aria-label="Breadcrumb">
+    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-nav-lg flex flex-col gap-6 small:gap-10" data-testid="product-container">
+      <nav className="flex items-center gap-1.5 text-body-md text-ink-soft overflow-x-auto no-scrollbar whitespace-nowrap" aria-label="Breadcrumb">
         <LocalizedClientLink href="/" className="hover:text-ink flex items-center gap-1">
           <Icon name="home" className="text-[16px]" /> Início
         </LocalizedClientLink>
@@ -111,7 +111,7 @@ export default async function ProductTemplate({ product, countryCode, images }: 
         <div className="small:col-span-6 medium:col-span-7 small:sticky small:top-24">
           <ProductGallery images={images} title={product.title} badge={meta.badge} />
         </div>
-        <div className="small:col-span-6 medium:col-span-5 bg-white rounded-ava-lg small:rounded-ava-xl shadow-sm p-4 small:p-6">
+        <div className="small:col-span-6 medium:col-span-5 card-surface small:rounded-ava-xl p-4 small:p-6">
           <Suspense fallback={<div className="h-96 animate-pulse bg-subtle rounded-ava-lg" />}>
             <BuyBox
               product={product}

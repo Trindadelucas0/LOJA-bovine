@@ -14,7 +14,7 @@ export default function CheckoutSummary({ cart, pixPercent, maxInstallments }: {
   const pix = pixPercent && pixPercent > 0 ? total * (1 - pixPercent / 100) : null
   return (
     <div className="flex flex-col gap-4 small:sticky small:top-6">
-    <aside className="bg-white rounded-ava-lg small:rounded-ava-xl shadow-sm p-4 small:p-6 flex flex-col gap-4" data-testid="checkout-summary">
+    <aside className="card-surface small:rounded-ava-xl p-4 small:p-6 flex flex-col gap-4" data-testid="checkout-summary">
       <div className="flex items-center justify-between">
         <h2 className="font-display text-h-sm text-ink flex items-center gap-2">
           <Icon name="shopping_bag" className="text-[20px]" /> Resumo do pedido
@@ -65,11 +65,11 @@ export default function CheckoutSummary({ cart, pixPercent, maxInstallments }: {
         <Icon name="verified_user" className="text-[20px] text-stock-in" />
         Compra protegida: seus dados são enviados de forma segura.
       </div>
-      <a href="#checkout-flow" className="hidden small:flex h-14 rounded-ava-md bg-brand hover:bg-brand-dark text-white text-label-md items-center justify-center gap-2 shadow-lg shadow-brand/30 uppercase tracking-wide">
+      <a href="#checkout-flow" className="hidden small:flex h-14 rounded-ava-md bg-brand hover:bg-brand-dark text-white text-label-md items-center justify-center gap-2 shadow-brand-glow uppercase tracking-wide">
         <Icon name="lock" className="text-[20px]" /> Finalizar compra com segurança
       </a>
     </aside>
-    <div className="bg-white rounded-ava-lg small:rounded-ava-xl shadow-sm p-4 border-l-4 border-stock-in">
+    <div className="card-surface small:rounded-ava-xl p-4 border-l-4 border-stock-in">
       <p className="font-display font-bold text-ink flex items-center gap-2 text-body-md"><Icon name="verified_user" className="text-[18px] text-stock-in" /> Garantia de Compra Protegida BOVINE</p>
       <p className="text-body-sm text-ink-soft mt-1">Seu pagamento fica protegido até você receber o produto. Suporte técnico humano e devolução em até 7 dias.</p>
     </div>
@@ -79,7 +79,7 @@ export default function CheckoutSummary({ cart, pixPercent, maxInstallments }: {
         <p className="font-bold text-body-md">Dúvida antes de pagar?</p>
         <p className="text-body-sm text-white/70">Especialistas prontos no chat</p>
       </div>
-      <ChatButton attrs={{ origem: "checkout" }} className="px-3 py-2 rounded-ava-md bg-white text-navy text-label-sm font-bold shrink-0">Falar agora</ChatButton>
+      <ChatButton attrs={{ origem: "checkout" }} className="h-11 px-4 rounded-ava-md bg-card text-navy text-label-md shrink-0 flex items-center">Falar agora</ChatButton>
     </div>
     </div>
   )

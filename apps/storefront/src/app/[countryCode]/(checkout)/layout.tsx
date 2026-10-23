@@ -11,7 +11,7 @@ export default async function CheckoutLayout({ children }: { children: React.Rea
   const chat = chatConfig(settings)
   return (
     <div className="w-full bg-canvas relative min-h-screen">
-      <header className="h-16 small:h-20 bg-white shadow-[0_1px_8px_rgba(14,36,57,0.06)]">
+      <header className="h-16 small:h-20 bg-white shadow-header">
         <nav className="max-w-page mx-auto px-margin-m small:px-margin h-full flex items-center justify-between gap-3">
           <LocalizedClientLink href="/cart" className="flex items-center gap-1 text-label-sm text-ink-soft hover:text-ink" data-testid="back-to-cart-link">
             <Icon name="arrow_back" className="text-[22px]" />

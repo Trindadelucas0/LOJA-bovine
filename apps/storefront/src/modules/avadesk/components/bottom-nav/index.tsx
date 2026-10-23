@@ -13,31 +13,33 @@ export default function BottomNav({ cartCount }: { cartCount: number }) {
   const isActive = (p: string) => (p === "" ? pathname === base || pathname === `${base}/` : pathname.startsWith(`${base}${p}`))
 
   const item = (active: boolean) =>
-    `flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[11px] font-semibold ${active ? "text-brand" : "text-ink-soft"}`
+    `relative flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[12px] font-bold ${active ? "text-brand" : "text-ink-soft"}`
 
   return (
     <nav
-      className="small:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur-xl border-t border-line"
+      className="small:hidden fixed bottom-0 inset-x-0 z-50 bg-card border-t border-line shadow-sticky"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <div className="flex h-16">
+      <div className="flex h-[68px]">
         <LocalizedClientLink href="/" className={item(isActive(""))}>
-          <Icon name="home" className="text-[24px]" filled={isActive("")} />
+          {isActive("") && <span className="absolute top-0 inset-x-5 h-[3px] rounded-b bg-brand" />}
+          <Icon name="home" className="text-[26px]" filled={isActive("")} />
           Início
         </LocalizedClientLink>
         <Search
           trigger={(open) => (
             <button type="button" onClick={open} className={item(false)}>
-              <Icon name="search" className="text-[24px]" />
+              <Icon name="search" className="text-[26px]" />
               Buscar
             </button>
           )}
         />
         <LocalizedClientLink href="/cart" className={item(isActive("/cart"))}>
+          {isActive("/cart") && <span className="absolute top-0 inset-x-5 h-[3px] rounded-b bg-brand" />}
           <span className="relative">
-            <Icon name="shopping_cart" className="text-[24px]" filled={isActive("/cart")} />
+            <Icon name="shopping_cart" className="text-[26px]" filled={isActive("/cart")} />
             {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-brand text-white text-[10px] font-bold flex items-center justify-center">
+              <span className="absolute -top-2 -right-2.5 min-w-[20px] h-5 px-1 rounded-full bg-brand text-white text-[12px] font-bold flex items-center justify-center ring-2 ring-card">
                 {cartCount}
               </span>
             )}
@@ -45,7 +47,8 @@ export default function BottomNav({ cartCount }: { cartCount: number }) {
           Carrinho
         </LocalizedClientLink>
         <LocalizedClientLink href="/account" className={item(isActive("/account"))}>
-          <Icon name="person" className="text-[24px]" filled={isActive("/account")} />
+          {isActive("/account") && <span className="absolute top-0 inset-x-5 h-[3px] rounded-b bg-brand" />}
+          <Icon name="person" className="text-[26px]" filled={isActive("/account")} />
           Conta
         </LocalizedClientLink>
       </div>

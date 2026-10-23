@@ -21,7 +21,7 @@ export default function ProductGallery({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative w-full aspect-square rounded-ava-lg small:rounded-ava-xl bg-white overflow-hidden shadow-sm">
+      <div className="relative w-full aspect-square card-surface small:rounded-ava-xl overflow-hidden">
         {badge && (
           <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-navy text-white text-label-xs uppercase">
             {badge}
@@ -40,7 +40,7 @@ export default function ProductGallery({
               type="button"
               aria-label="Imagem anterior"
               onClick={() => setActive((a) => (a - 1 + images.length) % images.length)}
-              className="small:hidden absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 shadow flex items-center justify-center"
+              className="small:hidden absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-card border border-line shadow-raised flex items-center justify-center"
             >
               <Icon name="chevron_left" className="text-[22px]" />
             </button>
@@ -48,7 +48,7 @@ export default function ProductGallery({
               type="button"
               aria-label="Próxima imagem"
               onClick={() => setActive((a) => (a + 1) % images.length)}
-              className="small:hidden absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 shadow flex items-center justify-center"
+              className="small:hidden absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-card border border-line shadow-raised flex items-center justify-center"
             >
               <Icon name="chevron_right" className="text-[22px]" />
             </button>
@@ -67,7 +67,7 @@ export default function ProductGallery({
               key={img.id}
               type="button"
               onClick={() => setActive(i)}
-              className={`relative aspect-square rounded-ava-md bg-white overflow-hidden border-2 transition-colors ${
+              className={`relative aspect-square rounded-ava-md bg-card overflow-hidden border-2 transition-colors ${
                 i === active ? "border-navy" : "border-transparent hover:border-line-strong"
               }`}
               aria-label={`Imagem ${i + 1}`}

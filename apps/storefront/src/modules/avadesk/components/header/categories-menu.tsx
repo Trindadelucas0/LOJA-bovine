@@ -29,10 +29,10 @@ export default function CategoriesMenu({
         aria-controls={drawerId}
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className={`flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-ava-md text-navy hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand medium:w-auto medium:px-3 ${isHome ? "medium:hidden" : ""}`}
+        className={`flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-ava-md text-navy hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand small:w-auto small:px-3 ${isHome ? "medium:hidden" : ""}`}
       >
         <Icon name="menu" className="text-[22px]" />
-        <span className="hidden text-label-sm medium:inline">{title}</span>
+        <span className="hidden text-label-sm small:inline">{title}</span>
       </button>
 
       <Dialog open={open} onClose={setOpen} className="relative z-[70]">

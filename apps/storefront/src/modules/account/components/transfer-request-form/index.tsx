@@ -24,7 +24,7 @@ export default function TransferRequestForm() {
 
   return (
     <div className="flex flex-col gap-y-4 w-full">
-      <div className="grid sm:grid-cols-2 items-center gap-x-8 gap-y-4 w-full">
+      <div className="grid xsmall:grid-cols-2 items-center gap-x-8 gap-y-4 w-full">
         <div className="flex flex-col gap-y-1">
           <Heading level="h3" className="!text-sm font-semibold text-neutral-950">
             Transferência de pedidos
@@ -36,7 +36,7 @@ export default function TransferRequestForm() {
         </div>
         <form
           action={formAction}
-          className="flex flex-col gap-y-1 sm:items-end"
+          className="flex flex-col gap-y-1 xsmall:items-end"
         >
           <div className="flex flex-col gap-y-2 w-full">
             <Input className="w-full" name="order_id" placeholder="ID do pedido" />

@@ -28,11 +28,11 @@ const OnSaleToggle = ({ currencyCode }: { currencyCode: string }) => {
         className="shrink-0 accent-ui-fg-interactive"
         data-testid="on-sale-toggle"
       />
-      <span className="txt-compact-small-plus text-ui-fg-subtle">
+      <span className="txt-compact-small-plus text-ink-soft">
         Somente em promoção
       </span>
       {typeof value.count === "number" && (
-        <span className="text-small-regular text-ui-fg-muted">
+        <span className="text-small-regular text-ink-muted">
           ({value.count})
         </span>
       )}

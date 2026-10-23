@@ -18,13 +18,13 @@ const Login = ({ setCurrentView, redirectTo }: Props) => {
       className="max-w-sm w-full flex flex-col items-center"
       data-testid="login-page"
     >
-      <h1 className="text-large-semi uppercase mb-6">Bem-vindo de volta</h1>
-      <p className="text-center text-base-regular text-ui-fg-base mb-8">
+      <h1 className="font-display text-h-md text-ink mb-4">Bem-vindo de volta</h1>
+      <p className="text-center text-body-lg text-ink-soft mb-8">
         Entre para ter uma experiência de compra melhor.
       </p>
       {message?.state === "verification_required" && (
         <div
-          className="w-full mb-6 text-center text-base-regular text-ui-fg-base bg-ui-bg-subtle border border-ui-border-base rounded-rounded p-4"
+          className="w-full mb-6 text-center text-base-regular text-ink bg-subtle border border-line rounded-rounded p-4"
           data-testid="login-verification-message"
         >
           Enviamos um link de verificação para <strong>{message.email}</strong>.
@@ -60,11 +60,11 @@ const Login = ({ setCurrentView, redirectTo }: Props) => {
           Entrar
         </SubmitButton>
       </form>
-      <span className="text-center text-ui-fg-base text-small-regular mt-6">
+      <span className="text-center text-ink text-small-regular mt-6">
         Ainda não tem conta?{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
-          className="underline"
+          className="font-bold text-brand hover:text-brand-dark underline underline-offset-4"
           data-testid="register-button"
         >
           Cadastre-se

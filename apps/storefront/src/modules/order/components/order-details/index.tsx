@@ -31,7 +31,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
           {new Date(order.created_at).toDateString()}
         </span>
       </Text>
-      <Text className="mt-2 text-ui-fg-interactive">
+      <Text className="mt-2 text-brand">
         Número do pedido: <span data-testid="order-id">{order.display_id}</span>
       </Text>
 
@@ -40,14 +40,14 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
           <>
             <Text>
               Status do pedido:{" "}
-              <span className="text-ui-fg-subtle " data-testid="order-status">
+              <span className="text-ink-soft " data-testid="order-status">
                 {formatStatus(order.fulfillment_status)}
               </span>
             </Text>
             <Text>
               Status do pagamento:{" "}
               <span
-                className="text-ui-fg-subtle "
+                className="text-ink-soft "
                 sata-testid="order-payment-status"
               >
                 {formatStatus(order.payment_status)}

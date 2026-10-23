@@ -55,17 +55,17 @@ export default function AvaProductCard({
         })} sem juros`
       : null
   const stockLabel = {
-    in: { text: "Disponível em estoque", cls: "text-stock-in", dot: "bg-stock-in" },
+    in: { text: "Em estoque", cls: "text-stock-in", dot: "bg-stock-in" },
     low: { text: "Últimas unidades", cls: "text-stock-low", dot: "bg-stock-low" },
     out: { text: "Indisponível", cls: "text-stock-out", dot: "bg-stock-out" },
   }[stock]
   const href = `/products/${product.handle}`
 
   return (
-    <article className="group relative flex flex-col bg-white rounded-ava-lg p-2.5 small:p-4 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
-      <LocalizedClientLink href={href} className="relative block w-full rounded-ava-md bg-subtle overflow-hidden mb-3">
+    <article className="group relative flex flex-col card-interactive p-3 small:p-4 hover:-translate-y-0.5 h-full">
+      <LocalizedClientLink href={href} className="relative block w-full rounded-ava-md bg-subtle border border-line overflow-hidden mb-3">
         {hasDiscount && (
-          <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 rounded-md bg-brand text-white text-label-xs shadow-sm">
+          <span className="absolute top-2.5 left-2.5 z-10 px-2.5 py-1 rounded-ava bg-brand text-white text-label-sm shadow-brand-glow">
             -{price!.percentage_diff}%
           </span>
         )}
@@ -73,8 +73,8 @@ export default function AvaProductCard({
       </LocalizedClientLink>
 
       <div className="flex items-center gap-1.5 mb-1.5">
-        <span className={`w-2 h-2 rounded-full ${stockLabel.dot}`} />
-        <span className={`text-label-xs uppercase ${stockLabel.cls}`}>{stockLabel.text}</span>
+        <span className={`w-2.5 h-2.5 rounded-full ${stockLabel.dot}`} />
+        <span className={`text-label-xs uppercase truncate ${stockLabel.cls}`}>{stockLabel.text}</span>
       </div>
 
       <LocalizedClientLink href={href}>
@@ -115,9 +115,9 @@ export default function AvaProductCard({
       <div className={`grid ${config.chatEnabled ? "grid-cols-[1fr_auto] small:grid-cols-2" : "grid-cols-1"} gap-2`}>
         <LocalizedClientLink
           href={href}
-          className="flex items-center justify-center gap-1 py-2.5 px-2 rounded-ava-md bg-brand hover:bg-brand-dark text-white text-label-sm transition-colors shadow-sm"
+          className="flex items-center justify-center gap-1.5 h-12 px-2 rounded-ava-md bg-brand hover:bg-brand-dark text-white text-label-md transition-colors shadow-brand-glow"
         >
-          <Icon name="shopping_cart" className="text-[18px]" />
+          <Icon name="shopping_cart" className="text-[20px]" />
           <span>Comprar</span>
         </LocalizedClientLink>
         {config.chatEnabled && (

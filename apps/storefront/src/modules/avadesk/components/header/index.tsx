@@ -56,12 +56,12 @@ export default async function AvaHeader({
   )
 
   return (
-    <header className="sticky top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(14,36,57,0.06)]">
+    <header className="sticky top-0 inset-x-0 z-50 bg-card border-b border-line shadow-header">
       {/* Desktop */}
-      <div className="hidden medium:flex min-h-20 max-w-page mx-auto px-margin py-3 items-center gap-gutter flex-wrap">
+      <div className="hidden small:flex min-h-20 max-w-page mx-auto px-margin py-3 items-center gap-gutter flex-wrap">
         <CategoriesMenu categories={cats} title={categoriesTitle} />
         <Logo name={name} logoUrl={settings.logo_url} />
-        <div className="flex flex-1 min-w-[280px] max-w-2xl items-center bg-subtle rounded-ava-md p-1 focus-within:ring-2 focus-within:ring-navy/20">
+        <div className="flex flex-1 min-w-[280px] max-w-2xl items-center bg-subtle border border-line rounded-ava-md p-1 focus-within:border-brand focus-within:bg-card transition-colors">
           <SearchBar />
         </div>
         {links.length > 0 && (
@@ -105,29 +105,29 @@ export default async function AvaHeader({
       </div>
 
       {/* Mobile */}
-      <div className="medium:hidden px-margin-m pt-2 pb-2 flex flex-col gap-2">
+      <div className="small:hidden px-margin-m pt-2 pb-2.5 flex flex-col gap-2.5">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex min-w-0 items-center gap-1">
+          <div className="flex min-w-0 flex-1 items-center gap-1">
             <CategoriesMenu categories={cats} title={categoriesTitle} />
             <Logo name={name} logoUrl={settings.logo_url} compact />
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex shrink-0 items-center gap-1.5">
             {chatEnabled && (
               <ChatButton
-                className="relative w-10 h-10 rounded-full flex items-center justify-center bg-subtle text-navy"
+                className="relative w-11 h-11 rounded-full flex items-center justify-center bg-subtle border border-line text-navy"
                 aria-label="Atendimento"
               >
                 <Icon name="support_agent" className="text-[22px]" />
                 <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-stock-in ring-2 ring-white" />
               </ChatButton>
             )}
-            <CartLink className="relative w-10 h-10 rounded-full flex items-center justify-center bg-subtle text-navy" />
-            <LocalizedClientLink href="/account" className="w-8 h-8 rounded-full bg-navy text-white flex items-center justify-center" aria-label="Minha conta">
-              <Icon name="person" className="text-[18px]" />
+            <CartLink className="relative w-11 h-11 rounded-full flex items-center justify-center bg-subtle border border-line text-navy" />
+            <LocalizedClientLink href="/account" className="w-11 h-11 rounded-full bg-navy text-white flex items-center justify-center" aria-label="Minha conta">
+              <Icon name="person" className="text-[22px]" />
             </LocalizedClientLink>
           </div>
         </div>
-        <div className="bg-subtle rounded-ava-md flex items-center">
+        <div className="bg-subtle border border-line rounded-ava-md flex items-center focus-within:border-brand focus-within:bg-card transition-colors">
           <SearchBar compact />
         </div>
       </div>

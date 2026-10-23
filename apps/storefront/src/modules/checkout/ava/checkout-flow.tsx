@@ -25,20 +25,20 @@ const fmt = (amount: number, currency: string) => convertToLocale({ amount, curr
 const Card = ({ n, title, icon, done, children, onEdit, summary, sub, tag }: {
   n: number; title: string; icon: string; done?: boolean; children?: React.ReactNode; onEdit?: () => void; summary?: React.ReactNode; sub?: string; tag?: React.ReactNode
 }) => (
-  <section className="bg-white rounded-ava-lg small:rounded-ava-xl shadow-sm p-4 small:p-6">
+  <section className="card-surface small:rounded-ava-xl p-4 small:p-6">
     <div className="flex items-center justify-between gap-3 mb-1">
       <h2 className="flex items-center gap-3 font-display text-h-sm text-ink">
-        <span className={`w-9 h-9 rounded-ava-md flex items-center justify-center ${done ? "bg-stock-in/10 text-stock-in" : "bg-brand-light text-brand-dark"}`}>
-          <Icon name={done ? "check_circle" : icon} className="text-[20px]" />
+        <span className={`w-11 h-11 shrink-0 rounded-ava-md flex items-center justify-center ${done ? "bg-stock-in/10 text-stock-in" : "bg-brand-light text-brand-dark"}`}>
+          <Icon name={done ? "check_circle" : icon} className="text-[24px]" />
         </span>
         <span className="flex flex-col">
           <span>{n}. {title}</span>
-          {sub && <span className="text-body-sm font-sans font-normal text-ink-muted">{sub}</span>}
+          {sub && <span className="text-body-sm font-sans font-normal text-ink-soft">{sub}</span>}
         </span>
       </h2>
       {!onEdit && tag && <span className="hidden xsmall:inline-flex">{tag}</span>}
       {onEdit && (
-        <button type="button" onClick={onEdit} className="text-label-sm text-brand hover:text-brand-dark">Alterar</button>
+        <button type="button" onClick={onEdit} className="shrink-0 h-11 px-4 rounded-ava-md border border-line-strong text-label-md text-navy hover:border-navy hover:bg-subtle transition-colors">Alterar</button>
       )}
     </div>
     {summary && <div className="mt-3 text-body-md text-ink-soft">{summary}</div>}
@@ -47,13 +47,13 @@ const Card = ({ n, title, icon, done, children, onEdit, summary, sub, tag }: {
 )
 
 const Field = ({ label, error, children, className = "" }: { label: string; error?: string | null; children: React.ReactNode; className?: string }) => (
-  <label className={`flex flex-col gap-1 ${className}`}>
-    <span className="text-label-sm text-ink-soft">{label}</span>
+  <label className={`flex flex-col gap-1.5 ${className}`}>
+    <span className="text-label-md text-ink">{label}</span>
     {children}
-    {error && <span className="text-body-sm text-danger">{error}</span>}
+    {error && <span className="text-body-sm text-danger font-semibold">{error}</span>}
   </label>
 )
-const inputCls = "h-11 px-3 rounded-ava-md border border-line bg-white text-body-md text-ink focus:outline-none focus:ring-2 focus:ring-navy/20 disabled:bg-subtle"
+const inputCls = "h-13 px-4 rounded-ava-md border border-line-strong bg-card text-body-lg text-ink placeholder:text-ink-muted focus:outline-none focus:border-brand transition-colors disabled:bg-subtle disabled:text-ink-soft"
 
 export default function CheckoutFlow({ cart, customer, shippingOptions, providerIds, pixPercent, maxInstallments }: Props) {
   const router = useRouter()
@@ -316,7 +316,7 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
                 const active = mode === "saved" && savedId === a.id
                 return (
                   <button key={a.id} type="button" onClick={() => { setMode("saved"); pickSaved(a) }}
-                    className={`text-left rounded-ava-lg border-2 p-4 transition-all ${active ? "border-navy bg-navy/5 shadow-md" : "border-line hover:border-line-strong bg-white"}`}>
+                    className={`text-left rounded-ava-lg border-2 p-4 min-h-16 transition-all ${active ? "border-brand bg-brand-light/30 shadow-raised" : "border-line hover:border-line-strong bg-card"}`}>
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <span className="flex items-center gap-2">
                         {a.is_default_shipping && <span className="px-2 py-0.5 rounded bg-navy text-white text-[10px] font-bold uppercase">Padrão</span>}
@@ -354,7 +354,7 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
             </Field>
             {touched && !addrValid && <p className="col-span-6 text-body-sm text-danger">Complete os dados do endereço: clique em &quot;Adicionar novo endereço&quot; para revisar.</p>}
             <div className="col-span-6 flex justify-end pt-2">
-              <button type="button" onClick={saveAddress} disabled={pending} className="h-12 px-6 rounded-ava-md bg-navy hover:bg-navy-deep text-white text-label-md disabled:opacity-60 w-full small:w-auto" data-testid="submit-address-button">
+              <button type="button" onClick={saveAddress} disabled={pending} className="h-13 px-6 rounded-ava-md bg-brand hover:bg-brand-dark text-white text-label-md shadow-brand-glow disabled:bg-line-strong disabled:shadow-none w-full small:w-auto" data-testid="submit-address-button">
                 {pending ? "Salvando..." : "Entregar neste endereço"}
               </button>
             </div>
@@ -408,7 +408,7 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
               </select>
             </Field>
             <div className="col-span-6 flex justify-end pt-2">
-              <button type="button" onClick={saveAddress} disabled={pending} className="h-12 px-6 rounded-ava-md bg-navy hover:bg-navy-deep text-white text-label-md disabled:opacity-60 w-full small:w-auto" data-testid="submit-address-button">
+              <button type="button" onClick={saveAddress} disabled={pending} className="h-13 px-6 rounded-ava-md bg-brand hover:bg-brand-dark text-white text-label-md shadow-brand-glow disabled:bg-line-strong disabled:shadow-none w-full small:w-auto" data-testid="submit-address-button">
                 {pending ? "Salvando..." : "Continuar para entrega"}
               </button>
             </div>
@@ -471,7 +471,7 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
               })}
             </div>
             <div className="flex justify-end pt-2">
-              <button type="button" onClick={saveShipping} disabled={pending || !optionId} className="h-12 px-6 rounded-ava-md bg-navy hover:bg-navy-deep text-white text-label-md disabled:opacity-60 w-full small:w-auto" data-testid="submit-delivery-option-button">
+              <button type="button" onClick={saveShipping} disabled={pending || !optionId} className="h-13 px-6 rounded-ava-md bg-brand hover:bg-brand-dark text-white text-label-md shadow-brand-glow disabled:bg-line-strong disabled:shadow-none w-full small:w-auto" data-testid="submit-delivery-option-button">
                 {pending ? "Salvando..." : "Continuar para pagamento"}
               </button>
             </div>
@@ -506,7 +506,7 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
                   key={m}
                   type="button"
                   onClick={() => setMethod(m)}
-                  className={`h-11 rounded-ava text-label-sm flex items-center justify-center gap-1.5 transition-colors ${method === m ? "bg-white shadow-sm text-ink" : "text-ink-soft"}`}
+                  className={`h-12 rounded-ava text-label-md flex items-center justify-center gap-1.5 transition-colors ${method === m ? "bg-card shadow-card text-ink" : "text-ink-soft"}`}
                 >
                   <Icon name={methodInfo[m].icon} className="text-[18px]" />
                   <span className="hidden xsmall:inline">{m === "card" ? "Cartão de Crédito" : m === "boleto" ? "Boleto Bancário" : "PIX"}</span>
@@ -515,10 +515,10 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
                 </button>
               ))}
             </div>
-            <div className="rounded-ava-lg bg-subtle/70 border border-line p-4 small:p-6 flex flex-col small:flex-row gap-4 items-start">
+            <div className="rounded-ava-lg bg-subtle border border-line p-4 small:p-6 flex flex-col small:flex-row gap-4 items-start">
               {method === "pix" ? (
                 <div className="w-full small:w-44 shrink-0 flex flex-col items-center gap-2">
-                  <div className="w-40 h-40 rounded-ava-lg bg-white shadow-sm border border-line p-3 grid grid-cols-7 gap-0.5" aria-hidden>
+                  <div className="w-40 h-40 rounded-ava-lg card-surface p-3 grid grid-cols-7 gap-0.5" aria-hidden>
                     {Array.from({ length: 49 }, (_, i) => {
                       const r = Math.floor(i / 7), c = i % 7
                       const finder = (r < 2 && c < 2) || (r < 2 && c > 4) || (r > 4 && c < 2)
@@ -529,7 +529,7 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
                   <span className="text-label-xs text-ink-muted inline-flex items-center gap-1"><Icon name="schedule" className="text-[14px]" /> QR Code gerado após finalizar</span>
                 </div>
               ) : (
-                <span className="w-14 h-14 rounded-ava-md bg-white flex items-center justify-center shrink-0 text-navy shadow-sm">
+                <span className="w-14 h-14 rounded-ava-md card-surface flex items-center justify-center shrink-0 text-navy">
                   <Icon name={methodInfo[method].icon} className="text-[32px]" />
                 </span>
               )}
@@ -542,7 +542,7 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
                 )}
                 {method === "card" && maxInst > 1 && (
                   <label className="mt-3 flex flex-col gap-1 max-w-xs">
-                    <span className="text-label-sm text-ink-soft">Parcelas</span>
+                    <span className="text-label-md text-ink">Parcelas</span>
                     <select className={inputCls} value={installments} onChange={(e) => setInstallments(Number(e.target.value))}>
                       {Array.from({ length: maxInst }, (_, i) => i + 1).map((n) => (
                         <option key={n} value={n}>{n}x de {fmt(total / n, currency)} sem juros</option>
@@ -556,7 +556,7 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
               </div>
             </div>
             <div className="flex justify-end">
-              <button type="button" onClick={savePayment} disabled={pending} className="h-12 px-6 rounded-ava-md bg-navy hover:bg-navy-deep text-white text-label-md disabled:opacity-60 w-full small:w-auto" data-testid="submit-payment-button">
+              <button type="button" onClick={savePayment} disabled={pending} className="h-13 px-6 rounded-ava-md bg-brand hover:bg-brand-dark text-white text-label-md shadow-brand-glow disabled:bg-line-strong disabled:shadow-none w-full small:w-auto" data-testid="submit-payment-button">
                 {pending ? "Salvando..." : "Revisar pedido"}
               </button>
             </div>
@@ -576,7 +576,7 @@ export default function CheckoutFlow({ cart, customer, shippingOptions, provider
               type="button"
               onClick={finish}
               disabled={pending || !accepted}
-              className="h-14 rounded-ava-md bg-brand hover:bg-brand-dark disabled:bg-line-strong text-white text-label-md flex items-center justify-center gap-2 shadow-lg shadow-brand/30"
+              className="h-14 rounded-ava-md bg-brand hover:bg-brand-dark disabled:bg-line-strong text-white text-label-md flex items-center justify-center gap-2 shadow-brand-glow"
               data-testid="submit-order-button"
             >
               <Icon name="lock" className="text-[20px]" />

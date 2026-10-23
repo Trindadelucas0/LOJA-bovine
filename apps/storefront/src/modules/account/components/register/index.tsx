@@ -21,15 +21,15 @@ const Register = ({ setCurrentView, redirectTo }: Props) => {
       className="max-w-sm flex flex-col items-center"
       data-testid="register-page"
     >
-      <h1 className="text-large-semi uppercase mb-6">
+      <h1 className="font-display text-h-md text-ink mb-4">
         Crie sua conta na BOVINE
       </h1>
-      <p className="text-center text-base-regular text-ui-fg-base mb-4">
+      <p className="text-center text-body-lg text-ink-soft mb-4">
         Crie seu perfil na BOVINE e tenha uma experiência de compra melhor.
       </p>
       {message?.state === "verification_required" && (
         <div
-          className="w-full mb-4 text-center text-base-regular text-ui-fg-base bg-ui-bg-subtle border border-ui-border-base rounded-rounded p-4"
+          className="w-full mb-4 text-center text-base-regular text-ink bg-subtle border border-line rounded-rounded p-4"
           data-testid="register-verification-message"
         >
           Enviamos um link de verificação para <strong>{message.email}</strong>.
@@ -81,18 +81,18 @@ const Register = ({ setCurrentView, redirectTo }: Props) => {
           error={message?.state === "error" ? message.error : null}
           data-testid="register-error"
         />
-        <span className="text-center text-ui-fg-base text-small-regular mt-6">
+        <span className="text-center text-ink text-small-regular mt-6">
           Ao criar uma conta, você concorda com a{" "}
           <LocalizedClientLink
             href="/content/privacy-policy"
-            className="underline"
+            className="font-bold text-brand hover:text-brand-dark underline underline-offset-4"
           >
             Política de Privacidade
           </LocalizedClientLink>{" "}
           and{" "}
           <LocalizedClientLink
             href="/content/terms-of-use"
-            className="underline"
+            className="font-bold text-brand hover:text-brand-dark underline underline-offset-4"
           >
             Termos de Uso
           </LocalizedClientLink>
@@ -102,11 +102,11 @@ const Register = ({ setCurrentView, redirectTo }: Props) => {
           Cadastrar
         </SubmitButton>
       </form>
-      <span className="text-center text-ui-fg-base text-small-regular mt-6">
+      <span className="text-center text-ink text-small-regular mt-6">
         Já tem conta?{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.SIGN_IN)}
-          className="underline"
+          className="font-bold text-brand hover:text-brand-dark underline underline-offset-4"
         >
           Entrar
         </button>

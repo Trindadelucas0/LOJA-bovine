@@ -17,15 +17,6 @@
     scrollbar-width: none; /* Firefox */
   }
 
-  input:focus ~ label,
-  input:not(:placeholder-shown) ~ label {
-    @apply -translate-y-2 text-xsmall-regular;
-  }
-
-  input:focus ~ label {
-    @apply left-0;
-  }
-
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
@@ -52,6 +43,42 @@
 @layer components {
   .content-container {
     @apply max-w-[1440px] w-full mx-auto px-6;
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
+  }
+
+  /* Superficie padrao: cartao branco com borda e sombra sobre o fundo canvas */
+  .card-surface {
+    @apply bg-card border border-line rounded-ava-lg shadow-card;
+  }
+
+  .card-interactive {
+    @apply bg-card border border-line rounded-ava-lg shadow-card transition-all duration-200;
+  }
+
+  .card-interactive:hover {
+    @apply border-line-strong shadow-card-hover;
+  }
+
+  /* Barra fixa inferior (carrinho, compra) acima da navegacao do app */
+  .bar-sticky {
+    @apply bg-card border-t border-line shadow-sticky;
+  }
+
+  /* Espaco para a navegacao inferior do celular */
+  .pb-nav {
+    padding-bottom: calc(68px + env(safe-area-inset-bottom));
+  }
+
+  .pb-nav-lg {
+    padding-bottom: calc(136px + env(safe-area-inset-bottom));
+  }
+
+  @screen small {
+    .pb-nav,
+    .pb-nav-lg {
+      padding-bottom: 3rem;
+    }
   }
 
   .contrast-btn {
@@ -59,31 +86,31 @@
   }
 
   .text-xsmall-regular {
-    @apply text-[10px] leading-4 font-normal;
+    @apply text-[13px] leading-5 font-normal;
   }
 
   .text-small-regular {
-    @apply text-xs leading-5 font-normal;
+    @apply text-[15px] leading-6 font-normal;
   }
 
   .text-small-semi {
-    @apply text-xs leading-5 font-semibold;
+    @apply text-[15px] leading-6 font-semibold;
   }
 
   .text-base-regular {
-    @apply text-sm leading-6 font-normal;
+    @apply text-[17px] leading-7 font-normal;
   }
 
   .text-base-semi {
-    @apply text-sm leading-6 font-semibold;
+    @apply text-[17px] leading-7 font-semibold;
   }
 
   .text-large-regular {
-    @apply text-base leading-6 font-normal;
+    @apply text-[18px] leading-7 font-normal;
   }
 
   .text-large-semi {
-    @apply text-base leading-6 font-semibold;
+    @apply text-[18px] leading-7 font-semibold;
   }
 
   .text-xl-regular {
@@ -130,9 +157,10 @@ img {
 }
 @media (pointer: coarse) {
   /* alvos de toque minimos (44px) para botoes so de icone e links pequenos */
-  button:not([class*="h-"]):not([class*="py-"]),
-  [role="button"] {
-    min-height: 44px;
+  button:not(.tap-exempt),
+  [role="button"]:not(.tap-exempt),
+  a[class*="rounded-ava"]:not(.tap-exempt) {
+    min-height: 48px;
   }
   input[type="checkbox"],
   input[type="radio"] {
@@ -144,4 +172,17 @@ img {
   textarea {
     font-size: 16px; /* impede zoom automatico no iOS ao focar */
   }
+}
+
+/* foco sempre visivel (acessibilidade e teclado) */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(254, 107, 0, 0.45);
+  border-radius: 8px;
+}
+
+/* cabecalho respeita o recorte lateral em telas com notch */
+header {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }

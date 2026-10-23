@@ -54,7 +54,7 @@ const HitCard = ({
   const href = `/products/${hit.handle}`
 
   return (
-    <article className="group flex flex-col bg-white rounded-ava-lg p-2.5 small:p-4 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full" data-testid="product-wrapper">
+    <article className="group flex flex-col card-interactive p-3 small:p-4 hover:-translate-y-0.5 h-full" data-testid="product-wrapper">
       <LocalizedClientLink href={href} className="relative block rounded-ava-md bg-subtle overflow-hidden mb-3">
         {discount > 0 && (
           <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 rounded-md bg-brand text-white text-label-xs">-{discount}%</span>
@@ -96,7 +96,7 @@ const HitCard = ({
 const GridSkeleton = ({ n }: { n: number }) => (
   <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 gap-3 small:gap-gutter" data-testid="products-loading">
     {Array.from({ length: n }).map((_, i) => (
-      <li key={i} className="bg-white rounded-ava-lg p-3 shadow-sm animate-pulse">
+      <li key={i} className="card-surface p-3 animate-pulse">
         <div className="aspect-square rounded-ava-md bg-subtle mb-3" />
         <div className="h-4 bg-subtle rounded mb-2" />
         <div className="h-4 w-2/3 bg-subtle rounded mb-4" />
@@ -127,7 +127,7 @@ const StoreHits = ({ hitsPerPage, currencyCode, pixPercent, maxInstallments }: S
 
   if (status === "error") {
     return (
-      <div className="flex flex-col items-center text-center gap-3 py-16 bg-white rounded-ava-lg shadow-sm" data-testid="products-error">
+      <div className="flex flex-col items-center text-center gap-3 py-16 card-surface" data-testid="products-error">
         <Icon name="error" className="text-[40px] text-stock-out" />
         <p className="font-display text-h-sm text-ink">Não foi possível carregar os produtos</p>
         {error?.message && <p className="text-body-sm text-ink-muted max-w-md">{error.message}</p>}
@@ -143,7 +143,7 @@ const StoreHits = ({ hitsPerPage, currencyCode, pixPercent, maxInstallments }: S
       {showSkeleton ? (
         <GridSkeleton n={Math.min(hitsPerPage, 8)} />
       ) : !items.length ? (
-        <div className="flex flex-col items-center text-center gap-3 py-16 bg-white rounded-ava-lg shadow-sm" data-testid="no-products">
+        <div className="flex flex-col items-center text-center gap-3 py-16 card-surface" data-testid="no-products">
           <Icon name="search_off" className="text-[40px] text-ink-muted" />
           <p className="font-display text-h-sm text-ink">Nenhum produto encontrado</p>
           <p className="text-body-sm text-ink-muted">Tente outros termos ou remova alguns filtros.</p>

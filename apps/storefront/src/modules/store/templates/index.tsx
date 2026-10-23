@@ -16,7 +16,7 @@ const PRODUCT_LIMIT = 12
 const ResultCount = () => {
   const { nbHits } = useStats()
   return (
-    <span className="text-body-sm text-ink-soft" data-testid="result-count">
+    <span className="text-body-md font-semibold text-ink-soft shrink-0" data-testid="result-count">
       {nbHits} {nbHits === 1 ? "produto" : "produtos"}
     </span>
   )
@@ -33,7 +33,7 @@ const StoreTemplate = ({ currencyCode, pixPercent, maxInstallments }: Props) => 
 
   return (
     <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-10" data-testid="category-container">
-      <nav className="flex items-center gap-1.5 text-body-sm text-ink-muted mb-2">
+      <nav className="flex items-center gap-1.5 text-body-md text-ink-soft mb-2">
         <LocalizedClientLink href="/" className="hover:text-ink">Início</LocalizedClientLink>
         <Icon name="chevron_right" className="text-[16px]" />
         <span className="text-ink">Produtos</span>
@@ -53,18 +53,20 @@ const StoreTemplate = ({ currencyCode, pixPercent, maxInstallments }: Props) => 
           <StoreRefinements currencyCode={currencyCode} open={filtersOpen} onClose={() => setFiltersOpen(false)} />
           <div className="w-full min-w-0 flex flex-col gap-4">
             <StoreSearchBox />
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <ResultCount />
-              <div className="flex items-center gap-2">
+              <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setFiltersOpen(true)}
-                  className="small:hidden inline-flex items-center gap-1.5 h-10 px-3 rounded-ava-md border border-line bg-white text-label-sm text-ink"
+                  className="small:hidden inline-flex shrink-0 items-center gap-1.5 h-12 px-4 rounded-ava-md border border-line-strong bg-card text-label-md text-ink"
                   data-testid="open-filters"
                 >
-                  <Icon name="tune" className="text-[18px]" /> Filtros
+                  <Icon name="tune" className="text-[20px]" /> Filtros
                 </button>
-                <SortSelect currencyCode={currencyCode} />
+                <div className="min-w-0 flex-1 small:flex-none">
+                  <SortSelect currencyCode={currencyCode} />
+                </div>
               </div>
             </div>
             <StoreHits

@@ -17,9 +17,9 @@ function initials(c: HttpTypes.StoreCustomer) {
 const AccountLayout: React.FC<AccountLayoutProps> = ({ customer, children }) => {
   if (!customer) {
     return (
-      <div className="flex-1 bg-[#F8FAFC] py-8 small:py-12" data-testid="account-page">
+      <div className="flex-1 bg-canvas py-8 small:py-12" data-testid="account-page">
         <div className="content-container max-w-xl mx-auto">
-          <div className="bg-white rounded-ava-xl shadow-sm border border-[#E2E8F0] p-6 small:p-10">{children}</div>
+          <div className="card-surface rounded-ava-xl border border-line p-6 small:p-10">{children}</div>
         </div>
       </div>
     )
@@ -27,17 +27,17 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ customer, children }) => 
   const since = new Date(customer.created_at || Date.now()).getFullYear()
   const name = [customer.first_name, customer.last_name].filter(Boolean).join(" ") || "Cliente"
   return (
-    <div className="flex-1 bg-[#F8FAFC] pb-24 small:pb-12" data-testid="account-page">
+    <div className="flex-1 bg-canvas pb-nav" data-testid="account-page">
       <div className="content-container max-w-[1200px] mx-auto pt-4 small:pt-8 flex flex-col gap-4 small:gap-6">
         {/* Cabeçalho do cliente (wireframe: detalhes_do_pedido / minha_conta mobile) */}
-        <section className="relative overflow-hidden rounded-ava-xl bg-gradient-to-br from-navy-deep via-navy to-navy-soft text-white small:bg-none small:bg-white small:text-ink small:border small:border-[#E2E8F0] shadow-md small:shadow-sm p-5 small:p-6">
+        <section className="relative overflow-hidden rounded-ava-xl bg-gradient-to-br from-navy-deep via-navy to-navy-soft text-white small:bg-none small:bg-white small:text-ink small:border small:border-line shadow-md small:shadow-sm p-5 small:p-6">
           <div className="flex flex-col small:flex-row small:items-center gap-4 small:gap-6">
             <div className="flex items-center gap-4 flex-1 min-w-0">
               <div className="relative shrink-0">
                 <div className="w-16 h-16 small:w-20 small:h-20 rounded-full bg-brand text-white font-display font-extrabold text-xl small:text-2xl flex items-center justify-center ring-4 ring-white/20 small:ring-brand-light">
                   {initials(customer)}
                 </div>
-                <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-[#10B981] border-2 border-white" />
+                <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-stock-in border-2 border-white" />
               </div>
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
@@ -53,10 +53,10 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ customer, children }) => 
                 </p>
               </div>
             </div>
-            <div className="flex items-center justify-between gap-3 rounded-ava-lg bg-white/10 small:bg-subtle border border-white/10 small:border-[#E2E8F0] p-3 small:min-w-[340px]">
+            <div className="flex items-center justify-between gap-3 rounded-ava-lg bg-white/10 small:bg-subtle border border-white/10 small:border-line p-3 small:min-w-[340px]">
               <div>
                 <p className="text-[10px] uppercase tracking-wider text-white/60 small:text-ink-muted font-bold">Atendimento</p>
-                <p className="text-sm font-bold flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#10B981]" /> Suporte técnico online</p>
+                <p className="text-sm font-bold flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-stock-in" /> Suporte técnico online</p>
               </div>
               <ChatButton
                 attrs={{ origem: "minha_conta", email: customer.email }}

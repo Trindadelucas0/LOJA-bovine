@@ -6,7 +6,7 @@ const colors = ["text-brand", "text-chat", "text-stock-in", "text-navy"]
 export default function Benefits({ items }: { items: AvaItem[] }) {
   if (!items.length) return null
   return (
-    <section className="bg-white rounded-ava-lg small:rounded-ava-xl shadow-sm p-4 small:p-8">
+    <section className="card-surface small:rounded-ava-xl p-4 small:p-8">
       <div className="grid grid-cols-1 xsmall:grid-cols-2 small:grid-cols-4 gap-4 small:gap-gutter">
         {items.map((b, i) => (
           <div key={i} className="flex items-start gap-3">

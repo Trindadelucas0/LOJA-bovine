@@ -33,7 +33,7 @@ const OrderDetailsTemplate: React.FC<{ order: HttpTypes.StoreOrder }> = ({ order
         <LocalizedClientLink href="/account/orders" className="inline-flex items-center gap-1 text-sm font-bold text-ink-soft hover:text-ink w-fit" data-testid="back-to-overview-button">
           <Icon name="arrow_back" className="text-[18px]" /> Voltar para Meus Pedidos
         </LocalizedClientLink>
-        <section className="bg-white rounded-ava-xl border border-[#E2E8F0] shadow-sm p-4 small:p-6 flex flex-col gap-6">
+        <section className="bg-white rounded-ava-xl border border-line shadow-sm p-4 small:p-6 flex flex-col gap-6">
           <div className="flex items-start justify-between gap-3 bg-subtle rounded-ava-lg p-4">
             <div>
               <div className="flex flex-wrap items-center gap-2">
@@ -51,7 +51,7 @@ const OrderDetailsTemplate: React.FC<{ order: HttpTypes.StoreOrder }> = ({ order
           <div>
             <h2 className="font-bold text-ink flex items-center gap-2 mb-4"><Icon name="local_shipping" className="text-brand" /> Linha de rastreamento</h2>
             {step === -1 ? (
-              <p className="text-sm text-[#EF4444] font-bold">Pedido cancelado.</p>
+              <p className="text-sm text-stock-out font-bold">Pedido cancelado.</p>
             ) : (
               <ol className="grid grid-cols-5 relative">
                 <div className="absolute top-5 left-[10%] right-[10%] h-1 bg-[#E2E8F0] rounded-full" />
@@ -100,7 +100,7 @@ const OrderDetailsTemplate: React.FC<{ order: HttpTypes.StoreOrder }> = ({ order
           </div>
         </section>
         <div className="grid grid-cols-1 small:grid-cols-2 gap-4 small:gap-6">
-          <section className="bg-white rounded-ava-xl border border-[#E2E8F0] shadow-sm p-4 small:p-5" data-testid="shipping-address-summary">
+          <section className="bg-white rounded-ava-xl border border-line shadow-sm p-4 small:p-5" data-testid="shipping-address-summary">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bold text-ink flex items-center gap-2"><Icon name="location_on" className="text-brand" /> Endereço de entrega</h3>
               {ship && <span className="text-[10px] font-bold bg-emerald-50 text-[#10B981] px-2 py-0.5 rounded-full">{ship.name}</span>}
@@ -114,7 +114,7 @@ const OrderDetailsTemplate: React.FC<{ order: HttpTypes.StoreOrder }> = ({ order
               </div>
             ) : <p className="text-sm text-ink-muted">Sem endereço.</p>}
           </section>
-          <section className="bg-white rounded-ava-xl border border-[#E2E8F0] shadow-sm p-4 small:p-5" data-testid="order-summary">
+          <section className="bg-white rounded-ava-xl border border-line shadow-sm p-4 small:p-5" data-testid="order-summary">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bold text-ink flex items-center gap-2"><Icon name="receipt" className="text-brand" /> Detalhes da cobrança</h3>
               {pay?.provider_id && <span className="text-[10px] font-bold bg-subtle text-ink-soft px-2 py-0.5 rounded-full uppercase">{String(pay.provider_id).replace(/^pp_/, "").replace(/_.*/, "")}</span>}
@@ -131,7 +131,7 @@ const OrderDetailsTemplate: React.FC<{ order: HttpTypes.StoreOrder }> = ({ order
       </div>
       {/* Pós-venda */}
       <aside className="small:col-span-4 flex flex-col gap-4 small:pt-9">
-        <section className="bg-white rounded-ava-xl border border-[#E2E8F0] shadow-sm p-5 flex flex-col gap-4">
+        <section className="bg-white rounded-ava-xl border border-line shadow-sm p-5 flex flex-col gap-4">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-display font-extrabold text-ink flex items-center gap-2"><Icon name="support_agent" className="text-chat" /> Central Pós-Venda</h2>
             <span className="text-[10px] font-bold bg-emerald-50 text-[#10B981] px-2 py-1 rounded-full">Resposta em &lt; 2 min</span>
@@ -140,7 +140,7 @@ const OrderDetailsTemplate: React.FC<{ order: HttpTypes.StoreOrder }> = ({ order
           <ChatButton attrs={chatAttrs} className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-ava-md bg-chat hover:opacity-90 text-white font-bold shadow-md">
             <Icon name="chat" className="text-[20px]" filled /> Falar sobre este pedido
           </ChatButton>
-          <div className="rounded-ava-lg border border-[#E2E8F0] p-3 text-sm text-ink-soft">
+          <div className="rounded-ava-lg border border-line p-3 text-sm text-ink-soft">
             <p className="text-[10px] uppercase tracking-wider font-bold text-ink-muted mb-1 flex items-center gap-1"><Icon name="sync_alt" className="text-[14px]" /> Contexto enviado ao atendente</p>
             O atendente já recebe o <b className="text-ink">Pedido #{num}</b>, status <b className="text-brand">{badge.label}</b>{first ? <> e o item <b className="text-ink">{first.product_title || first.title}</b></> : null}.
           </div>

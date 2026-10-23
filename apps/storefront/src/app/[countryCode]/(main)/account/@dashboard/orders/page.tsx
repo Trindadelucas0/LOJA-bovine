@@ -29,7 +29,7 @@ export default async function Orders() {
       <div>
         <OrderOverview orders={orders} />
         <div className="h-6" />
-        <div className="bg-white rounded-ava-xl border border-[#E2E8F0] shadow-sm p-5"><TransferRequestForm /></div>
+        <div className="bg-white rounded-ava-xl border border-line shadow-sm p-5"><TransferRequestForm /></div>
       </div>
     </div>
   )

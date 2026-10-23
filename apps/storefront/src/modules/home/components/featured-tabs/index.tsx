@@ -20,7 +20,7 @@ export default function FeaturedTabs({
               type="button"
               onClick={() => setActive(t.id)}
               className={`px-3 py-1.5 rounded-full text-label-xs whitespace-nowrap transition-colors ${
-                active === t.id ? "bg-navy text-white" : "bg-subtle text-ink-soft hover:bg-white"
+                active === t.id ? "bg-navy text-white shadow-raised" : "bg-card border border-line text-ink-soft hover:border-line-strong hover:text-ink"
               }`}
             >
               {t.label}

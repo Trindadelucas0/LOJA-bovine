@@ -17,10 +17,10 @@ const CheckboxWithLabel: React.FC<CheckboxProps> = ({
   'data-testid': dataTestId
 }) => {
   return (
-    <div className="flex items-center space-x-2 ">
+    <label htmlFor={name || "checkbox"} className="flex items-center gap-3 min-h-11 cursor-pointer select-none">
       <Checkbox
-        className="text-base-regular flex items-center gap-x-2"
-        id="checkbox"
+        className="h-6 w-6 shrink-0 rounded border-line-strong text-brand focus:ring-brand"
+        id={name || "checkbox"}
         role="checkbox"
         checked={checked}
         readOnly
@@ -29,13 +29,8 @@ const CheckboxWithLabel: React.FC<CheckboxProps> = ({
         name={name}
         data-testid={dataTestId}
       />
-      <Label
-        htmlFor="checkbox"
-        className="!transform-none !txt-medium"
-      >
-        {label}
-      </Label>
-    </div>
+      <Label className="text-body-md text-ink cursor-pointer">{label}</Label>
+    </label>
   )
 }
 

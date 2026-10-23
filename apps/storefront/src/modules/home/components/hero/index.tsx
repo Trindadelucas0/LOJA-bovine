@@ -25,7 +25,7 @@ export default function Hero({
     )
 
     return (
-      <section className="h-full min-h-48 w-full overflow-hidden rounded-ava-lg small:rounded-ava-xl bg-white shadow-md small:shadow-xl">
+      <section className="w-full overflow-hidden card-surface small:rounded-ava-xl shadow-raised medium:h-full medium:min-h-48">
         {banner?.cta_url ? (
           <SmartLink
             href={banner.cta_url}
@@ -39,7 +39,7 @@ export default function Hero({
   }
 
   return (
-    <section className="w-full rounded-ava-lg small:rounded-ava-xl bg-navy text-white p-6 small:p-10 shadow-md small:shadow-xl">
+    <section className="w-full rounded-ava-lg small:rounded-ava-xl bg-navy text-white p-6 small:p-10 shadow-raised">
       <div className="max-w-2xl">
         <h1 className="font-display text-h-md small:text-h-xl font-extrabold">
           Bem-vindo à {storeName(settings)}

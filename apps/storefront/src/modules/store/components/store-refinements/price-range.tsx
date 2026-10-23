@@ -53,7 +53,7 @@ const PriceRange = ({ currencyCode }: { currencyCode: string }) => {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <span className="txt-compact-small-plus text-ui-fg-subtle">Preço</span>
+      <span className="txt-compact-small-plus text-ink-soft">Preço</span>
 
       <div className="flex flex-col gap-y-3 pr-6">
         <Slider.Root
@@ -76,17 +76,17 @@ const PriceRange = ({ currencyCode }: { currencyCode: string }) => {
           {value.map((_, index) => (
             <Slider.Thumb
               key={index}
-              className="block h-4 w-4 rounded-full border border-ui-border-interactive bg-ui-bg-base shadow-elevation-card-rest outline-none focus-visible:ring-2 focus-visible:ring-ui-fg-interactive"
+              className="block h-4 w-4 rounded-full border border-ui-border-interactive bg-card shadow-elevation-card-rest outline-none focus-visible:ring-2 focus-visible:ring-ui-fg-interactive"
               aria-label={index === 0 ? "Preço mínimo" : "Preço máximo"}
             />
           ))}
         </Slider.Root>
 
         <div className="flex items-center justify-between">
-          <span className="text-small-regular text-ui-fg-subtle">
+          <span className="text-small-regular text-ink-soft">
             {format(value[0])}
           </span>
-          <span className="text-small-regular text-ui-fg-subtle">
+          <span className="text-small-regular text-ink-soft">
             {format(value[1])}
           </span>
         </div>
