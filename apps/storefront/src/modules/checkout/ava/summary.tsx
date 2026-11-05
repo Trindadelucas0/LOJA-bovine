@@ -11,7 +11,7 @@ export default function CheckoutSummary({ cart, pixPercent, maxInstallments }: {
   const items = cart.items || []
   const count = items.reduce((a, i) => a + i.quantity, 0)
   const total = cart.total ?? 0
-  const pix = pixPercent && pixPercent > 0 ? total * (1 - pixPercent / 100) : null
+  const pix = total > 0 && pixPercent ? total * (1 - pixPercent / 100) : null
   return (
     <div className="flex flex-col gap-4 small:sticky small:top-6">
     <aside className="card-surface small:rounded-ava-xl p-4 small:p-6 flex flex-col gap-4" data-testid="checkout-summary">
@@ -54,7 +54,7 @@ export default function CheckoutSummary({ cart, pixPercent, maxInstallments }: {
       <div className="flex items-end justify-between border-t border-line pt-3">
         <span className="flex flex-col">
           <span className="font-display text-h-sm text-ink">Total a pagar</span>
-          {(maxInstallments ?? 1) > 1 && <span className="text-body-sm text-ink-muted">ou até {maxInstallments}x de {fmt(total / (maxInstallments ?? 1))} sem juros</span>}
+          {total > 0 && maxInstallments ? <span className="text-body-sm text-ink-muted">ou até {maxInstallments}x de {fmt(total / maxInstallments)} sem juros</span> : null}
         </span>
         <div className="text-right">
           <span className="font-display text-price-display text-ink block" data-testid="cart-total">{fmt(pix ?? total)}</span>

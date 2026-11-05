@@ -67,7 +67,13 @@
 
   /* Espaco para a navegacao inferior do celular */
   .pb-nav {
-    padding-bottom: calc(68px + env(safe-area-inset-bottom));
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+
+  /* Esconde o texto alternativo se a imagem ainda não carregou ou falhou. */
+  .img-no-alt {
+    color: transparent;
+    font-size: 0;
   }
 
   .pb-nav-lg {

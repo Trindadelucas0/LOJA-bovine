@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { redirect } from "next/navigation"
 
 import { getAvaContent } from "@lib/data/avadesk-content"
+import { resolveStorePricing } from "@lib/util/store-pricing"
 import { retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import { listCartShippingMethods } from "@lib/data/fulfillment"
@@ -39,8 +40,10 @@ export default async function Checkout(props: { params: Promise<{ countryCode: s
     getAvaContent(),
   ])
 
-  const pixP = settings.pix_discount_percent || 0
-  const payNow = (cart.total ?? 0) * (1 - pixP / 100)
+  const pricing = resolveStorePricing(settings)
+  const pixP = pricing.pixPercent
+  const total = cart.total ?? 0
+  const payNow = pixP && total > 0 ? total * (1 - pixP / 100) : total
   return (
     <>
     <div className="max-w-page mx-auto px-margin-m small:px-margin pt-4 small:pt-6 flex items-center justify-between gap-3 text-body-sm">
@@ -57,13 +60,13 @@ export default async function Checkout(props: { params: Promise<{ countryCode: s
         customer={customer}
         shippingOptions={shippingOptions || []}
         providerIds={(providers || []).map((p) => p.id)}
-        pixPercent={settings.pix_discount_percent}
-        maxInstallments={settings.max_installments}
+        pixPercent={pricing.pixPercent}
+        maxInstallments={pricing.maxInstallments}
       />
-      <CheckoutSummary cart={cart} pixPercent={settings.pix_discount_percent} maxInstallments={settings.max_installments} />
+      <CheckoutSummary cart={cart} pixPercent={pricing.pixPercent} maxInstallments={pricing.maxInstallments} />
     </div>
     <div className="small:hidden fixed bottom-0 inset-x-0 z-40 bar-sticky px-4 pt-2.5" style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}>
-      <div className="flex justify-between text-body-sm mb-2"><span className="text-ink-soft">Total{pixP ? " com PIX" : ""}:</span><b className="text-brand">{convertToLocale({ amount: pixP ? payNow : cart.total ?? 0, currency_code: cart.currency_code })}{pixP ? " à vista" : ""}</b></div>
+      <div className="flex justify-between text-body-sm mb-2"><span className="text-ink-soft">Total{pixP ? " com PIX" : ""}:</span><b className="text-brand">{convertToLocale({ amount: payNow, currency_code: cart.currency_code })}{pixP ? " à vista" : ""}</b></div>
       <a href="#checkout-flow" className="h-13 rounded-ava-md bg-brand text-white text-label-md flex items-center justify-center gap-2 shadow-brand-glow"><Icon name="lock" className="text-[18px]" /> Finalizar compra com segurança</a>
     </div>
     </>

@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { HttpTypes } from "@medusajs/types"
 import { getAvaContent } from "@lib/data/avadesk-content"
+import { resolveStorePricing } from "@lib/util/store-pricing"
 import { listCartOptions, retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import CartTemplate from "@modules/cart/templates"
@@ -26,8 +27,8 @@ export default async function Cart() {
       cart={cart}
       customer={customer}
       shippingOptions={shippingOptions}
-      pixPercent={settings.pix_discount_percent}
-      maxInstallments={settings.max_installments}
+      pixPercent={resolveStorePricing(settings).pixPercent}
+      maxInstallments={resolveStorePricing(settings).maxInstallments}
     />
   )
 }

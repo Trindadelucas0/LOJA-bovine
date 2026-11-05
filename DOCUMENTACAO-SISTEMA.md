@@ -2,8 +2,8 @@
 
 | Item | Valor |
 |---|---|
-| Versão do sistema | 1.3.0 — Identidade visual e navegação do aplicativo |
-| Última atualização | 23/10/2026 — superfícies com borda e sombra sobre fundo cinza-claro, tipografia e botões maiores para leitura confortável, fronteira única entre celular e computador em 1024 px e navegação do celular revista |
+| Versão do sistema | 1.4.0 — Vitrine de e-commerce |
+| Última atualização | 05/11/2026 — home com cara de loja: tarja de benefícios, banner horizontal com reserva desenhada em código, grade de departamentos, vitrines que não exibem “0 produtos”, Pix e parcelamento só com preço real, rodapé com formas de pagamento e botão de WhatsApp |
 | Fonte oficial | Este arquivo |
 
 ## 1. Como usar este documento
@@ -20,6 +20,7 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 | Versão | Data | Mudança |
 |---|---|---|
+| 1.4.0 — Vitrine de e-commerce | 05/11/2026 | A home passa a ler como loja: tarja no topo, marca BOVINE em código, banner horizontal (arte do admin ou desenho reserva), departamentos em grade, prateleiras de ofertas, mais vendidos e novidades, estado vazio sem “0 produtos”, atalho de WhatsApp oculto quando falta número, cabeçalho em uma linha a partir de 1024 px, selos de pagamento no rodapé e botão flutuante de WhatsApp. Pix e parcelamento ficam em `store-pricing.ts`, desligados por padrão e só aparecem com preço real. |
 | 1.3.0 — Identidade visual e navegação do aplicativo | 23/10/2026 | Sistema visual único em toda a loja: cartões brancos com borda e sombra sobre fundo cinza-claro, texto e botões maiores, rodapé em azul-escuro, campos com rótulo sempre visível, barra inferior do celular revista e página sem conexão redesenhada. |
 | 1.2.1 — Menu lateral de departamentos | 23/10/2026 | Na home a partir de 1280 px, os departamentos permanecem visíveis em uma lateral fixa abaixo do cabeçalho; celular, tablet e demais páginas preservam o painel acionado pelo botão. |
 | 1.2.0 — Menu lateral de departamentos | 21/10/2026 | Painel de departamentos em altura total acionado pelo cabeçalho, disponível nas páginas principais da loja e fechável por botão, fundo ou Esc. |
@@ -40,9 +41,10 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 |---|---|---|
 | Home da loja | Departamentos | A partir de 1280 px, lateral fixa com as categorias selecionadas em Conteúdo da loja e suas subcategorias imediatas. |
 | Demais páginas e home abaixo de 1280 px | Departamentos | Botão hambúrguer no cabeçalho abre o painel lateral com as mesmas categorias e subcategorias. |
-| Home da loja | Banner principal | Primeiro banner principal ativo; a arte usa imagem desktop/mobile e pode ter um destino de clique. |
-| Home da loja | Atendimentos | Veterinário e Agrícola usam o WhatsApp geral; Energia usa o WhatsApp da Mobile. |
-| Todas as telas da loja | Cabeçalho | Menu, marca, busca, conta e carrinho se reorganizam conforme a largura disponível. |
+| Home da loja | Banner principal | Banners principais ativos, em quadro horizontal. Se a imagem mobile falhar, usa a desktop. Se nenhuma carregar, entra o banner desenhado em código. |
+| Home da loja | Vitrine | Ofertas, mais vendidos, destaques e novidades. Sem produtos publicados, um estado vazio com as prateleiras nomeadas e os departamentos. |
+| Home da loja | Atendimentos | Veterinário e Agrícola usam o WhatsApp geral; Energia usa o WhatsApp da Mobile. Sem número, o atalho não aparece. |
+| Todas as telas da loja | Cabeçalho | A partir de 1024 px, menu, marca, busca, atalhos, conta e carrinho ficam na mesma linha. |
 | Admin | Conteúdo da loja → Banners | Upload das artes completas e destino opcional do banner. |
 | Admin | Conteúdo da loja → Informações e home | Números de WhatsApp e seleção dos departamentos. |
 
@@ -66,22 +68,26 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 ### Home e navegação de departamentos
 
-- O card compacto de departamentos foi removido da home; o banner ocupa a largura completa do conteúdo.
 - Na home a partir de 1280 px, os departamentos ficam sempre visíveis em uma lateral à esquerda do conteúdo. A lateral permanece abaixo do cabeçalho durante a rolagem e usa rolagem interna quando a lista ultrapassa a altura disponível.
-- Na home abaixo de 1280 px e nas demais páginas, o botão hambúrguer **Departamentos**, à esquerda do cabeçalho, abre o painel lateral.
+- Na home abaixo de 1280 px e nas demais páginas, o botão hambúrguer abre o painel lateral. O rótulo **Departamentos** só entra na linha do cabeçalho a partir de 1440 px, para a linha não quebrar.
 - O painel mostra as categorias escolhidas em **Conteúdo da loja → Informações e home**, na ordem configurada; se nenhuma estiver escolhida, mostra as categorias principais.
 - O primeiro departamento com subcategorias inicia expandido. O nome abre a categoria e a seta expande ou recolhe as subcategorias imediatas; apenas uma lista fica aberta por vez.
 - O painel recolhível pode ser fechado pelo botão **X**, clicando fora ou pressionando **Esc**. No celular, ocupa quase toda a largura da tela.
-- Quando existe imagem, o banner não recebe texto, selo ou botão sobreposto pelo storefront.
-- A imagem mobile é opcional. Sem ela, a imagem desktop também é usada no celular.
-- A arte do banner preenche o espaço disponível sem sobrepor textos, selos ou botões do storefront.
-- O clique no banner só existe quando o campo de destino está preenchido.
-- Abaixo do banner aparecem Atendimento Veterinário, Atendimento Agrícola e Soluções em Energia.
+- Acima do cabeçalho há uma tarja de benefícios. Ela usa os selos cadastrados em Informações e home; se não houver nenhum, mostra entrega, orientação, pagamento seguro e atendimento.
+- O banner principal é horizontal (`4/3` no celular e `21/8` no computador). Vários banners ativos viram um carrossel.
+- Quando a imagem existe e carrega, o storefront não coloca texto, selo ou botão por cima da arte.
+- A imagem mobile é opcional. Se ela falhar ou não existir, a imagem desktop é usada. Se nenhuma carregar, o banner desenhado em código entra no mesmo quadro. Texto alternativo solto não aparece.
+- O clique no banner do admin só existe quando o campo de destino está preenchido.
+- Abaixo do banner, a grade de departamentos usa ícone pelo nome da categoria. Sem foto de produto, o card mostra a moldura “Foto em breve”.
+- Ofertas, mais vendidos, destaques e novidades só aparecem quando há produtos de verdade. Mais vendidos depende de uma coleção cujo título contenha “mais vendidos”. Sem nenhum produto, a home mostra as quatro prateleiras vazias e os departamentos, sem a frase “0 produtos”.
+- Os atalhos de atendimento ficam depois da vitrine. Sem o número daquele atalho, ele não é renderizado.
+- O botão flutuante de WhatsApp usa o número geral. Sem número válido, o botão não aparece.
 
 ### Cabeçalho da loja
 
-- Em larguras compactas, menu, marca, busca e carrinho ocupam uma linha com espaços flexíveis; a marca pode truncar para manter os controles separados.
-- O cabeçalho desktop completo é exibido a partir do breakpoint `medium` (1280 px). A busca preserva largura mínima; links e controles podem fluir para outra linha quando o espaço disponível não comporta todos os elementos.
+- A marca, quando não há logo enviado, é o monograma BOVINE desenhado em código. A linha “Saúde Animal e Agro” só aparece a partir de 1440 px.
+- A partir de 1024 px o cabeçalho de controles é uma única linha: menu, marca, busca, atalhos, carrinho e conta. A busca encolhe; os atalhos rolam dentro da própria faixa se não couberem. A conta mostra só o ícone até 1440 px.
+- No celular, menu, marca, carrinho e conta ficam na primeira linha e a busca na segunda.
 
 ### Conteúdo da loja
 
@@ -109,16 +115,19 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 ### Navegação no celular e aplicativo instalado
 
 - A barra inferior fixa tem 68 px, quatro destinos (Início, Buscar, Carrinho, Conta), rótulos sempre visíveis e marca o destino atual com uma faixa laranja.
-- As telas reservam o espaço da barra com `.pb-nav` (ou `.pb-nav-lg` quando há também uma barra de ação fixa, como no carrinho, no produto e no checkout). Não usar `pb-16`, `pb-24` ou `pb-32`.
+- As telas reservam o espaço da barra com `.pb-nav` (84 px mais a área de gestos, para o conteúdo terminar acima da barra de 68 px) ou `.pb-nav-lg` quando há também uma barra de ação fixa, como no carrinho, no produto e no checkout. Não usar `pb-16`, `pb-24` ou `pb-32`.
 - As barras fixas de ação usam `.bar-sticky` e ficam acima da barra inferior, respeitando a área de gestos do aparelho.
 - No checkout, o celular mostra o nome do passo atual e uma barra de progresso ("Passo 2 de 4"); a trilha completa com ícones aparece a partir de 1024 px.
 
 ## 7. Regras de negócio
 
-- Atendimento Veterinário abre o WhatsApp geral com mensagem de urgência veterinária.
-- Atendimento Agrícola abre o WhatsApp geral com mensagem de agendamento agrícola.
-- Soluções em Energia abre o WhatsApp da Mobile com mensagem sobre energia.
-- Sem o número necessário, o cartão permanece visível e indisponível, sem gerar link inválido.
+- Atendimento veterinário abre o WhatsApp geral com mensagem de urgência veterinária.
+- Atendimento agrícola abre o WhatsApp geral com mensagem de agendamento agrícola.
+- Soluções em energia abre o WhatsApp da Mobile com mensagem sobre energia.
+- Sem o número necessário, o atalho não é exibido. Não há estado “WhatsApp não configurado”.
+- Pix e parcelamento sem juros são calculados em `apps/storefront/src/lib/util/store-pricing.ts`. Os padrões do arquivo estão desligados (`null`). Se o admin preencher `pix_discount_percent` ou `max_installments`, esses valores prevalecem. O texto só aparece quando o produto, o item da busca ou o total do carrinho tem preço maior que zero.
+- O rodapé lista as formas de pagamento em texto (Pix, Visa, Mastercard, Elo, Hipercard, Amex e boleto), porque a loja não recebeu as artes oficiais das bandeiras.
+- A loja não publica produto, preço, marca ou depoimento de exemplo. Um catálogo vazio permanece vazio, com estado visual de prateleira em preparação.
 - Na home desktop a partir de 1280 px, a navegação de departamentos fica aberta e o botão do cabeçalho é ocultado. Nas demais páginas e abaixo desse tamanho, o botão **Departamentos** abre o painel, que pode ser fechado pelo **X**, pelo fundo escurecido ou pela tecla **Esc**.
 - A primeira categoria com subcategorias inicia expandida. A seta expande apenas as subcategorias imediatas; os nomes abrem suas respectivas páginas.
 - A expansão é exclusiva: abrir outro departamento recolhe o anterior. A navegação usa as categorias escolhidas no admin e mantém o link **Ver todos**.
@@ -133,17 +142,18 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 2. Crie ou edite um banner com posição **Banner principal**.
 3. Preencha o nome interno, envie a arte desktop e, se houver, a arte mobile.
 4. Opcionalmente preencha **Destino ao clicar no banner**.
-5. Salve e aguarde até 60 segundos para a atualização da home.
+5. Salve e aguarde até 60 segundos para a atualização da home. A arte entra no quadro horizontal. Se o arquivo não abrir, a home mostra o banner desenhado em código, sem texto alternativo solto.
 
 ### Configurar os atendimentos
 
 1. Abra **Conteúdo da loja → Informações e home**.
-2. Informe o WhatsApp geral e o **WhatsApp da Mobile**, ambos com DDI.
-3. Marque as categorias que devem aparecer como departamentos.
+2. Informe o WhatsApp geral e, se houver, o **WhatsApp da Mobile**, ambos com DDI. O atalho sem número fica oculto.
+3. Marque as categorias que devem aparecer como departamentos. O percentual de Pix e o número de parcelas também ficam nesta área; em branco, a vitrine não mostra desconto nem parcelamento.
 4. Salve as configurações.
 
 ### Navegar pelos departamentos
 
+- No computador, a linha do cabeçalho não quebra: a busca encolhe e os atalhos rolam dentro da faixa.
 - Na home desktop a partir de 1280 px, use a lateral **Departamentos** à esquerda; não é necessário abrir um painel.
 - Na home abaixo de 1280 px e nas demais páginas, clique em **Departamentos** à esquerda do cabeçalho para abrir o painel.
 - A primeira categoria com subcategorias já aparece aberta. Clique no nome para abrir sua página ou use a seta para mostrar/recolher subcategorias; apenas uma lista fica aberta por vez.
@@ -155,15 +165,16 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 - Conferir banner com e sem destino, inclusive arte panorâmica, sem faixa vazia abaixo da imagem.
 - Conferir a lateral fixa da home em 1280, 1440 e 1920 px, incluindo permanência durante a rolagem, rolagem interna e ausência do botão no cabeçalho.
 - Conferir botão e painel na home abaixo de 1280 px e nas demais páginas, incluindo abrir/fechar, primeira categoria expandida, categorias com e sem subcategorias, expansão exclusiva e navegação pelos nomes.
-- Conferir menu, marca, busca e carrinho em larguras compactas e desktop sem sobreposição.
+- Conferir menu, marca, busca, atalhos, conta e carrinho em uma única linha em 1024, 1280 e 1440 px.
 - Conferir as telas em 390 px, 768 px, 1100 px e 1280 px: home, produtos, categoria, produto, carrinho, checkout, conta, pedidos, entrar e uma rota inexistente.
 - Conferir que em 1100 px o cabeçalho e a grade de produtos trocam juntos para o formato de computador.
 - Conferir ausência de rolagem horizontal em 390 px.
-- Conferir que as barras fixas do carrinho e do produto não cobrem a barra inferior.
+- Conferir que a barra inferior não cobre o fim da home, da listagem, do carrinho nem do rodapé.
+- Conferir que uma imagem de banner ou de produto quebrada não deixa texto alternativo solto.
 - Conferir o foco visível ao navegar somente pelo teclado em entrar, produto e checkout.
 - Conferir o aplicativo instalado: service worker na versão `bovine-v2`, visual novo após a atualização e página sem conexão em modo avião.
-- Conferir número e mensagem dos três atalhos.
-- Conferir o estado indisponível quando um número estiver vazio.
+- Conferir que cada atalho de atendimento só aparece com número válido.
+- Conferir que Pix e parcelamento não aparecem sem preço real, e que os percentuais saem de `store-pricing.ts` ou do admin.
 
 ## 10. Segurança
 

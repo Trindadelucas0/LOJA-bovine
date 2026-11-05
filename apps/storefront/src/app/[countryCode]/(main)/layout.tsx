@@ -10,6 +10,7 @@ import BottomNav from "@modules/avadesk/components/bottom-nav"
 import ChatwootWidget from "@modules/avadesk/components/chatwoot/widget"
 import AvaFooter from "@modules/avadesk/components/footer"
 import AvaHeader from "@modules/avadesk/components/header"
+import WhatsappFab from "@modules/avadesk/components/whatsapp-fab"
 import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge"
 
@@ -51,6 +52,7 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
       {props.children}
       <AvaFooter settings={settings} />
       <BottomNav cartCount={cartCount} />
+      <WhatsappFab phone={settings.whatsapp} />
       {chat.enabled && (
         <ChatwootWidget
           baseUrl={chat.baseUrl}

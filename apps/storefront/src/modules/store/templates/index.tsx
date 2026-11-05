@@ -15,6 +15,7 @@ const PRODUCT_LIMIT = 12
 
 const ResultCount = () => {
   const { nbHits } = useStats()
+  if (!nbHits) return null
   return (
     <span className="text-body-md font-semibold text-ink-soft shrink-0" data-testid="result-count">
       {nbHits} {nbHits === 1 ? "produto" : "produtos"}
@@ -26,13 +27,14 @@ type Props = {
   currencyCode: string
   pixPercent?: number | null
   maxInstallments?: number | null
+  categories?: { name: string; handle: string }[]
 }
 
-const StoreTemplate = ({ currencyCode, pixPercent, maxInstallments }: Props) => {
+const StoreTemplate = ({ currencyCode, pixPercent, maxInstallments, categories = [] }: Props) => {
   const [filtersOpen, setFiltersOpen] = useState(false)
 
   return (
-    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-10" data-testid="category-container">
+    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-nav" data-testid="category-container">
       <nav className="flex items-center gap-1.5 text-body-md text-ink-soft mb-2">
         <LocalizedClientLink href="/" className="hover:text-ink">Início</LocalizedClientLink>
         <Icon name="chevron_right" className="text-[16px]" />
@@ -74,6 +76,7 @@ const StoreTemplate = ({ currencyCode, pixPercent, maxInstallments }: Props) => 
               currencyCode={currencyCode}
               pixPercent={pixPercent}
               maxInstallments={maxInstallments}
+              categories={categories}
             />
           </div>
         </div>

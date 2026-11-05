@@ -6,7 +6,9 @@ import { useClearRefinements, useHits, useInstantSearch } from "react-instantsea
 
 import useSearchSettled from "@lib/hooks/use-search-settled"
 import { indexedCurrency, priceAttribute } from "@lib/search-client"
+import { hasRealPrice } from "@lib/util/store-pricing"
 import { convertToLocale } from "@lib/util/money"
+import EmptyCatalog from "@modules/avadesk/components/empty-catalog"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Thumbnail from "@modules/products/components/thumbnail"
 import Icon from "@modules/avadesk/components/icon"
@@ -26,6 +28,7 @@ type StoreHitsProps = {
   currencyCode: string
   pixPercent?: number | null
   maxInstallments?: number | null
+  categories?: { name: string; handle: string }[]
 }
 
 const num = (v: unknown) => (typeof v === "number" ? v : null)
@@ -49,8 +52,9 @@ const HitCard = ({
   const fmt = (v: number) => convertToLocale({ amount: v, currency_code })
   const isRange = max !== null && min !== null && max > min
   const discount = onSale && original && min ? Math.round(((original - min) / original) * 100) : 0
-  const pix = min !== null && pixPercent && pixPercent > 0 ? fmt(min * (1 - pixPercent / 100)) : null
-  const inst = min !== null && maxInstallments && maxInstallments > 1 ? `ou ${maxInstallments}x de ${fmt(min / maxInstallments)} sem juros` : null
+  const priced = hasRealPrice(min)
+  const pix = priced && pixPercent ? fmt(min! * (1 - pixPercent / 100)) : null
+  const inst = priced && maxInstallments ? `ou ${maxInstallments}x de ${fmt(min! / maxInstallments)} sem juros` : null
   const href = `/products/${hit.handle}`
 
   return (
@@ -67,7 +71,7 @@ const HitCard = ({
         </h3>
       </LocalizedClientLink>
       <div className="mt-auto mb-3" data-testid="product-price">
-        {min !== null ? (
+        {priced ? (
           <>
             {!isRange && onSale && original !== null && <span className="text-body-sm text-ink-muted line-through block">{fmt(original)}</span>}
             <div className="flex items-baseline gap-1 flex-wrap">
@@ -80,7 +84,7 @@ const HitCard = ({
             {inst && <span className="text-body-sm text-ink-soft block">{inst}</span>}
           </>
         ) : (
-          <span className="text-body-sm text-ink-muted">Ver preço</span>
+          <span className="text-body-sm text-ink-muted">Consulte o preço</span>
         )}
       </div>
       <LocalizedClientLink
@@ -107,7 +111,7 @@ const GridSkeleton = ({ n }: { n: number }) => (
   </ul>
 )
 
-const StoreHits = ({ hitsPerPage, currencyCode, pixPercent, maxInstallments }: StoreHitsProps) => {
+const StoreHits = ({ hitsPerPage, currencyCode, pixPercent, maxInstallments, categories = [] }: StoreHitsProps) => {
   const { items } = useHits<ProductHit>()
   const { status, error, indexUiState, refresh } = useInstantSearch()
   const { isSearching, hasNoResultsYet } = useSearchSettled()
@@ -143,16 +147,22 @@ const StoreHits = ({ hitsPerPage, currencyCode, pixPercent, maxInstallments }: S
       {showSkeleton ? (
         <GridSkeleton n={Math.min(hitsPerPage, 8)} />
       ) : !items.length ? (
+        canRefine ? (
         <div className="flex flex-col items-center text-center gap-3 py-16 card-surface" data-testid="no-products">
           <Icon name="search_off" className="text-[40px] text-ink-muted" />
           <p className="font-display text-h-sm text-ink">Nenhum produto encontrado</p>
           <p className="text-body-sm text-ink-muted">Tente outros termos ou remova alguns filtros.</p>
-          {canRefine && (
-            <button type="button" onClick={clearAll} className="mt-2 px-5 h-10 rounded-ava-md bg-brand text-white text-label-md">
-              Limpar filtros
-            </button>
-          )}
+          <button type="button" onClick={clearAll} className="mt-2 h-12 px-5 rounded-ava-md bg-brand text-white text-label-md">
+            Limpar filtros
+          </button>
         </div>
+        ) : (
+          <EmptyCatalog
+            title="O catálogo está sendo preparado"
+            text="Ainda não há produtos publicados nesta vitrine. Escolha um departamento para ver a estrutura da loja."
+            categories={categories}
+          />
+        )
       ) : (
         <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 gap-3 small:gap-gutter" data-testid="products-list">
           {items.map((hit) =>

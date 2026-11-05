@@ -3,6 +3,7 @@ import { convertToLocale } from "@lib/util/money"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import DiscountCode from "@modules/checkout/components/discount-code"
 import Icon from "@modules/avadesk/components/icon"
+import PaymentFlags from "@modules/avadesk/components/payment-flags"
 import CartItemRow from "../ava/cart-item"
 import ShippingEstimate from "../ava/shipping-estimate"
 
@@ -18,7 +19,7 @@ const CartTemplate = ({ cart, customer, shippingOptions = [], pixPercent, maxIns
   const items = cart?.items || []
   if (!cart || !items.length) {
     return (
-      <div className="max-w-page mx-auto px-margin-m small:px-margin py-10" data-testid="cart-container">
+      <div className="max-w-page mx-auto px-margin-m small:px-margin py-10 pb-nav" data-testid="cart-container">
         <div className="max-w-lg mx-auto flex flex-col items-center text-center gap-4 card-surface rounded-ava-xl p-10" data-testid="empty-cart-message">
           <span className="w-20 h-20 rounded-full bg-subtle flex items-center justify-center text-ink-muted">
             <Icon name="shopping_cart" className="text-[40px]" />
@@ -37,7 +38,7 @@ const CartTemplate = ({ cart, customer, shippingOptions = [], pixPercent, maxIns
   const fmt = (n: number) => convertToLocale({ amount: n, currency_code: currency })
   const subtotal = cart.item_subtotal ?? cart.subtotal ?? 0
   const total = cart.total ?? 0
-  const pix = pixPercent && pixPercent > 0 ? total * (1 - pixPercent / 100) : null
+  const pix = total > 0 && pixPercent ? total * (1 - pixPercent / 100) : null
   const count = items.reduce((a, i) => a + i.quantity, 0)
   const sorted = [...items].sort((a, b) => (String(a.created_at ?? "") > String(b.created_at ?? "") ? -1 : 1))
 
@@ -80,11 +81,12 @@ const CartTemplate = ({ cart, customer, shippingOptions = [], pixPercent, maxIns
             <div className="text-right">
               <span className="font-display text-price-display text-ink block" data-testid="cart-total">{fmt(total)}</span>
               {pix !== null && <span className="text-body-sm text-teal font-semibold block">{fmt(pix)} no PIX ({pixPercent}% OFF)</span>}
-              {maxInstallments && maxInstallments > 1 ? (
+              {total > 0 && maxInstallments ? (
                 <span className="text-body-sm text-ink-soft block">ou {maxInstallments}x de {fmt(total / maxInstallments)}</span>
               ) : null}
             </div>
           </div>
+          <PaymentFlags tone="dark" />
           <LocalizedClientLink
             href="/checkout?step=address"
             className="hidden small:flex h-12 rounded-ava-md bg-brand text-white text-label-md items-center justify-center gap-2 shadow-brand-glow"

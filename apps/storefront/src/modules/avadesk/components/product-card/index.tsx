@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { getProductPrice } from "@lib/util/get-product-price"
+import { hasRealPrice } from "@lib/util/store-pricing"
 import { convertToLocale } from "@lib/util/money"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Thumbnail from "@modules/products/components/thumbnail"
@@ -39,19 +40,20 @@ export default function AvaProductCard({
 }) {
   const { cheapestPrice: price } = getProductPrice({ product })
   const stock = stockOf(product)
-  const hasDiscount = price && price.price_type === "sale" && price.original_price_number > price.calculated_price_number
+  const priced = !!price && hasRealPrice(price.calculated_price_number)
+  const hasDiscount = priced && price!.price_type === "sale" && price!.original_price_number > price!.calculated_price_number
   const pix =
-    price && config.pixPercent && config.pixPercent > 0
+    priced && config.pixPercent
       ? convertToLocale({
-          amount: price.calculated_price_number * (1 - config.pixPercent / 100),
-          currency_code: price.currency_code,
+          amount: price!.calculated_price_number * (1 - config.pixPercent / 100),
+          currency_code: price!.currency_code,
         })
       : null
   const installments =
-    price && config.maxInstallments && config.maxInstallments > 1
+    priced && config.maxInstallments
       ? `ou ${config.maxInstallments}x de ${convertToLocale({
-          amount: price.calculated_price_number / config.maxInstallments,
-          currency_code: price.currency_code,
+          amount: price!.calculated_price_number / config.maxInstallments,
+          currency_code: price!.currency_code,
         })} sem juros`
       : null
   const stockLabel = {
@@ -93,7 +95,7 @@ export default function AvaProductCard({
       )}
 
       <div className="mt-auto mb-3">
-        {price ? (
+        {priced && price ? (
           <>
             {hasDiscount && (
               <span className="text-body-sm text-ink-muted line-through block">{price.original_price}</span>
@@ -108,7 +110,7 @@ export default function AvaProductCard({
             {installments && <span className="text-body-sm text-ink-soft block">{installments}</span>}
           </>
         ) : (
-          <span className="text-body-sm text-ink-muted">Preço indisponível</span>
+          <span className="text-body-sm text-ink-muted">Consulte o preço</span>
         )}
       </div>
 

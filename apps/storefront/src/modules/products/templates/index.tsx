@@ -3,8 +3,10 @@ import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 
 import { getAvaContent } from "@lib/data/avadesk-content"
+import { resolveStorePricing } from "@lib/util/store-pricing"
 import { retrieveCustomer } from "@lib/data/customer"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Assurance from "@modules/avadesk/components/assurance"
 import Icon from "@modules/avadesk/components/icon"
 import BuyBox from "@modules/avadesk/components/product-page/buy-box"
 import DetailsTabs, { DetailSection } from "@modules/avadesk/components/product-page/details-tabs"
@@ -26,6 +28,7 @@ export default async function ProductTemplate({ product, countryCode, images }: 
   }
 
   const [{ settings }, customer] = await Promise.all([getAvaContent(), retrieveCustomer().catch(() => null)])
+  const pricing = resolveStorePricing(settings)
   const meta = readProductMeta(product)
 
   // Breadcrumb: categoria principal + ancestrais
@@ -115,8 +118,8 @@ export default async function ProductTemplate({ product, countryCode, images }: 
           <Suspense fallback={<div className="h-96 animate-pulse bg-subtle rounded-ava-lg" />}>
             <BuyBox
               product={product}
-              pixPercent={settings.pix_discount_percent}
-              maxInstallments={settings.max_installments}
+              pixPercent={pricing.pixPercent}
+              maxInstallments={pricing.maxInstallments}
               maxQty={meta.maxQty}
               whatsapp={settings.whatsapp}
               email={settings.email}
@@ -126,6 +129,8 @@ export default async function ProductTemplate({ product, countryCode, images }: 
           </Suspense>
         </div>
       </div>
+
+      <Assurance />
 
       <DetailsTabs sections={sections} />
 
