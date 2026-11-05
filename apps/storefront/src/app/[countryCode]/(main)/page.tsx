@@ -18,7 +18,6 @@ import CategoryGrid from "@modules/home/components/category-grid"
 import ChatBlock from "@modules/home/components/chat-block"
 import FeaturedTabs from "@modules/home/components/featured-tabs"
 import Hero from "@modules/home/components/hero"
-import PromoBanner from "@modules/home/components/promo-banner"
 import SectionHeading from "@modules/home/components/section-heading"
 import ServiceShortcuts from "@modules/home/components/service-shortcuts"
 
@@ -53,13 +52,12 @@ export default async function Home(props: { params: Promise<{ countryCode: strin
   const region = await getRegion(countryCode)
   if (!region) return null
 
-  const [{ settings, banners }, categories, { collections }] = await Promise.all([
+  const [{ settings }, categories, { collections }] = await Promise.all([
     getAvaContent(),
     listCategories({ fields: "id,name,handle,parent_category_id,rank,*category_children" }).catch(() => []),
     listCollections({ fields: "id,handle,title" }).catch(() => ({ collections: [] as HttpTypes.StoreCollection[] })),
   ])
 
-  const promo = banners.find((banner) => banner.position === "promo")
   const availableCategories = categories || []
   const topCategories = availableCategories.filter((category) => !category.parent_category_id)
   const selectedCategoryIds = settings.home_category_ids || []
@@ -147,11 +145,10 @@ export default async function Home(props: { params: Promise<{ countryCode: strin
     <div className="mx-auto flex max-w-page flex-col gap-6 px-margin-m pb-nav pt-3 small:gap-10 small:px-margin small:pt-6 medium:grid medium:grid-cols-[260px_minmax(0,1fr)] medium:items-start medium:gap-gutter">
       <CategoriesSidebar categories={departmentCategories} title={categoriesTitle} />
       <div className="flex min-w-0 flex-col gap-6 small:gap-10">
-        <Hero banners={banners} settings={settings} />
+        <Hero settings={settings} />
         <div id="departamentos">
           <CategoryGrid title={categoriesTitle} categories={selectedCategories} />
         </div>
-        <PromoBanner banner={promo} pixText={settings.pix_discount_text} />
         {shelf("offers", "Preço menor", "Ofertas", offers)}
         {shelf("best", "Quem mais sai", "Mais vendidos", bestsellers)}
         {tabs.length > 0 && (

@@ -3,7 +3,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 
 const PILLARS = ["Saúde animal", "Energia solar", "Agropecuária"]
 
-/** Banner horizontal desenhado em código, usado quando não há arte válida no admin. */
+/** Hero compacto da home. A arte enviada no admin não entra neste quadro. */
 export default function CodedBanner({ settings }: { settings: AvaSettings }) {
   const name = storeName(settings)
   const subtitle =
@@ -11,7 +11,7 @@ export default function CodedBanner({ settings }: { settings: AvaSettings }) {
     "Medicamentos, nutrição, cercas e energia solar para a rotina da fazenda."
 
   return (
-    <div className="absolute inset-0 flex items-end overflow-hidden bg-navy text-white small:items-center">
+    <div className="absolute inset-0 flex items-center overflow-hidden bg-navy text-white">
       <svg
         viewBox="0 0 800 360"
         className="pointer-events-none absolute inset-0 h-full w-full"
@@ -39,14 +39,14 @@ export default function CodedBanner({ settings }: { settings: AvaSettings }) {
           <path d="M6 28h58M6 40h58M18 16v36M36 16v36M54 16v36" className="text-teal-light" stroke="currentColor" strokeWidth="2" />
         </g>
       </svg>
-      <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/88 to-navy/25 small:bg-gradient-to-r small:from-navy small:via-navy/80 small:to-transparent" />
-      <div className="relative z-10 flex w-full max-w-xl flex-col gap-2 p-4 small:gap-3 small:p-8">
+      <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/88 to-navy/20" />
+      <div className="relative z-10 flex w-full max-w-xl flex-col gap-1.5 px-4 py-3 small:gap-2 small:px-8">
         <p className="text-label-xs uppercase tracking-[0.16em] text-teal-light">{name}</p>
-        <h1 className="font-display text-h-md font-extrabold leading-tight small:text-h-xl">
+        <h1 className="font-display text-h-sm font-extrabold leading-tight small:text-h-lg">
           Saúde animal, energia e agro para a sua fazenda
         </h1>
-        <p className="line-clamp-3 text-body-sm text-white/80 small:text-body-md">{subtitle}</p>
-        <ul className="flex flex-wrap gap-1.5">
+        <p className="line-clamp-1 text-body-sm text-white/80">{subtitle}</p>
+        <ul className="hidden gap-1.5 small:flex">
           {PILLARS.map((pillar) => (
             <li key={pillar} className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-label-xs">
               {pillar}

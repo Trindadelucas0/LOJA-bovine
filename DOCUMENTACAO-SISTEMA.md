@@ -2,8 +2,8 @@
 
 | Item | Valor |
 |---|---|
-| Versão do sistema | 1.4.0 — Vitrine de e-commerce |
-| Última atualização | 05/11/2026 — home com cara de loja: tarja de benefícios, banner horizontal com reserva desenhada em código, grade de departamentos, vitrines que não exibem “0 produtos”, Pix e parcelamento só com preço real, rodapé com formas de pagamento e botão de WhatsApp |
+| Versão do sistema | 1.4.1 — Hero compacto sem arte do admin |
+| Última atualização | 05/11/2026 — a home não exibe mais os banners cadastrados no admin; o hero é só o desenho em código, com altura fixa, para os departamentos aparecerem na primeira dobra |
 | Fonte oficial | Este arquivo |
 
 ## 1. Como usar este documento
@@ -20,7 +20,8 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 
 | Versão | Data | Mudança |
 |---|---|---|
-| 1.4.0 — Vitrine de e-commerce | 05/11/2026 | A home passa a ler como loja: tarja no topo, marca BOVINE em código, banner horizontal (arte do admin ou desenho reserva), departamentos em grade, prateleiras de ofertas, mais vendidos e novidades, estado vazio sem “0 produtos”, atalho de WhatsApp oculto quando falta número, cabeçalho em uma linha a partir de 1024 px, selos de pagamento no rodapé e botão flutuante de WhatsApp. Pix e parcelamento ficam em `store-pricing.ts`, desligados por padrão e só aparecem com preço real. |
+| 1.4.1 — Hero compacto sem arte do admin | 05/11/2026 | A home deixa de renderizar os banners do admin. O hero passa a ser somente o desenho em código, com 188 px no celular e 200 px no computador, para a grade de departamentos entrar na primeira dobra. Os registros de banner permanecem no banco. |
+| 1.4.0 — Vitrine de e-commerce | 05/11/2026 | A home passa a ler como loja: tarja no topo, marca BOVINE em código, banner horizontal, departamentos em grade, prateleiras de ofertas, mais vendidos e novidades, estado vazio sem “0 produtos”, atalho de WhatsApp oculto quando falta número, cabeçalho em uma linha a partir de 1024 px, selos de pagamento no rodapé e botão flutuante de WhatsApp. Pix e parcelamento ficam em `store-pricing.ts`, desligados por padrão e só aparecem com preço real. |
 | 1.3.0 — Identidade visual e navegação do aplicativo | 23/10/2026 | Sistema visual único em toda a loja: cartões brancos com borda e sombra sobre fundo cinza-claro, texto e botões maiores, rodapé em azul-escuro, campos com rótulo sempre visível, barra inferior do celular revista e página sem conexão redesenhada. |
 | 1.2.1 — Menu lateral de departamentos | 23/10/2026 | Na home a partir de 1280 px, os departamentos permanecem visíveis em uma lateral fixa abaixo do cabeçalho; celular, tablet e demais páginas preservam o painel acionado pelo botão. |
 | 1.2.0 — Menu lateral de departamentos | 21/10/2026 | Painel de departamentos em altura total acionado pelo cabeçalho, disponível nas páginas principais da loja e fechável por botão, fundo ou Esc. |
@@ -41,11 +42,11 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 |---|---|---|
 | Home da loja | Departamentos | A partir de 1280 px, lateral fixa com as categorias selecionadas em Conteúdo da loja e suas subcategorias imediatas. |
 | Demais páginas e home abaixo de 1280 px | Departamentos | Botão hambúrguer no cabeçalho abre o painel lateral com as mesmas categorias e subcategorias. |
-| Home da loja | Banner principal | Banners principais ativos, em quadro horizontal. Se a imagem mobile falhar, usa a desktop. Se nenhuma carregar, entra o banner desenhado em código. |
+| Home da loja | Banner principal | Somente o hero desenhado em código, com altura fixa. As artes do admin não são exibidas na home. |
 | Home da loja | Vitrine | Ofertas, mais vendidos, destaques e novidades. Sem produtos publicados, um estado vazio com as prateleiras nomeadas e os departamentos. |
 | Home da loja | Atendimentos | Veterinário e Agrícola usam o WhatsApp geral; Energia usa o WhatsApp da Mobile. Sem número, o atalho não aparece. |
 | Todas as telas da loja | Cabeçalho | A partir de 1024 px, menu, marca, busca, atalhos, conta e carrinho ficam na mesma linha. |
-| Admin | Conteúdo da loja → Banners | Upload das artes completas e destino opcional do banner. |
+| Admin | Conteúdo da loja → Banners | O cadastro continua disponível e os arquivos ficam gravados. A home não os renderiza. |
 | Admin | Conteúdo da loja → Informações e home | Números de WhatsApp e seleção dos departamentos. |
 
 ## 4. Papéis e acesso
@@ -74,11 +75,9 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 - O primeiro departamento com subcategorias inicia expandido. O nome abre a categoria e a seta expande ou recolhe as subcategorias imediatas; apenas uma lista fica aberta por vez.
 - O painel recolhível pode ser fechado pelo botão **X**, clicando fora ou pressionando **Esc**. No celular, ocupa quase toda a largura da tela.
 - Acima do cabeçalho há uma tarja de benefícios. Ela usa os selos cadastrados em Informações e home; se não houver nenhum, mostra entrega, orientação, pagamento seguro e atendimento.
-- O banner principal é horizontal (`4/3` no celular e `21/8` no computador). Vários banners ativos viram um carrossel.
-- Quando a imagem existe e carrega, o storefront não coloca texto, selo ou botão por cima da arte.
-- A imagem mobile é opcional. Se ela falhar ou não existir, a imagem desktop é usada. Se nenhuma carregar, o banner desenhado em código entra no mesmo quadro. Texto alternativo solto não aparece.
-- O clique no banner do admin só existe quando o campo de destino está preenchido.
-- Abaixo do banner, a grade de departamentos usa ícone pelo nome da categoria. Sem foto de produto, o card mostra a moldura “Foto em breve”.
+- O hero da home é só o desenho em HTML/CSS/SVG. Ele tem 188 px no celular e 200 px a partir de 1024 px, para a grade de departamentos aparecer na primeira dobra em 1440×900 e em 390×844.
+- Banners cadastrados no admin (posição principal ou promocional) não são renderizados na home. O banco e os arquivos enviados não são apagados.
+- Abaixo do hero, a grade de departamentos usa ícone pelo nome da categoria. Sem foto de produto, o card mostra a moldura “Foto em breve”.
 - Ofertas, mais vendidos, destaques e novidades só aparecem quando há produtos de verdade. Mais vendidos depende de uma coleção cujo título contenha “mais vendidos”. Sem nenhum produto, a home mostra as quatro prateleiras vazias e os departamentos, sem a frase “0 produtos”.
 - Os atalhos de atendimento ficam depois da vitrine. Sem o número daquele atalho, ele não é renderizado.
 - O botão flutuante de WhatsApp usa o número geral. Sem número válido, o botão não aparece.
@@ -96,10 +95,10 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 | Informações e home | WhatsApp | Número geral com DDI | Usado nos atendimentos Veterinário e Agrícola. |
 | Informações e home | WhatsApp da Mobile | 10 a 15 dígitos, somente números | Usado exclusivamente em Soluções em Energia. |
 | Informações e home | Categorias exibidas na home | Nenhuma marcada usa as categorias principais | Define os departamentos e sua ordem. |
-| Banners | Nome interno / texto alternativo | Obrigatório | Identifica e descreve a arte. |
-| Banners | Arte completa desktop | Opcional | Imagem principal de ponta a ponta. |
-| Banners | Arte completa mobile | Opcional | Substitui a imagem principal abaixo de 1024 px. |
-| Banners | Destino ao clicar | Opcional | Aceita caminho interno, `#chat` ou URL externa. |
+| Banners | Nome interno / texto alternativo | Obrigatório no cadastro | Identifica a arte. A home não exibe o registro. |
+| Banners | Arte completa desktop | Opcional | Gravada no banco. A home não a renderiza. |
+| Banners | Arte completa mobile | Opcional | Gravada no banco. A home não a renderiza. |
+| Banners | Destino ao clicar | Opcional | Gravado no banco. A home não usa esse destino. |
 
 ### Sistema visual (superfícies, texto e botões)
 
@@ -131,18 +130,14 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 - Na home desktop a partir de 1280 px, a navegação de departamentos fica aberta e o botão do cabeçalho é ocultado. Nas demais páginas e abaixo desse tamanho, o botão **Departamentos** abre o painel, que pode ser fechado pelo **X**, pelo fundo escurecido ou pela tecla **Esc**.
 - A primeira categoria com subcategorias inicia expandida. A seta expande apenas as subcategorias imediatas; os nomes abrem suas respectivas páginas.
 - A expansão é exclusiva: abrir outro departamento recolhe o anterior. A navegação usa as categorias escolhidas no admin e mantém o link **Ver todos**.
-- Campos antigos de texto e botões do banner são preservados no banco por compatibilidade, mas não são exibidos sobre a arte principal.
+- Os banners do admin, inclusive texto, botão e imagem, permanecem gravados. A home não os renderiza: o hero é o desenho em código, com altura fixa.
 - O conteúdo público pode levar até 60 segundos para refletir alterações por causa do cache do storefront.
 
 ## 8. Como usar o sistema
 
-### Trocar o banner
+### Banner da home
 
-1. No admin, abra **Conteúdo da loja → Banners**.
-2. Crie ou edite um banner com posição **Banner principal**.
-3. Preencha o nome interno, envie a arte desktop e, se houver, a arte mobile.
-4. Opcionalmente preencha **Destino ao clicar no banner**.
-5. Salve e aguarde até 60 segundos para a atualização da home. A arte entra no quadro horizontal. Se o arquivo não abrir, a home mostra o banner desenhado em código, sem texto alternativo solto.
+A home não troca de arte pelo admin. O hero é o desenho compacto do storefront. Um banner criado em **Conteúdo da loja → Banners** continua salvo, mas não aparece na página inicial.
 
 ### Configurar os atendimentos
 
@@ -162,7 +157,7 @@ Este arquivo registra o comportamento atual da loja BOVINE. Os guias antigos em 
 ## 9. Checklist de validação
 
 - Conferir arte desktop e mobile sem sobreposição.
-- Conferir banner com e sem destino, inclusive arte panorâmica, sem faixa vazia abaixo da imagem.
+- Conferir que a home não mostra a arte “Falta de energia” nem outro banner do admin, e que a grade de departamentos entra na primeira dobra em 1440×900 e 390×844.
 - Conferir a lateral fixa da home em 1280, 1440 e 1920 px, incluindo permanência durante a rolagem, rolagem interna e ausência do botão no cabeçalho.
 - Conferir botão e painel na home abaixo de 1280 px e nas demais páginas, incluindo abrir/fechar, primeira categoria expandida, categorias com e sem subcategorias, expansão exclusiva e navegação pelos nomes.
 - Conferir menu, marca, busca, atalhos, conta e carrinho em uma única linha em 1024, 1280 e 1440 px.
