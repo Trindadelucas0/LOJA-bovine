@@ -69,4 +69,4 @@ export const getAvaContent = async (): Promise<AvaContent> => {
   }
 }
 
-export const storeName = (s: AvaSettings) => s.store_name || "Loja"
+export const storeName = (s: AvaSettings) => s.store_name?.trim() || "BOVINE"

@@ -25,7 +25,7 @@ export default function CollectionTemplate({
   const sort = sortBy || "created_at"
 
   return (
-    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-10">
+    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-nav">
       <nav className="flex items-center gap-1.5 text-body-sm text-ink-muted mb-2">
         <LocalizedClientLink href="/" className="hover:text-ink">Início</LocalizedClientLink>
         <Icon name="chevron_right" className="text-[16px]" />

@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
-import PlaceholderImage from "@modules/common/icons/placeholder-image"
+import ProductArt from "../product-art"
 import Icon from "../icon"
 
 export default function ProductGallery({
@@ -16,23 +16,34 @@ export default function ProductGallery({
   badge?: string | null
 }) {
   const [active, setActive] = useState(0)
-  useEffect(() => setActive(0), [images])
+  const [broken, setBroken] = useState(false)
+  useEffect(() => {
+    setActive(0)
+    setBroken(false)
+  }, [images])
   const current = images[active]
 
   return (
     <div className="flex flex-col gap-3">
       <div className="relative w-full aspect-square card-surface small:rounded-ava-xl overflow-hidden">
+        <span className="sr-only">{title}</span>
         {badge && (
           <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md bg-navy text-white text-label-xs uppercase">
             {badge}
           </span>
         )}
-        {current?.url ? (
-          <Image src={current.url} alt={title} fill priority sizes="(max-width: 1024px) 100vw, 600px" className="object-contain p-4" />
+        {current?.url && !broken ? (
+          <Image
+            src={current.url}
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 600px"
+            className="object-contain p-4 text-[0px] text-transparent"
+            onError={() => setBroken(true)}
+          />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-subtle">
-            <PlaceholderImage size={40} />
-          </div>
+          <ProductArt />
         )}
         {images.length > 1 && (
           <>

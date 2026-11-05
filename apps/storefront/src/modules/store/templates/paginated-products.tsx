@@ -82,10 +82,10 @@ export default async function PaginatedProducts({
         <span className="w-16 h-16 rounded-full bg-subtle flex items-center justify-center text-ink-soft">
           <Icon name="inventory_2" className="text-[32px]" />
         </span>
-        <p className="font-display text-h-md text-ink">Nenhum produto por aqui ainda</p>
-        <p className="text-body-lg text-ink-soft">Veja o catálogo completo da loja.</p>
-        <LocalizedClientLink href="/store" className="mt-2 px-6 h-13 inline-flex items-center rounded-ava-md bg-brand text-white text-label-md shadow-brand-glow">
-          Ver todos os produtos
+        <p className="font-display text-h-md text-ink">Este departamento ainda não tem produtos</p>
+        <p className="text-body-lg text-ink-soft">A vitrine aparece aqui assim que houver itens publicados.</p>
+        <LocalizedClientLink href="/" className="mt-2 px-6 h-13 inline-flex items-center rounded-ava-md bg-brand text-white text-label-md shadow-brand-glow">
+          Voltar para a loja
         </LocalizedClientLink>
       </div>
     )

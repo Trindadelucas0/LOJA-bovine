@@ -10,6 +10,7 @@ import CategoriesMenu from "./categories-menu"
 import SearchBar from "./search-bar"
 import Logo from "./logo"
 import CartDropdown from "./cart-dropdown"
+import UtilityBar from "../utility-bar"
 
 export default async function AvaHeader({
   settings,
@@ -56,28 +57,33 @@ export default async function AvaHeader({
   )
 
   return (
-    <header className="sticky top-0 inset-x-0 z-50 bg-card border-b border-line shadow-header">
-      {/* Desktop */}
-      <div className="hidden small:flex min-h-20 max-w-page mx-auto px-margin py-3 items-center gap-gutter flex-wrap">
+    <div className="sticky top-0 inset-x-0 z-50">
+      <UtilityBar items={settings.hero_badges} />
+      <header className="bg-card border-b border-line shadow-header">
+      {/* Desktop: uma única linha entre 1024 e 1440 px */}
+      <div
+        data-testid="desktop-header-row"
+        className="hidden small:flex h-16 max-w-page mx-auto px-margin items-center gap-3 flex-nowrap"
+      >
         <CategoriesMenu categories={cats} title={categoriesTitle} />
         <Logo name={name} logoUrl={settings.logo_url} />
-        <div className="flex flex-1 min-w-[280px] max-w-2xl items-center bg-subtle border border-line rounded-ava-md p-1 focus-within:border-brand focus-within:bg-card transition-colors">
+        <div className="flex min-w-0 flex-1 items-center bg-subtle border border-line rounded-ava-md p-1 focus-within:border-brand focus-within:bg-card transition-colors">
           <SearchBar />
         </div>
         {links.length > 0 && (
-          <nav className="ml-auto flex items-center justify-end gap-1 min-w-0 max-w-full flex-wrap whitespace-nowrap">
+          <nav className="flex min-w-0 max-w-[38%] items-center gap-0.5 overflow-x-auto no-scrollbar flex-nowrap">
             {links.map((l, i) => (
               <SmartLink
                 key={i}
                 href={l.url}
-                className="text-label-md text-ink-soft hover:text-ink hover:bg-subtle rounded-ava px-3 py-1.5 transition-colors"
+                className="whitespace-nowrap text-label-sm text-ink-soft hover:text-ink hover:bg-subtle rounded-ava px-2 py-1.5 transition-colors"
               >
                 {l.label}
               </SmartLink>
             ))}
           </nav>
         )}
-        <div className="ml-auto flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1 shrink-0">
           {chatEnabled && (
             <ChatButton
               className="relative p-2 text-ink-soft hover:text-ink hover:bg-subtle rounded-full transition-colors flex items-center"
@@ -97,7 +103,7 @@ export default async function AvaHeader({
             <span className="w-8 h-8 rounded-full bg-navy text-white flex items-center justify-center">
               <Icon name="person" className="text-[18px]" />
             </span>
-            <span className="text-label-sm text-ink-soft max-w-[120px] truncate">
+            <span className="hidden large:inline text-label-sm text-ink-soft max-w-[120px] truncate">
               {customer ? `Olá, ${customer.first_name || "cliente"}` : "Entrar"}
             </span>
           </LocalizedClientLink>
@@ -132,5 +138,6 @@ export default async function AvaHeader({
         </div>
       </div>
     </header>
+    </div>
   )
 }

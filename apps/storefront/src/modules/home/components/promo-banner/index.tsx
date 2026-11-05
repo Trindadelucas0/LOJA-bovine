@@ -1,5 +1,6 @@
 import { AvaBanner } from "@lib/data/avadesk-content"
 import Icon from "@modules/avadesk/components/icon"
+import SafeImage from "@modules/avadesk/components/safe-image"
 import SmartLink from "@modules/avadesk/components/smart-link"
 
 export default function PromoBanner({ banner, pixText }: { banner?: AvaBanner; pixText?: string | null }) {
@@ -8,14 +9,12 @@ export default function PromoBanner({ banner, pixText }: { banner?: AvaBanner; p
   const subtitle = banner?.subtitle
   return (
     <section className="flex items-center gap-3 small:gap-4 bg-brand-light/60 small:bg-card border border-brand/25 rounded-ava-lg p-3.5 small:p-5 shadow-card">
-      {banner?.image_url ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={banner.image_url} alt="" className="w-12 h-12 small:w-14 small:h-14 rounded-ava-md object-cover shrink-0" />
-      ) : (
-        <div className="w-10 h-10 small:w-14 small:h-14 rounded-full small:rounded-ava-md bg-brand text-white flex items-center justify-center shrink-0">
+      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-ava-md bg-brand text-white small:h-14 small:w-14">
+        <div className="absolute inset-0 flex items-center justify-center">
           <Icon name="percent" className="text-[22px] small:text-[28px]" />
         </div>
-      )}
+        <SafeImage src={banner?.image_url} className="absolute inset-0 h-full w-full object-cover" />
+      </div>
       <div className="flex-1 min-w-0">
         <p className="font-display text-body-md small:text-h-sm text-ink font-bold">{title}</p>
         {subtitle && <p className="text-body-sm text-ink-soft line-clamp-2">{subtitle}</p>}

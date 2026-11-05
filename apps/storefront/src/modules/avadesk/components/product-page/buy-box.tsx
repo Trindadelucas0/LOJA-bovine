@@ -6,6 +6,7 @@ import { isEqual } from "lodash"
 import { HttpTypes } from "@medusajs/types"
 import { addToCart } from "@lib/data/cart"
 import { getPricesForVariant, getProductPrice } from "@lib/util/get-product-price"
+import { hasRealPrice } from "@lib/util/store-pricing"
 import { convertToLocale } from "@lib/util/money"
 import { openProductChat } from "@lib/util/chatwoot"
 import Icon from "../icon"
@@ -78,18 +79,19 @@ export default function BuyBox({
   const limit = Math.max(1, Math.min(maxQty || 99, stock.qty ?? 99))
   useEffect(() => setQty((q) => Math.min(q, limit)), [limit])
 
+  const priced = !!price && hasRealPrice(price.calculated_price_number)
   const pix =
-    price && pixPercent && pixPercent > 0
-      ? convertToLocale({ amount: price.calculated_price_number * (1 - pixPercent / 100), currency_code: price.currency_code })
+    priced && pixPercent
+      ? convertToLocale({ amount: price!.calculated_price_number * (1 - pixPercent / 100), currency_code: price!.currency_code })
       : null
   const installments =
-    price && maxInstallments && maxInstallments > 1
+    priced && maxInstallments
       ? `${maxInstallments}x de ${convertToLocale({
-          amount: price.calculated_price_number / maxInstallments,
-          currency_code: price.currency_code,
+          amount: price!.calculated_price_number / maxInstallments,
+          currency_code: price!.currency_code,
         })} sem juros`
       : null
-  const hasDiscount = price && price.original_price_number > price.calculated_price_number
+  const hasDiscount = priced && price!.original_price_number > price!.calculated_price_number
 
   const canBuy = !!selected && stock.state !== "out"
   const label = !selected ? "Selecione as opções" : stock.state === "out" ? "Esgotado" : null
@@ -154,7 +156,7 @@ export default function BuyBox({
 
       {/* Preço */}
       <div className="rounded-ava-lg bg-brand-light/40 border border-brand/25 p-4 small:p-5" data-testid="product-price">
-        {price ? (
+        {priced && price ? (
           <>
             {hasDiscount && (
               <div className="flex items-center gap-2 mb-1">
@@ -178,7 +180,7 @@ export default function BuyBox({
             )}
           </>
         ) : (
-          <span className="text-body-md text-ink-muted">Preço indisponível para esta região.</span>
+          <span className="text-body-md text-ink-muted">Consulte o preço</span>
         )}
       </div>
 

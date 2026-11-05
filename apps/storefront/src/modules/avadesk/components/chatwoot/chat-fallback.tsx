@@ -1,5 +1,6 @@
 "use client"
 
+import { whatsappHref } from "@lib/util/whatsapp"
 import Icon from "../icon"
 
 /** Mensagem exibida quando o Chatwoot não está configurado. */
@@ -12,23 +13,25 @@ export default function ChatFallback({
   email?: string | null
   onClose?: () => void
 }) {
+  const whatsappLink = whatsappHref(whatsapp, "Olá! Preciso de atendimento.")
+
   return (
     <div className="flex items-start gap-2 rounded-ava-md border border-line bg-subtle p-3 text-body-sm text-ink-soft" role="status">
       <Icon name="info" className="text-[18px] text-chat mt-0.5" />
       <div className="flex-1">
         <p>O atendimento por chat não está disponível no momento.</p>
-        {(whatsapp || email) && (
+        {(whatsappLink || email) && (
           <p className="mt-1">
             Fale conosco
-            {whatsapp && (
+            {whatsappLink && (
               <>
                 {" "}pelo{" "}
-                <a className="text-teal font-semibold underline" href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">
+                <a className="text-teal font-semibold underline" href={whatsappLink} target="_blank" rel="noreferrer">
                   WhatsApp
                 </a>
               </>
             )}
-            {whatsapp && email && " ou"}
+            {whatsappLink && email && " ou"}
             {email && (
               <>
                 {" "}pelo e-mail{" "}

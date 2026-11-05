@@ -36,7 +36,7 @@ export default function CategoryTemplate({
   const children = category.category_children || []
 
   return (
-    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-10" data-testid="category-container">
+    <div className="max-w-page mx-auto px-margin-m small:px-margin pt-3 small:pt-6 pb-nav" data-testid="category-container">
       <nav className="flex items-center gap-1.5 text-body-sm text-ink-muted mb-2 overflow-x-auto no-scrollbar whitespace-nowrap">
         <LocalizedClientLink href="/" className="hover:text-ink">Início</LocalizedClientLink>
         <Icon name="chevron_right" className="text-[16px]" />
